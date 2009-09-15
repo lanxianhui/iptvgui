@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IPTV Web</title>
+<link rel="stylesheet" href="css/site.css" type="text/css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</head>
+<body>
+<div id="contentcent">
+<!-- Main主菜单 Start-->
+<div id="v_main" class="active">
+<a href="" onclick="ajaxcgi();return false;">TestCGI</a><div id="testcgi"></div>
+<h3>主菜单</h3>
+<ul>
+<li><a href="" onclick="activePanel('#v_account');return false;">账号设置</a></li>
+<li><a href="" onclick="activePanel('#v_network');return false;">网络设置</a></li>
+<li><a href="" onclick="activePanel('#v_advanced');return false;">高级设置</a></li>
+<li><a href="" onclick="activePanel('#v_system');return false;">系统信息</a></li>
+<li><a href="" onclick="activePanel('#v_update');return false;">升级设置</a></li>
+<li><a href="" onclick="activePanel('#v_default');return false;">恢复默认设置</a></li>
+</ul>
+</div>
+<!-- Main主菜单 End-->
+
+<div id="v_account" class="hidden">
+<h3>账号设置</h3>
+<form id="" class="form">
+<table>
+<tr><td>业务账号：</td><td><input type="text" name="accountname" id="accountname"/></td></tr>
+<tr><td>业务密码：</td><td><input type="text" name="password" id="password"/></td></tr>
+</table>
+<span id="bar"><a href="#">上一步</a>&nbsp;&nbsp;<a href="#">下一步</a>&nbsp;&nbsp;<a href="" onclick="backMain();return false;">返回</a></span>
+</form>
+</div>
+
+<div id="v_network" class="hidden">
+<h3>连接设置</h3>
+<form id="" class="form">
+<input type="radio" name="t_network" value="1" onclick="changeRadio(1);" checked="checked"/>PPPoE
+<input type="radio" name="t_network" value="2" onclick="changeRadio(2);"/>DHCP
+<input type="radio" name="t_network" value="3" onclick="changeRadio(3);"/>LAN
+<input type="radio" name="t_network" value="4" onclick="changeRadio(4);"/>DualMode
+<table id="table1" class="active">
+<tr><td>PPPoE用户名：</td><td><input type="text" name="username" id="username"/></td></tr>
+<tr><td>PPPoE密码：</td><td><input type="password" name="password" id="password"/></td></tr>
+</table>
+<table id="table2" class="hidden">
+<tr><td><input type="checkbox"/></td><td>是否启用DHCP方式自动获取IP地址</td></tr>
+</table>
+<table id="table3" class="hidden">
+<tr><td>IP：</td><td>
+<input type="text" maxlength="3" size="3" id="lanadd11"/>-
+<input type="text" maxlength="3" size="3" id="lanadd12"/>-
+<input type="text" maxlength="3" size="3" id="lanadd13"/>-
+<input type="text" maxlength="3" size="3" id="lanadd14"/></td></tr>
+<tr><td>GATEWAY：</td><td>
+<input type="text" maxlength="3" size="3" id="lanadd21"/>-
+<input type="text" maxlength="3" size="3" id="lanadd22"/>-
+<input type="text" maxlength="3" size="3" id="lanadd23"/>-
+<input type="text" maxlength="3" size="3" id="lanadd24"/></td></tr>
+<tr><td>NETMASK：</td><td>
+<input type="text" maxlength="3" size="3" id="lanadd31"/>-
+<input type="text" maxlength="3" size="3" id="lanadd32"/>-
+<input type="text" maxlength="3" size="3" id="lanadd33"/>-
+<input type="text" maxlength="3" size="3" id="lanadd34"/></td></tr>
+<tr><td>DNS：</td><td>
+<input type="text" maxlength="3" size="3" id="lanadd41"/>-
+<input type="text" maxlength="3" size="3" id="lanadd42"/>-
+<input type="text" maxlength="3" size="3" id="lanadd43"/>-
+<input type="text" maxlength="3" size="3" id="lanadd44"/></td></tr>
+</table>
+<table id="table4" class="hidden">
+<tr><td>PPPoE用户名：</td><td><input type="text" name="dualname" id="dualname"/></td></tr>
+<tr><td>PPPoE密码：</td><td><input type="password" name="dualpwd" id="dualpwd"/></td></tr>
+</table>
+<span id="bar"><a href="#">上一步</a>&nbsp;&nbsp;<a href="#">下一步</a>&nbsp;&nbsp;<a href="" onclick="backMain();return false;">返回</a></span>
+</form>
+</div>
+<div id="v_advanced" class="hidden">
+<h3>高级设置</h3>
+<form id="" class="form">
+<table>
+<tr><td>制式设置：</td><td></td></tr>
+<tr><td><input type="radio" value="1" name="adredio" checked="checked"/>NTSC制式</td><td><input name="adredio" type="radio" value="2"/>PAL制式</td></tr>
+</table>
+<span id="bar"><a href="#">确定</a>&nbsp;&nbsp;<a href="" onclick="backMain();return false;">取消</a></span>
+</form>
+</div>
+<div id="v_system" class="hidden">
+<h3>系统设置</h3>
+<form id="" class="form">
+<table>
+<tr><td><a href="" onclick="showMessage(1);return false;">设备信息</a></td>
+<td><a href="" onclick="showMessage(2);return false;">网络信息</a></td>
+<td rowspan="3"><div id="messageDiv"></div></td></tr>
+<tr><td><a href=""  onclick="showMessage(3);return false;">服务器信息</a></td>
+<td><a href="" onclick="showMessage(4);return false;">版本信息</a></td></tr>
+<tr><td><a  href="" onclick="showMessage(5);return false;">DRM信息</a></td>
+<td><a href="" onclick="showMessage(6);return false;">设备自检</a></td></tr>
+</table>
+<span id="bar"><a href="" onclick="backMain();return false;">返回</a></span>
+</form>
+</div>
+<div id="v_update" class="hidden">
+<h3>升级设置</h3>
+<form id="" class="form">
+<table>
+<tr><td>升级服务器：</td><td>
+<input type="text" maxlength="3" size="3" id="ipaddress1"/>-
+<input type="text" maxlength="3" size="3" id="ipaddress2"/>-
+<input type="text" maxlength="3" size="3" id="ipaddress3"/>-
+<input type="text" maxlength="3" size="3" id="ipaddress4"/></td></tr>
+</table>
+<span id="bar"><a href="#">上一步</a>&nbsp;&nbsp;<a href="#">下一步</a>&nbsp;&nbsp;<a href="" onclick="backMain();return false;">返回</a></span>
+</form>
+</div>
+<div id="v_default" class="hidden">
+<h3>恢复默认</h3>
+<form id="" class="form">
+<table class="active">
+<tr><td></td><td>是否要恢复到默认配置？</td></tr>
+</table>
+<span id="bar"><a href="#">确定</a>&nbsp;&nbsp;<a href="" onclick="backMain();return false;">取消</a></span>
+</form>
+</div>
+<div id="v_error" class="hidden">
+错误信息页面
+</div>
+</div>
+</body>
+</html>

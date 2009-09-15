@@ -1,0 +1,1 @@
+copy *.c C:\Server\Apache2\cgi-bin

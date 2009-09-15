@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网络设置</title>
+<link rel="stylesheet" href="css/site.css" type="text/css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<style type="text/css">
+.form table td{ height:50px;}
+#username,#password{ float:left; height:20px;width:180px; font-size:16px; margin-left:10px; margin-right:10px;}
+</style>
+</head>
+<body>
+<div id="contentcent">
+<div id="v_main">
+<div id="v_menu">
+<ul>
+<li><a href="SetAccount.html"><img src="images/3.png"/></a>
+<span>账号设置</span>
+</li>
+<li  style="-moz-opacity:1;filter:alpha(opacity=100);"><a href="NetworkSettings.html"><img src="images/1.png"/></a>
+<span>网络设置</span>
+</li>
+<li><a href="AdvancedSettings.html"><img src="images/2.png"/></a>
+<span>高级设置</span>
+</li>
+<li><a href="SystemInformation.html"><img src="images/4.png"/></a>
+<span>系统信息</span>
+</li>
+<li><a href="SetUpgradeInformation.html"><img src="images/5.png"/></a>
+<span>升级设置</span>
+</li>
+<li><a href="ReloadDefaultSettings.html"><img src="images/6.png"/></a>
+<span>恢复默认</span>
+</li>
+<li><a href="index.html"><img src="images/back.png"/></a>
+<span>返回</span>
+</li>
+</ul>
+</div>
+<h3 class="title"></h3>
+<h3 class="titlespan">网络设置<span></span></h3>
+<div class="line">
+<form id="f_pppoe" class="form" action="../cgi-bin/PPPoEAction.cgi" method="post">
+<div class="choosenet">
+<input type="radio" name="t_network" value="1" onclick="changeRadio(1);" checked="checked"/>PPPoE
+<input type="radio" name="t_network" value="2" onclick="changeRadio(2);"/>DHCP
+<input type="radio" name="t_network" value="3" onclick="changeRadio(3);"/>LAN
+<input type="radio" name="t_network" value="4" onclick="changeRadio(4);"/>DualMode
+</div>
+<table id="table1" class="active">
+<tr><td>PPPoE用户名：</td><td><input type="text" name="username" id="username"/></td></tr>
+<tr><td>PPPoE密码：</td><td><input type="password" name="password" id="password"/></td></tr>
+</table>
+</form>
+<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitNetwork(1);return false;">下一步</a></div>
+</div>
+</div>
+<div id="banner">
+<img src="images/Logo.png"/>
+<div id="hint">中国电信集团公司
+<hr/>
+<span>Copy Right:2009 CHINA TELECOM </span>
+</div>
+<div id="searchdiv">
+<input type="text"/><a href=""><span>搜索视频</span></a><img src="images/search.png"/>
+</div>
+</div>
+</div>
+</body>
+</html>

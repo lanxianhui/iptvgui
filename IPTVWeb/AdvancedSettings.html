@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+		jQuery("#chkntsc").focus();
+});
+</script>
 <style type="text/css">
 .form{ height:200px;;width:100%; float:left;}
 .form table{ width:60%; margin-left:15%; float:left;}
@@ -48,7 +53,7 @@
 <form id="f_advanced" class="form" action="../cgi-bin/AdvancedSetting.cgi" method="post">
 <table>
 <tr><td>制式设置：</td><td></td></tr>
-<tr><td><input type="radio" value="1" name="adredio" checked="checked"/>NTSC制式</td><td><input name="adredio" type="radio" value="2"/>PAL制式</td></tr>
+<tr><td><input type="radio" value="1" id="chkntsc" name="adredio" checked="checked"/>NTSC制式</td><td><input name="adredio" type="radio" value="2"/>PAL制式</td></tr>
 </table>
 </form>
 <div id="bar"><a href="" onclick="submitForm('f_advanced');return false;"  class="operation" >确定</a><a class="operation" href="index.html">取消</a></div>

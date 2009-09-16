@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+		jQuery("#lnkdevice").focus();
+});
+</script>
 <style type="text/css">
 .form table td{ height:50px;}
 </style>
@@ -43,7 +48,7 @@
 <div class="line">
 <form id="" class="form">
 <table>
-<tr><td><a href="" onclick="showMessage(1);return false;">设备信息</a></td>
+<tr><td><a href="" id="lnkdevice" onclick="showMessage(1);return false;">设备信息</a></td>
 <td><a href="" onclick="showMessage(2);return false;">网络信息</a></td>
 <td rowspan="3"><div id="messageDiv"></div></td></tr>
 <tr><td><a href=""  onclick="showMessage(3);return false;">服务器信息</a></td>

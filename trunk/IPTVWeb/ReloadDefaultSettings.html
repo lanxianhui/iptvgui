@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+		jQuery("#yeslink").focus();
+});
+</script>
 <style type="text/css">
 .form{ height:200px;;width:100%; float:left;}
 .form table{ width:60%; margin-left:15%; float:left;}
@@ -48,7 +53,7 @@
 <tr><td></td><td>如果你要恢复到出厂设置请点击确定。是否要恢复到默认配置？</td></tr>
 </table>
 </form>
-<div id="bar"><a href="" class="operation" onclick="submitForm('f_default');return false;">确定</a><a class="operation" href="index.html">取消</a></div>
+<div id="bar"><a href="" class="operation" id="yeslink" onclick="submitForm('f_default');return false;">确定</a><a class="operation" href="index.html">取消</a></div>
 </div>
 </div>
 <div id="banner">

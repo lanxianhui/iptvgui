@@ -8,12 +8,7 @@
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
-	jQuery("input[name=t_network]").each(function(){
-		if(jQuery(this).attr("checked") == true)
-		{
-			jQuery(this).focus();
-		}
-	});
+	jQuery("#t_network4").focus();
 });
 </script>
 <style type="text/css">
@@ -54,10 +49,10 @@ jQuery(document).ready(function(){
 <div class="line">
 <form id="f_dualmode" class="form" action="../cgi-bin/DualModeAction.cgi" method="post">
 <div class="choosenet">
-<input type="radio" name="t_network" value="1" onclick="changeRadio(1);"/>PPPoE
-<input type="radio" name="t_network" value="2" onclick="changeRadio(2);"/>DHCP
-<input type="radio" name="t_network" value="3" onclick="changeRadio(3);"/>LAN
-<input type="radio" name="t_network" value="4" onclick="changeRadio(4);"  checked="checked"/>DualMode
+<input type="radio" name="t_network" value="1"/><a href="NetworkSettings.html">PPPoE</a>
+<input type="radio" name="t_network" value="2"/><a href="DhcpSettings.html">DHCP</a>
+<input type="radio" name="t_network" value="3"/><a href="LanSetting.html">LAN</a>
+<input type="radio" name="t_network" id="t_network4" value="4" checked="checked"/><a href="DualModeSettings.html">DualMode</a>
 </div>
 <table id="table4" class="active">
 <tr><td>PPPoE用户名：</td><td><input type="text" name="dualname" id="dualname"/></td></tr>

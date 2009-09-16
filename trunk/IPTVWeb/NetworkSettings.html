@@ -17,7 +17,7 @@ jQuery(document).ready(function(){
 </style>
 </head>
 <body>
-<div id="contentcent" style="background-image:url(images/back.jpg);">
+<div id="contentcent">
 <div id="v_main">
 <div id="v_menu">
 <ul>
@@ -49,10 +49,10 @@ jQuery(document).ready(function(){
 <div class="line">
 <form id="f_pppoe" class="form" action="../cgi-bin/PPPoEAction.cgi" method="post">
 <div class="choosenet">
-<input type="radio" name="t_network" id="t_network1" value="1" checked="checked"/><a href="NetworkSettings.html">PPPoE</a>
-<input type="radio" name="t_network" value="2" /><a href="DhcpSettings.html">DHCP</a>
-<input type="radio" name="t_network" value="3" /><a href="LanSetting.html">LAN</a>
-<input type="radio" name="t_network" value="4" /><a href="DualModeSettings.html">DualMode</a>
+<a href="NetworkSettings.html"  id="t_network1" ><input type="radio" tabindex="-1" name="t_network" value="1" checked="checked"/>PPPoE</a>
+<a href="DhcpSettings.html"><input type="radio" tabindex="-1" name="t_network" value="2" />DHCP</a>
+<a href="LanSettings.html"><input type="radio" tabindex="-1" name="t_network" value="3" />LAN</a>
+<a href="DualModeSettings.html"><input type="radio" tabindex="-1" name="t_network" value="4" />DualMode</a>
 </div>
 <table id="table1" class="active">
 <tr><td>PPPoE用户名：</td><td><input type="text" name="username" id="username"/></td></tr>

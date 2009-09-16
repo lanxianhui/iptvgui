@@ -16,7 +16,7 @@ jQuery(document).ready(function(){
 </style>
 </head>
 <body>
-<div id="contentcent" style="background-image:url(images/back.jpg);">
+<div id="contentcent">
 <div id="v_main">
 <div id="v_menu">
 <ul>
@@ -48,10 +48,10 @@ jQuery(document).ready(function(){
 <div class="line">
 <form id="f_dhcp"  class="form" action="../cgi-bin/DHCPAction.cgi" method="post">
 <div class="choosenet">
-<input type="radio" name="t_network" value="1"/><a href="NetworkSettings.html">PPPoE</a>
-<input type="radio" name="t_network" id="t_network2" value="2"checked="checked"/><a href="DhcpSettings.html">DHCP</a>
-<input type="radio" name="t_network" value="3"/><a href="LanSetting.html">LAN</a>
-<input type="radio" name="t_network" value="4"/><a href="DualModeSettings.html">DualMode</a>
+<a href="NetworkSettings.html"><input type="radio" name="t_network" value="1"  tabindex="-1" />PPPoE</a>
+<a href="DhcpSettings.html" id="t_network2" ><input type="radio" name="t_network" value="2"  tabindex="-1"  checked="checked"/>DHCP</a>
+<a href="LanSettings.html"><input type="radio" name="t_network" value="3"  tabindex="-1" />LAN</a>
+<a href="DualModeSettings.html"><input type="radio" name="t_network" value="4"  tabindex="-1" />DualMode</a>
 </div>
 <table id="table2">
 <tr><td><input type="checkbox" name="isdhcp"/></td><td>是否启用DHCP方式自动获取IP地址</td></tr>

@@ -17,7 +17,7 @@ jQuery(document).ready(function(){
 </style>
 </head>
 <body>
-<div id="contentcent" style="background-image:url(images/back.jpg);">
+<div id="contentcent">
 <div id="v_main">
 <div id="v_menu">
 <ul>
@@ -49,10 +49,10 @@ jQuery(document).ready(function(){
 <div class="line">
 <form id="f_lan" class="form"  action="../cgi-bin/LANAction.cgi" method="post">
 <div class="choosenet">
-<input type="radio" name="t_network" value="1" /><a href="NetworkSettings.html">PPPoE</a>
-<input type="radio" name="t_network" value="2" /><a href="DhcpSettings.html">DHCP</a>
-<input type="radio" name="t_network" id="t_network3" value="3" checked="checked"/><a href="LanSetting.html">LAN</a>
-<input type="radio" name="t_network" value="4" /><a href="DualModeSettings.html">DualMode</a>
+<a href="NetworkSettings.html"><input type="radio" name="t_network" value="1" tabindex="-1"  />PPPoE</a>
+<a href="DhcpSettings.html"><input type="radio" name="t_network" value="2"  tabindex="-1" />DHCP</a>
+<a href="LanSettings.html" id="t_network3"><input type="radio" name="t_network"  tabindex="-1" value="3" checked="checked"/>LAN</a>
+<a href="DualModeSettings.html"><input type="radio" name="t_network" value="4"  tabindex="-1" />DualMode</a>
 </div>
 <table id="table3">
 <tr><td>IP：</td><td>

@@ -49,10 +49,10 @@ jQuery(document).ready(function(){
 <div class="line">
 <form id="f_dualmode" class="form" action="../cgi-bin/DualModeAction.cgi" method="post">
 <div class="choosenet">
-<input type="radio" name="t_network" value="1"/><a href="NetworkSettings.html">PPPoE</a>
-<input type="radio" name="t_network" value="2"/><a href="DhcpSettings.html">DHCP</a>
-<input type="radio" name="t_network" value="3"/><a href="LanSetting.html">LAN</a>
-<input type="radio" name="t_network" id="t_network4" value="4" checked="checked"/><a href="DualModeSettings.html">DualMode</a>
+<a href="NetworkSettings.html"><input type="radio" name="t_network" value="1"  tabindex="-1"/>PPPoE</a>
+<a href="DhcpSettings.html"><input type="radio" name="t_network" value="2"  tabindex="-1"/>DHCP</a>
+<a href="LanSettings.html"><input type="radio" name="t_network" value="3"  tabindex="-1"/>LAN</a>
+<a href="DualModeSettings.html"  id="t_network4"><input type="radio" name="t_network" value="4" checked="checked"  tabindex="-1"/>DualMode</a>
 </div>
 <table id="table4" class="active">
 <tr><td>PPPoE用户名：</td><td><input type="text" name="dualname" id="dualname"/></td></tr>

@@ -9,7 +9,7 @@ h3 a{ font-size:12px; color:#30F;}
 form{ padding-left:40px; padding-top:10px;}
 input[type=text],input[type=password]{width:160px; height:16px;}
 
-#contentcent{ float:left; width:720px; background-color:#ACC5DD; background-image:url(../images/back.JPG); height:576px;}
+#contentcent{ float:left; width:720px; background-color:#ACC5DD; height:576px;}
 
 .active{ display:block;}
 .hidden{ display:none;}

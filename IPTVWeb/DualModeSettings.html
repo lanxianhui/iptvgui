@@ -6,6 +6,16 @@
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("input[name=t_network]").each(function(){
+		if(jQuery(this).attr("checked") == true)
+		{
+			jQuery(this).focus();
+		}
+	});
+});
+</script>
 <style type="text/css">
 .form table td{ height:50px;}
 #dualname,#dualpwd{ float:left; height:20px;width:180px; font-size:16px; margin-left:10px; margin-right:10px;}

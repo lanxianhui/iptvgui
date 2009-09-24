@@ -63,3 +63,7 @@ input[type=text],input[type=password]{width:160px; height:16px;}
 #lanadd31,#lanadd32,#lanadd33,#lanadd34,
 #lanadd41,#lanadd42,#lanadd43,#lanadd44{width:36px; height:16px;}
 
+#msg{width:400px;border:solid 2px Red;height:300px;margin-top:40px;margin-left:80px;background-color:white;}
+#msg h4{ float:left; width:98%; padding-left:2%; padding-top:10px; background-color:Red; padding-bottom:10px; font-size:12px; color:white;}
+#msg img{ width:100px; height:100px; margin-top:40px; margin-left:20px; float:left;}
+#msg div{ float:left; width:240px; margin-top:40px;color:#C03; font-size:20px; line-height:1.8em; font-weight:700; padding:20px; padding-top:10px;}

@@ -5,6 +5,7 @@
 <title>账号设置</title>
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jqueryimg.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
@@ -12,11 +13,12 @@ jQuery(document).ready(function(){
 });
 </script>
 <style type="text/css">
-.form table td{ height:70px;}
+.form table td{ height:60px;}
 #accountname,#password{ float:left; height:20px;width:180px; font-size:16px; margin-left:10px; margin-right:10px;}
 </style>
 </head>
 <body>
+
 <div id="contentcent">
 <div id="v_main" class="active">
 <div id="v_menu">
@@ -48,13 +50,14 @@ jQuery(document).ready(function(){
 <h3 class="title"></h3>
 <h3 class="titlespan">账号设置<span></span></h3>
 <div class="line">
-<form id="f_account" class="form" action="../../cgi-bin/SetAccount.cgi" method="post">
+<form id="f_account" class="form" action="../cgi-bin/SetAccount.cgi" method="post">
 <table>
 <tr><td>业务账号：</td><td><input type="text" name="accountname" id="accountname"/></td></tr>
 <tr><td>业务密码：</td><td><input type="password" name="password" id="password"/></td></tr>
+<tr><td colspan="2"><span style="color:red;display:none;width:80%;background-color:white;float:left;height:40px;text-align:center;border:solid 1px red;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
 </table>
 </form>
-<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitForm('f_account');return false;">下一步</a></div>
+<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitAccount('f_account');return false;">下一步</a></div>
 </div>
 </div>
 <div id="banner">

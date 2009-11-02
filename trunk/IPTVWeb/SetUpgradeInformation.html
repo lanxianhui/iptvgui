@@ -5,16 +5,42 @@
 <title>升级设置</title>
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jqueryimg.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
 		jQuery("#ipaddress1").focus();
 });
+
+function submitOutUpGrade(){
+	var result = true;
+	if($("#ipaddress1").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#ipaddress2").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#ipaddress3").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#ipaddress4").attr("value") == ""){
+		//$("#msgError").css("display","inline");
+		$("#msgError").fadeIn("slow");
+			result = false;
+	}else{
+		if( result == true ){
+			submitUpGrade();
+		}
+	}
+}
 </script>
 <style type="text/css">
 .form{ height:200px;;width:100%; float:left;}
 .form table{ width:60%; margin-left:15%; float:left;}
-.form table td{ height:110px;}
+.form table td{ height:80px;}
 #ipaddress1,#ipaddress2,#ipaddress3,#ipaddress4{ height:20px;font-size:16px; margin-left:10px; margin-right:10px;}
 </style>
 </head>
@@ -53,14 +79,15 @@ jQuery(document).ready(function(){
 <form id="f_upgrade" class="form" action="../cgi-bin/SetUpgradeInformation.cgi" method="post">
 <table>
 <tr><td>升级服务器：</td><td>
-<input type="text" maxlength="3" size="3" id="ipaddress1"/>-
-<input type="text" maxlength="3" size="3" id="ipaddress2"/>-
-<input type="text" maxlength="3" size="3" id="ipaddress3"/>-
-<input type="text" maxlength="3" size="3" id="ipaddress4"/></td></tr>
+<input type="text" maxlength="3" size="3" id="ipaddress1"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' />-
+<input type="text" maxlength="3" size="3" id="ipaddress2"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' />-
+<input type="text" maxlength="3" size="3" id="ipaddress3"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' />-
+<input type="text" maxlength="3" size="3" id="ipaddress4"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' /></td></tr>
+<tr><td colspan="2"><span style="color:red;display:none;width:90%;background-color:white;float:left;height:40px;text-align:center;border:solid 1px red;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
 </table>
 <input type="hidden" name="ipaddress" id="ipaddress" value=""/>
 </form>
-<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitUpGrade();return false;">下一步</a></div>
+<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitOutUpGrade();return false;">下一步</a></div>
 </div>
 </div>
 <div id="banner">

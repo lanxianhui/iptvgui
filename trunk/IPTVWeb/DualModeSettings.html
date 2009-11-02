@@ -5,19 +5,37 @@
 <title>网络设置</title>
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jqueryimg.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery("#t_network4").focus();
 });
+
+function submitOutNetwork(){
+	var result = true;
+	if($("#dualname").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#dualpwd").attr("value") == ""){
+		//$("#msgError").css("display","inline");
+		$("#msgError").fadeIn("slow");
+			result = false;
+	}else{
+		if( result == true ){
+			submitNetwork(4);
+		}
+	}
+}
 </script>
 <style type="text/css">
-.form table td{ height:50px;}
+.form table td{ height:40px;}
 #dualname,#dualpwd{ float:left; height:20px;width:180px; font-size:16px; margin-left:10px; margin-right:10px;}
 </style>
 </head>
 <body>
-<div id="contentcent" style="background-image:url(images/back.jpg);">
+<div id="contentcent">
 <div id="v_main">
 <div id="v_menu">
 <ul>
@@ -57,9 +75,10 @@ jQuery(document).ready(function(){
 <table id="table4" class="active">
 <tr><td>PPPoE用户名：</td><td><input type="text" name="dualname" id="dualname"/></td></tr>
 <tr><td>PPPoE密码：</td><td><input type="password" name="dualpwd" id="dualpwd"/></td></tr>
+<tr><td colspan="2"><span style="color:red;display:none;width:80%;background-color:white;float:left;height:40px;text-align:center;border:solid 1px red;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
 </table>
 </form>
-<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitNetwork(4);return false;">下一步</a></div>
+<div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitOutNetwork();return false;">下一步</a></div>
 </div>
 </div>
 <div id="banner">

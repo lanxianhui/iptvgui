@@ -5,15 +5,90 @@
 <title>网络设置</title>
 <link rel="stylesheet" href="css/site.css" type="text/css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jqueryimg.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery("#t_network3").focus();
 });
+
+function submitOutLan(){
+	var result = true;
+	if($("#lanadd11").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd12").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd13").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd14").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd21").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd22").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd23").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd24").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd31").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd32").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd33").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd34").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd41").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd42").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd43").attr("value") == ""){
+		$("#msgError").fadeIn("slow");
+		result = false;
+	}
+	if($("#lanadd44").attr("value") == ""){
+		//$("#msgError").css("display","inline");
+		$("#msgError").fadeIn("slow");
+			result = false;
+	}else{
+		if( result == true ){
+			submitNetwork(3);
+		}
+	}
+}
 </script>
 <style type="text/css">
 .form{ height:250px;}
 .form table{ margin-left:18%;}
+#table3 td{ height:18px;}
 </style>
 </head>
 <body>
@@ -47,8 +122,8 @@ jQuery(document).ready(function(){
 <h3 class="title"></h3>
 <h3 class="titlespan">网络设置<span></span></h3>
 <div class="line">
-<form id="f_lan" class="form"  action="../cgi-bin/LANAction.cgi" method="post">
-<div class="choosenet">
+<form id="f_lan" class="form" action="../cgi-bin/LANAction.cgi" method="post">
+<div class="choosenet" style="height:20px;">
 <a href="NetworkSettings.html"><input type="radio" name="t_network" value="1" tabindex="-1"  />PPPoE</a>
 <a href="DhcpSettings.html"><input type="radio" name="t_network" value="2"  tabindex="-1" />DHCP</a>
 <a href="LanSettings.html" id="t_network3"><input type="radio" name="t_network"  tabindex="-1" value="3" checked="checked"/>LAN</a>
@@ -56,25 +131,26 @@ jQuery(document).ready(function(){
 </div>
 <table id="table3">
 <tr><td>IP：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd11"/>-
-<input type="text" maxlength="3" size="3" id="lanadd12"/>-
-<input type="text" maxlength="3" size="3" id="lanadd13"/>-
-<input type="text" maxlength="3" size="3" id="lanadd14"/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd11" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd12" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd13" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd14" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
 <tr><td>GATEWAY：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd21"/>-
-<input type="text" maxlength="3" size="3" id="lanadd22"/>-
-<input type="text" maxlength="3" size="3" id="lanadd23"/>-
-<input type="text" maxlength="3" size="3" id="lanadd24"/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd21" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd22" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd23" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd24" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
 <tr><td>NETMASK：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd31"/>-
-<input type="text" maxlength="3" size="3" id="lanadd32"/>-
-<input type="text" maxlength="3" size="3" id="lanadd33"/>-
-<input type="text" maxlength="3" size="3" id="lanadd34"/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd31" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd32" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd33" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd34" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
 <tr><td>DNS：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd41"/>-
-<input type="text" maxlength="3" size="3" id="lanadd42"/>-
-<input type="text" maxlength="3" size="3" id="lanadd43"/>-
-<input type="text" maxlength="3" size="3" id="lanadd44"/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd41" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd42" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd43" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd44" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
+<tr><td colspan="2"><span style="color:red;display:none;width:80%;background-color:white;float:left;height:30px;text-align:center;border:solid 1px red;font-size:12px;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
 </table>
 <input type="hidden" value="" id="ip" name="ip"/>
 <input type="hidden" value="" id="gateway" name="gateway"/>
@@ -82,7 +158,7 @@ jQuery(document).ready(function(){
 <input type="hidden" value="" id="dns" name="dns"/>
 
 </form>
-<div id="bar"><a href="index.html" class="operation">上一步</a><a href="#" class="operation" onclick="submitNetwork(3);return false;">下一步</a></div>
+<div id="bar"><a href="index.html" class="operation">上一步</a><a href="#" class="operation" onclick="submitOutLan();return false;">下一步</a></div>
 </div>
 </div>
 <div id="banner">

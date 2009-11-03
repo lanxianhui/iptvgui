@@ -4,6 +4,14 @@ function activePanel(objectId)
 	$(objectId).css("display","block");
 }
 
+function activemenu(object){
+	jQuery("#menu" + object).attr("src","images/active" + object + ".jpg");
+}
+
+function deactivemenu(object){
+	jQuery("#menu" + object).attr("src","images/deactive" + object + ".jpg");
+}
+
 function backMain()
 {
 	activePanel("#v_main");
@@ -19,6 +27,18 @@ function changeRadio(index)
 		case 3:window.location = "LanSettings.html";break;
 		case 4:window.location = "DualModeSettings.html";break;
 	}
+}
+
+function settitle(){
+	jQuery("#titlelabel").fadeOut("fast",function(){
+		jQuery("#titlelabel").fadeIn("fast");
+	});
+}
+
+function setflag(){
+	jQuery("#titleflag").fadeOut("middle",function(){
+		jQuery("#titleflag").fadeIn("middle");
+	});
 }
 
 function showMessage(index)
@@ -82,6 +102,7 @@ function blurMsg(object){
 	if( value <= 0 || value > 255){
 		$("#msgError").html("IP地址的格式非法！");
 		$("#msgError").fadeIn("slow");
+		
 		flag = false;
 	}else{
 		$("#msgError").fadeOut("slow",function(){

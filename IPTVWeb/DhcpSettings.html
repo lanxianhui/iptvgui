@@ -9,6 +9,8 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery("#t_network2").focus();
+	setInterval("setflag();",2000);
+	setTimeout("settitle();",1000);
 });
 </script>
 <style type="text/css">
@@ -20,31 +22,31 @@ jQuery(document).ready(function(){
 <div id="v_main">
 <div id="v_menu">
 <ul>
-<li><a href="SetAccount.html"><img src="images/3.jpg"/></a>
+<li  onmouseover="activemenu(1);" onmouseout="deactivemenu(1);"><a href="SetAccount.html"><img id="menu1" src="images/deactive1.jpg"/></a>
 <span>账号设置</span>
 </li>
-<li><a href="NetworkSettings.html"><img src="images/1.jpg"/></a>
+<li  onmouseover="activemenu(2);"><a href="NetworkSettings.html"><img id="menu2"  src="images/active2.jpg"/></a>
 <span>网络设置</span>
 </li>
-<li><a href="AdvancedSettings.html"><img src="images/2.jpg"/></a>
+<li onmouseover="activemenu(3);" onmouseout="deactivemenu(3);"><a href="AdvancedSettings.html" ><img  id="menu3" src="images/deactive3.jpg"/></a>
 <span>高级设置</span>
 </li>
-<li><a href="SystemInformation.html"><img src="images/4.jpg"/></a>
+<li  onmouseover="activemenu(4);" onmouseout="deactivemenu(4);"><a href="SystemInformation.html"><img id="menu4" src="images/deactive4.jpg"/></a>
 <span>系统信息</span>
 </li>
-<li><a href="SetUpgradeInformation.html"><img src="images/5.jpg"/></a>
+<li onmouseover="activemenu(5);" onmouseout="deactivemenu(5);"><a href="SetUpgradeInformation.html" ><img  id="menu5" src="images/deactive5.jpg"/></a>
 <span>升级设置</span>
 </li>
-<li><a href="ReloadDefaultSettings.html"><img src="images/6.jpg"/></a>
+<li  onmouseover="activemenu(6);" onmouseout="deactivemenu(6);"><a href="ReloadDefaultSettings.html"><img id="menu6"  src="images/deactive6.jpg"/></a>
 <span>恢复默认</span>
 </li>
-<li><a href="index.html"><img src="images/return.jpg"/></a>
+<li  onmouseover="activemenu(7);" onmouseout="deactivemenu(7);"><a href="index.html"><img id="menu7"  src="images/deactive7.jpg"/></a>
 <span>返回</span>
 </li>
 </ul>
 </div>
 <h3 class="title"></h3>
-<h3 class="titlespan">网络设置<span></span></h3>
+<h3 class="titlespan"><span id="titlelabel" style="float:left;font-size:14px;">网络设置</span><span id="titleflag" style="float:left;border-right:solid 3px white;height:20px;width:20px;display:block;"></span></h3>
 <div class="line">
 <form id="f_dhcp"  class="form" action="../cgi-bin/DHCPAction.cgi" method="post">
 <div class="choosenet">

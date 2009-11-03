@@ -31,7 +31,7 @@ function submitOutUpGrade(){
 		$("#msgError").fadeIn("slow");
 			result = false;
 	}else{
-		if( result == true ){
+		if( result == true && flag == true){
 			submitUpGrade();
 		}
 	}
@@ -79,10 +79,10 @@ function submitOutUpGrade(){
 <form id="f_upgrade" class="form" action="../cgi-bin/SetUpgradeInformation.cgi" method="post">
 <table>
 <tr><td>升级服务器：</td><td>
-<input type="text" maxlength="3" size="3" id="ipaddress1"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' />-
-<input type="text" maxlength="3" size="3" id="ipaddress2"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' />-
-<input type="text" maxlength="3" size="3" id="ipaddress3"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' />-
-<input type="text" maxlength="3" size="3" id="ipaddress4"  onkeydown='cusOnlyNum();'  style='ime-mode:disabled' /></td></tr>
+<input type="text" maxlength="3" size="3" id="ipaddress1" onblur="blurMsg(this);"   style='ime-mode:disabled' />-
+<input type="text" maxlength="3" size="3" id="ipaddress2" onblur="blurMsg(this);"    style='ime-mode:disabled' />-
+<input type="text" maxlength="3" size="3" id="ipaddress3" onblur="blurMsg(this);"    style='ime-mode:disabled' />-
+<input type="text" maxlength="3" size="3" id="ipaddress4" onblur="blurMsg(this);"    style='ime-mode:disabled' /></td></tr>
 <tr><td colspan="2"><span style="color:red;display:none;width:90%;background-color:white;float:left;height:40px;text-align:center;border:solid 1px red;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
 </table>
 <input type="hidden" name="ipaddress" id="ipaddress" value=""/>

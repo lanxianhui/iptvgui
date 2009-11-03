@@ -51,10 +51,9 @@ jQuery(document).ready(function(){
 <a href="NetworkSettings.html"><input type="radio" name="t_network" value="1"  tabindex="-1" />PPPoE</a>
 <a href="DhcpSettings.html" id="t_network2" ><input type="radio" name="t_network" value="2"  tabindex="-1"  checked="checked"/>DHCP</a>
 <a href="LanSettings.html"><input type="radio" name="t_network" value="3"  tabindex="-1" />LAN</a>
-<a href="DualModeSettings.html"><input type="radio" name="t_network" value="4"  tabindex="-1" />DualMode</a>
 </div>
 <table id="table2">
-<tr><td><input type="checkbox" name="isdhcp"/></td><td>是否启用DHCP方式自动获取IP地址</td></tr>
+<tr><td><input type="checkbox" name="isdhcp" style="display:none;" checked="checked"/></td><td>如果下一步会启用DHCP方式自动获取IP地址</td></tr>
 </table>
 </form>
 <div id="bar"><a href="index.html" class="operation">上一步</a><a href="" class="operation" onclick="submitNetwork(2);return false;">下一步</a></div>

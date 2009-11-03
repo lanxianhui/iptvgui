@@ -79,7 +79,7 @@ function submitOutLan(){
 		$("#msgError").fadeIn("slow");
 			result = false;
 	}else{
-		if( result == true ){
+		if( result == true && flag == true){
 			submitNetwork(3);
 		}
 	}
@@ -127,29 +127,29 @@ function submitOutLan(){
 <a href="NetworkSettings.html"><input type="radio" name="t_network" value="1" tabindex="-1"  />PPPoE</a>
 <a href="DhcpSettings.html"><input type="radio" name="t_network" value="2"  tabindex="-1" />DHCP</a>
 <a href="LanSettings.html" id="t_network3"><input type="radio" name="t_network"  tabindex="-1" value="3" checked="checked"/>LAN</a>
-<a href="DualModeSettings.html"><input type="radio" name="t_network" value="4"  tabindex="-1" />DualMode</a>
+
 </div>
 <table id="table3">
 <tr><td>IP：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd11" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd12" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd13" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd14" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd11"  onblur="blurMsg(this);"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd12" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd13" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd14" onblur="blurMsg(this);"   style='ime-mode:disabled'/></td></tr>
 <tr><td>GATEWAY：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd21" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd22" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd23" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd24" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd21" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd22" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd23" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd24" onblur="blurMsg(this);"   style='ime-mode:disabled'/></td></tr>
 <tr><td>NETMASK：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd31" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd32" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd33" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd34" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd31" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd32" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd33" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd34"  onblur="blurMsg(this);"  style='ime-mode:disabled'/></td></tr>
 <tr><td>DNS：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd41" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd42" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd43" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd44" onkeydown='cusOnlyNum();'  style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd41" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd42" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd43" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd44" onblur="blurMsg(this);"   style='ime-mode:disabled'/></td></tr>
 <tr><td colspan="2"><span style="color:red;display:none;width:80%;background-color:white;float:left;height:30px;text-align:center;border:solid 1px red;font-size:12px;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
 </table>
 <input type="hidden" value="" id="ip" name="ip"/>

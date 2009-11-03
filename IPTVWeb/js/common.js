@@ -74,8 +74,25 @@ function submitNetwork(index){
 	}
 }
 
+var flag = true;
+
+function blurMsg(object){
+	var text = jQuery(object).attr("value");
+	var value = Number(text);
+	if( value <= 0 || value > 255){
+		$("#msgError").html("IP地址的格式非法！");
+		$("#msgError").fadeIn("slow");
+		flag = false;
+	}else{
+		$("#msgError").fadeOut("slow",function(){
+			$("#msgError").html("对不起，请将信息填写完整！");
+			flag = true;
+		});
+	}
+}
+
 function cusOnlyNum() 
-{ 
+{
 	if(!(event.keyCode==46)&&!(event.keyCode==8)&&!(event.keyCode==37)&&!(event.keyCode==39)) 
 	if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105))) 
 	event.returnValue=false; 

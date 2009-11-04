@@ -2,26 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>错误信息响应</title>
+<title>网络信息</title>
 <link rel="stylesheet" href="css/site.css" type="text/css" />
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	var Request = GetRequest();
-	var errorCode = Request["returncode"];
-	displayMsg(errorCode);
+	var ip = Request["ip"];
+	var mac = Request["mac"];
+	jQuery("#ipdiv").html(ip);
+	jQuery("#macdiv").html(mac);
+	//var errorCode = Request["returncode"];
+	//displayMsg(errorCode);
 	jQuery("#dialogButton").focus();
 });
-
-function displayMsg(returnCode){
-	switch(Number(returnCode)){
-	case 0: jQuery("#msgError").html("正常");break;
-	case 1: jQuery("#msgError").html("请求不可用");break;
-	case 2: jQuery("#msgError").html("输入的IP值范围有误");break;
-	case 3: jQuery("#msgError").html("失败");break;
-	}
-}
 
 function GetRequest() {
 
@@ -86,11 +81,13 @@ function GetRequest() {
 	method="post">
 <table>
 	<tr>
-		<td colspan="2"><div id="msgDiv" style="position:absolute;color:red;background-color:white;color:red;left:120px;height:250px;top:150px;width:400px;z-index:200px;border:solid 1px red;">
-<div style="width:98%;float:left;color:white;background-color:red;font-size:12px; padding-top:2px;padding-bottom:2px;padding-left:2%;">错误消息</div>
-<img src="images/error.png" style="width:80px;height:80px;float:left;margin-top:30px;margin-left:30px;"/>
-<span  id="msgError" style="width:200px;float:right;margin-top:20px; margin-right:30px;">对不起，系统错误！</span>
-<a href="index.html" id="dialogButton" onclick="" class="operation" style="float:left;margin-left:130px;margin-top:90px;">返回首页</a>
+		<td colspan="2"><div id="msgDiv" style="position:absolute;color:red;background-color:white;color:red;left:120px;height:250px;top:150px;width:400px;z-index:200px;border:solid 1px green;">
+<div style="width:98%;float:left;color:white;background-color:green;font-size:12px; padding-top:2px;padding-bottom:2px;padding-left:2%;">设备信息</div>
+<ul style="width:300px;float:left;margin-top:20px; margin-right:30px;color:green;">
+<li><span style="width:130px;color:black;">Ip 地址：</span><span id="ipdiv"></span></li>
+<li><span style="width:130px;color:black;">Mac 地址：</span><span id="macdiv"></span></li>
+</ul>
+<a href="index.html" id="dialogButton" onclick="" class="operation" style="float:left;margin-left:130px;margin-top:30px;">返回首页</a>
 </div></td>
 	</tr>
 </table>

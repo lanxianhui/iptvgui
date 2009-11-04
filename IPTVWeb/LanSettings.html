@@ -25,6 +25,7 @@ function submitOutLan(){
 	if( result == false){
 		jQuery("#msgError").html("对不起，IP地址不能为空，请输入IP地址！");
 		jQuery("#msgDiv").fadeIn("middle");
+		jQuery("#dialogButton").focus();
 		return;
 	}
 	var format = true;
@@ -41,6 +42,7 @@ function submitOutLan(){
 	if( format == false ){
 		jQuery("#msgError").html("对不起，IP地址格式不合法，请重新输入！");
 		jQuery("#msgDiv").fadeIn("middle");
+		jQuery("#dialogButton").focus();
 		return;
 	}
 	submitNetwork(3);
@@ -136,7 +138,9 @@ function submitOutLan(){
 <form id="f_lan" class="form" action="../cgi-bin/LANAction.cgi" method="post">
 <div class="choosenet" style="height:20px;">
 <a href="NetworkSettings.html"><input type="radio" name="t_network" value="1" tabindex="-1"  />PPPoE</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="DhcpSettings.html"><input type="radio" name="t_network" value="2"  tabindex="-1" />DHCP</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="LanSettings.html" id="t_network3"><input type="radio" name="t_network"  tabindex="-1" value="3" checked="checked"/>LAN</a>
 
 </div>

@@ -9,7 +9,8 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
 		jQuery("#lnkdevice").focus();
-		setInterval("setflag();",2000);
+		setInterval("setflag();",5000);
+		setInterval("setflags();",9000);
 		setTimeout("settitle();",1000);
 });
 </script>
@@ -17,8 +18,52 @@ jQuery(document).ready(function(){
 .form table td{ height:50px;}
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;" onpaste="return false;" oncopy="return false;" oncut="return false;">
 <div id="contentcent">
+
+<div class="starset" style="top:260px;left:80px;">
+</div>
+<div class="starset" style="top:180px;left:110px;">
+</div>
+<div class="starset" style="top:200px;left:50px;">
+</div>
+<div class="starset" style="top:300px;left:50px;">
+</div>
+<div class="starline" style="top:210px;left:51px;">
+</div>
+<div class="starline" style="top:181px;left:120px;height:1px;width:40px;">
+</div>
+<div class="starline" style="top:186px;left:30px;height:1px;width:35px;">
+</div>
+<div class="starset" style="top:186px;left:20px;">
+</div>
+<div class="starset" style="top:186px;left:70px;">
+</div>
+<div class="starset" style="top:200px;left:90px;">
+</div>
+<div class="starset" style="top:300px;left:90px;">
+</div>
+<div class="starset" style="top:250px;left:40px;">
+</div>
+<div class="starset" style="top:350px;left:140px;">
+</div>
+<div class="starset" style="top:340px;left:100px;">
+</div>
+<div class="starset" style="top:380px;left:50px;">
+</div>
+<div class="starset" style="top:190px;left:130px;">
+</div>
+<div class="starline" style="top:310px;left:51px;height:60px;">
+</div>
+<div class="starline" style="top:270px;left:81px;height:50px;">
+</div>
+<div class="starline" style="top:210px;left:91px;height:30px;">
+</div>
+<div class="starline" style="top:310px;left:91px;height:40px;">
+</div>
+<div class="starline" style="top:190px;left:101px;height:40px;">
+</div>
+
 <div id="v_main">
 <div id="v_menu">
 <ul>
@@ -46,7 +91,11 @@ jQuery(document).ready(function(){
 </ul>
 </div>
 <h3 class="title"></h3>
-<h3 class="titlespan"><span id="titlelabel" style="float:left;font-size:14px;">系统信息</span><span id="titleflag" style="float:left;margin-left:170px;border-right:solid 3px white;height:20px;width:20px;display:block;"></span></h3>
+<h3 class="titlespan">
+<span id="titlelabel" style="float:left;font-size:14px;">系统设置</span><span id="titleflag" style="float:left;margin-left:185px;height:20px;width:20px;display:block;">
+<img src="images/flagset.jpg"/>
+</span>
+</h3>
 <div class="line">
 <form id="" class="form">
 <table>

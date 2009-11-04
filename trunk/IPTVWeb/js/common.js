@@ -12,6 +12,12 @@ function deactivemenu(object){
 	jQuery("#menu" + object).attr("src","images/deactive" + object + ".jpg");
 }
 
+function setflagmove(from,to){
+	for( var i = from; i >= to; i++ ){
+		jQuery("#titleflag").css("margin-left", i + "px");
+	}
+}
+
 function backMain()
 {
 	activePanel("#v_main");
@@ -31,13 +37,28 @@ function changeRadio(index)
 
 function settitle(){
 	jQuery("#titlelabel").fadeOut("fast",function(){
-		jQuery("#titlelabel").fadeIn("fast");
+		jQuery("#titlelabel").fadeIn("middle");
+		//jQuery("#titleflag").fadeIn("fast");
+	});
+}
+
+
+function setflags(){
+	jQuery(".starline").fadeOut("slow",function(){
+		jQuery(".starline").fadeIn("slow");
 	});
 }
 
 function setflag(){
-	jQuery("#titleflag").fadeOut("middle",function(){
-		jQuery("#titleflag").fadeIn("middle");
+	jQuery(".starset").fadeOut("fast",function(){
+		jQuery(".starset").fadeIn("fast");
+	});
+}
+
+function closeErrorDialog()
+{
+	jQuery("#msgDiv").fadeOut("middle",function(){
+		
 	});
 }
 
@@ -118,23 +139,6 @@ function cusOnlyNum()
 	if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105))) 
 	event.returnValue=false; 
 } 
-
-function submitAccount(objectid){
-	var result = true;
-	if($("#accountname").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#password").attr("value") == ""){
-		//$("#msgError").css("display","inline");
-		$("#msgError").fadeIn("slow");
-			result = false;
-	}else{
-		if( result == true ){
-			submitForm(objectid);
-		}
-	}
-}
 
 function submitForm(objectid)
 {

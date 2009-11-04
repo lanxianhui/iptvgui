@@ -19,12 +19,14 @@ function submitOutNetwork(){
 	var result = true;
 	if($("#accountname").attr("value") == ""){
 		$("#msgDiv").fadeIn("slow");
+		jQuery("#dialogButton").focus();
 		result = false;
 	}
 	if($("#password").attr("value") == ""){
 		//$("#msgDiv").css("display","inline");
 		$("#msgDiv").fadeIn("slow");
-			result = false;
+		jQuery("#dialogButton").focus();
+		result = false;
 	}else{
 		if( result == true ){
 			submitNetwork(1);
@@ -124,7 +126,9 @@ function submitOutNetwork(){
 <form id="f_pppoe" class="form" action="../cgi-bin/PPPoEAction.cgi" method="post">
 <div class="choosenet">
 <a href="NetworkSettings.html"  id="t_network1" ><input type="radio" tabindex="-1" name="t_network" value="1" checked="checked"/>PPPoE</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="DhcpSettings.html"><input type="radio" tabindex="-1" name="t_network" value="2" />DHCP</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="LanSettings.html"><input type="radio" tabindex="-1" name="t_network" value="3" />LAN</a>
 </div>
 <table id="table1" class="active">

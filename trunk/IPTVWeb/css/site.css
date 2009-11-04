@@ -48,7 +48,7 @@ input[type=text],input[type=password]{width:160px; height:16px;}
 .title{ color:#fff;float:left; width:580px; line-height:2em; margin-left:40px; background-color:#666;height:30px;position:absolute;z-index: 30; top:110px;}
 .titlespan{	position:absolute;z-index:31;color:#fff; top:100px; margin-left:50px;}
 #titlelabel{ margin-top:10px;}
-#titleflag{ margin-top:5px;}
+#titleflag{ margin-top:7px;}
 .titlespan span{ font-size:12px;}
 .titlespan img{ width:25p; height:25px; }
 

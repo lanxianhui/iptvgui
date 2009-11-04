@@ -10,8 +10,10 @@ h3 a{ font-size:12px; color:#30F;}
 form{ padding-left:40px; padding-top:10px;}
 input[type=text],input[type=password]{width:160px; height:16px;}
 
-#contentcent{ float:left; width:720px; background-color:#0177D1; height:576px; }
+#contentcent{ float:left; width:720px; background-color:#0177D1; height:576px;position:absolute; }
 
+.starset,.starline{ color:white; width:3px; height:3px; position:absolute;display:block; background-color:white; z-index:200px; }
+.starline{ height:80px; width: 1px;}
 .active{ display:block;}
 .hidden{ display:none;}
 
@@ -44,7 +46,9 @@ input[type=text],input[type=password]{width:160px; height:16px;}
 .operation:hover{text-decoration:none;}
 
 .title{ color:#fff;float:left; width:580px; line-height:2em; margin-left:40px; background-color:#666;height:30px;position:absolute;z-index: 30; top:110px;}
-.titlespan{	position:absolute;z-index:31;color:#fff; top:110px; margin-left:50px;}
+.titlespan{	position:absolute;z-index:31;color:#fff; top:100px; margin-left:50px;}
+#titlelabel{ margin-top:10px;}
+#titleflag{ margin-top:5px;}
 .titlespan span{ font-size:12px;}
 .titlespan img{ width:25p; height:25px; }
 

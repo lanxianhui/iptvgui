@@ -10,81 +10,40 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery("#t_network3").focus();
-	setInterval("setflag();",2000);
+	setInterval("setflag();",5000);
+	setInterval("setflags();",9000);
 	setTimeout("settitle();",1000);
 });
 
 function submitOutLan(){
 	var result = true;
-	if($("#lanadd11").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd12").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd13").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd14").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd21").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd22").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd23").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd24").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd31").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd32").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd33").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd34").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd41").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd42").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd43").attr("value") == ""){
-		$("#msgError").fadeIn("slow");
-		result = false;
-	}
-	if($("#lanadd44").attr("value") == ""){
-		//$("#msgError").css("display","inline");
-		$("#msgError").fadeIn("slow");
+	jQuery(".idinput").each(function(){
+		if(jQuery(this).attr("value") == ""){
 			result = false;
-	}else{
-		if( result == true && flag == true){
-			submitNetwork(3);
 		}
+	});
+	if( result == false){
+		jQuery("#msgError").html("对不起，IP地址不能为空，请输入IP地址！");
+		jQuery("#msgDiv").fadeIn("middle");
+		return;
 	}
+	var format = true;
+	jQuery(".idinput").each(function(){
+		var number = jQuery(this).attr("value");
+		if(isNaN(number) == false){
+			if(number > 255 || number <= 0){
+				format = false;
+			}
+		}else{
+			format = false;
+		}
+	});
+	if( format == false ){
+		jQuery("#msgError").html("对不起，IP地址格式不合法，请重新输入！");
+		jQuery("#msgDiv").fadeIn("middle");
+		return;
+	}
+	submitNetwork(3);
 }
 </script>
 <style type="text/css">
@@ -93,8 +52,56 @@ function submitOutLan(){
 #table3 td{ height:18px;}
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;" onpaste="return false;" oncopy="return false;" oncut="return false;">
 <div id="contentcent">
+<div id="msgDiv" style="position:absolute;color:red;background-color:white;color:red;display:none;left:120px;height:220px;top:200px;width:400px;z-index:200px;border:solid 1px red;">
+<div style="width:98%;float:left;color:white;background-color:red;font-size:12px; padding-top:3px;padding-bottom:8px;padding-left:2%;">错误消息</div>
+<img src="images/error.png" style="width:80px;height:80px;float:left;margin-top:30px;margin-left:30px;"/>
+<span  id="msgError" style="width:200px;float:right;margin-top:40px; margin-right:30px;line-height:1.8em;">对不起，请将信息填写完整！PPPoE的用户名和密码不可以为空！</span>
+<a href="" id="dialogButton" onclick="closeErrorDialog();return false;" class="operation" style="float:left;margin-left:40px;margin-top:50px;">关闭该窗口</a>
+</div>
+<div class="starset" style="top:260px;left:80px;">
+</div>
+<div class="starset" style="top:180px;left:110px;">
+</div>
+<div class="starset" style="top:200px;left:50px;">
+</div>
+<div class="starset" style="top:300px;left:50px;">
+</div>
+<div class="starline" style="top:210px;left:51px;">
+</div>
+<div class="starline" style="top:181px;left:120px;height:1px;width:40px;">
+</div>
+<div class="starline" style="top:186px;left:30px;height:1px;width:35px;">
+</div>
+<div class="starset" style="top:186px;left:20px;">
+</div>
+<div class="starset" style="top:186px;left:70px;">
+</div>
+<div class="starset" style="top:200px;left:90px;">
+</div>
+<div class="starset" style="top:300px;left:90px;">
+</div>
+<div class="starset" style="top:250px;left:40px;">
+</div>
+<div class="starset" style="top:350px;left:140px;">
+</div>
+<div class="starset" style="top:340px;left:100px;">
+</div>
+<div class="starset" style="top:380px;left:50px;">
+</div>
+<div class="starset" style="top:190px;left:130px;">
+</div>
+<div class="starline" style="top:310px;left:51px;height:60px;">
+</div>
+<div class="starline" style="top:270px;left:81px;height:50px;">
+</div>
+<div class="starline" style="top:210px;left:91px;height:30px;">
+</div>
+<div class="starline" style="top:310px;left:91px;height:40px;">
+</div>
+<div class="starline" style="top:190px;left:101px;height:40px;">
+</div>
 <div id="v_main">
 <div id="v_menu">
 <ul>
@@ -122,7 +129,9 @@ function submitOutLan(){
 </ul>
 </div>
 <h3 class="title"></h3>
-<h3 class="titlespan"><span id="titlelabel" style="float:left;font-size:14px;">网络设置</span><span id="titleflag" style="float:left;border-right:solid 3px white;height:20px;width:20px;display:block;"></span></h3>
+<h3 class="titlespan"><span id="titlelabel" style="float:left;font-size:14px;">网络设置</span><span id="titleflag" style="float:left;margin-left:15px;height:20px;width:20px;display:block;">
+<img src="images/flagset.jpg"/>
+</span></h3>
 <div class="line">
 <form id="f_lan" class="form" action="../cgi-bin/LANAction.cgi" method="post">
 <div class="choosenet" style="height:20px;">
@@ -133,26 +142,25 @@ function submitOutLan(){
 </div>
 <table id="table3">
 <tr><td>IP：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd11"  onblur="blurMsg(this);"  style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd12" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd13" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd14" onblur="blurMsg(this);"   style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd11" class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd12"  class="idinput" style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd13"  class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd14"  class="idinput"  style='ime-mode:disabled'/></td></tr>
 <tr><td>GATEWAY：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd21" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd22" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd23" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd24" onblur="blurMsg(this);"   style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd21" class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd22"  class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd23" class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd24"  class="idinput"  style='ime-mode:disabled'/></td></tr>
 <tr><td>NETMASK：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd31" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd32" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd33" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd34"  onblur="blurMsg(this);"  style='ime-mode:disabled'/></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd31" class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd32"  class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd33"  class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd34" class="idinput"  style='ime-mode:disabled'/></td></tr>
 <tr><td>DNS：</td><td>
-<input type="text" maxlength="3" size="3" id="lanadd41" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd42" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd43" onblur="blurMsg(this);"   style='ime-mode:disabled'/>-
-<input type="text" maxlength="3" size="3" id="lanadd44" onblur="blurMsg(this);"   style='ime-mode:disabled'/></td></tr>
-<tr><td colspan="2"><span style="color:red;display:none;width:80%;background-color:white;float:left;height:30px;text-align:center;border:solid 1px red;font-size:12px;" id="msgError">对不起，请将信息填写完整！</span></td></tr>
+<input type="text" maxlength="3" size="3" id="lanadd41"  class="idinput"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd42" class="idinput"  style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd43"  class="idinput"   style='ime-mode:disabled'/>-
+<input type="text" maxlength="3" size="3" id="lanadd44"  class="idinput"   style='ime-mode:disabled'/></td></tr>
 </table>
 <input type="hidden" value="" id="ip" name="ip"/>
 <input type="hidden" value="" id="gateway" name="gateway"/>

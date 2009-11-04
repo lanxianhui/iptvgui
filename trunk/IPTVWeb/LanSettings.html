@@ -135,7 +135,8 @@ function submitOutLan(){
 <img src="images/flagset.jpg"/>
 </span></h3>
 <div class="line">
-<form id="f_lan" class="form" action="../cgi-bin/LANAction.cgi" method="post">
+<form id="f_lan" class="form" action="../cgi-bin/NetConnect.cgi" method="post">
+<input type="hidden" name="netmethod" value="lan"/>
 <div class="choosenet" style="height:20px;">
 <a href="NetworkSettings.html"><input type="radio" name="t_network" value="1" tabindex="-1"  />PPPoE</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -123,7 +123,8 @@ function submitOutNetwork(){
 <img src="images/flagset.jpg"/>
 </span></h3>
 <div class="line">
-<form id="f_pppoe" class="form" action="../cgi-bin/PPPoEAction.cgi" method="post">
+<form id="f_pppoe" class="form" action="../cgi-bin/NetConnect.cgi" method="post">
+<input type="hidden" name="netmethod" value="pppoe"/>
 <div class="choosenet">
 <a href="NetworkSettings.html"  id="t_network1" ><input type="radio" tabindex="-1" name="t_network" value="1" checked="checked"/>PPPoE</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -32,7 +32,7 @@ function submitOutLan(){
 	jQuery(".idinput").each(function(){
 		var number = jQuery(this).attr("value");
 		if(isNaN(number) == false){
-			if(number > 255 || number <= 0){
+			if(number > 255 || number < 0){
 				format = false;
 			}
 		}else{
@@ -136,7 +136,7 @@ function submitOutLan(){
 </span></h3>
 <div class="line">
 <form id="f_lan" class="form" action="../cgi-bin/NetConnect.cgi" method="post">
-<input type="hidden" name="netmethod" value="lan"/>
+
 <div class="choosenet" style="height:20px;">
 <a href="NetworkSettings.html"><input type="radio" name="t_network" value="1" tabindex="-1"  />PPPoE</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

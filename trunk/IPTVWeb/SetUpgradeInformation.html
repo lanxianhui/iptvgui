@@ -32,7 +32,7 @@ function submitOutUpGrade(){
 	jQuery(".idinput").each(function(){
 		var number = jQuery(this).attr("value");
 		if(isNaN(number) == false){
-			if(number > 255 || number <= 0){
+			if(number > 255 || number < 0){
 				format = false;
 			}
 		}else{

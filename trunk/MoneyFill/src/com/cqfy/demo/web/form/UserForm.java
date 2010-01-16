@@ -1,5 +1,7 @@
 package com.cqfy.demo.web.form;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -10,8 +12,13 @@ import com.cqfy.demo.model.constant.EnumValue.UserSort;
 import com.cqfy.demo.util.BeanNames;
 
 @Component(BeanNames.BEAN_FORM_USER)
-@Scope("prototype")
-public class UserForm {
+@Scope("session")
+public class UserForm implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2952837484983370777L;
+	
 	private long id;
 	public long getId() {
 		return id;

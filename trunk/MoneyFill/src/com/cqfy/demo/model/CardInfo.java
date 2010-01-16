@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ import com.cqfy.demo.util.BeanNames;
 @Entity
 @Table(name="fm_card")
 @Component(BeanNames.BEAN_MODEL_CARD)
-@Scope("prototype")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CardInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

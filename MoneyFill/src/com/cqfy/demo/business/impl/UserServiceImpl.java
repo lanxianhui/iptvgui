@@ -9,6 +9,7 @@ import com.cqfy.demo.business.UserService;
 import com.cqfy.demo.dao.UserDao;
 import com.cqfy.demo.model.UserInfo;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.util.ResponseCode.LoginCode;
 import com.cqfy.demo.web.form.UserForm;
 /**
  * 用户业务接口实现
@@ -27,8 +28,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserForm loginUser(UserForm user) {
+	public LoginCode loginUser(UserForm user) {
 		// TODO Auto-generated method stub
+		user.setId(12);
 		return null;
 	}
 

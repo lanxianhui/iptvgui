@@ -12,6 +12,13 @@ import com.cqfy.demo.util.BeanNames;
 @Component(BeanNames.BEAN_FORM_USER)
 @Scope("prototype")
 public class UserForm {
+	private long id;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	@NotEmpty(message="对不起，登陆帐号不可以为空！")
 	@Size(max = 200)
 	private String username;
@@ -20,7 +27,6 @@ public class UserForm {
 	private String password;
 	
 	private UserSort userSort;
-	private boolean loginSuccess;
 	private String errorMessage;
 	
 	public UserSort getUserSort() {
@@ -40,12 +46,6 @@ public class UserForm {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public boolean isLoginSuccess() {
-		return loginSuccess;
-	}
-	public void setLoginSuccess(boolean loginSuccess) {
-		this.loginSuccess = loginSuccess;
 	}
 	public String getErrorMessage() {
 		return errorMessage;

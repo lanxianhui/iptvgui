@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.cqfy.demo.business.UserService;
 import com.cqfy.demo.model.constant.EnumValue.UserSort;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.util.ResponseCode.LoginCode;
 import com.cqfy.demo.web.BaseController;
 import com.cqfy.demo.web.form.UserForm;
 
@@ -33,16 +34,15 @@ public class UserController extends BaseController{
 		if(result.hasErrors()){
 			return BeanNames.PAGE_LOGIN;
 		}else{
-			UserForm resultForm = userService.loginUser(userForm);
-			System.out.println(userForm.getUsername());
-			System.err.println(userForm.getUsername());
-			if(resultForm.isLoginSuccess()){
-				if(resultForm.getUserSort() == UserSort.SORT_USER){
+			LoginCode resultCode = this.userService.loginUser(userForm);
+			if(resultCode == LoginCode.SUCCESS){
+				if(userForm.getUserSort() == UserSort.SORT_USER){
 					return BeanNames.ACTION_USER_INDEX;
 				}else{
 					return BeanNames.ACTION_ADMIN_INDEX;
 				}
 			}else{
+				System.out.println(userForm.getErrorMessage());
 				return BeanNames.PAGE_LOGIN;
 			}
 		}

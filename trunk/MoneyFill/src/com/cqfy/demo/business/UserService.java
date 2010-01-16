@@ -1,6 +1,7 @@
 package com.cqfy.demo.business;
 
 import com.cqfy.demo.model.UserInfo;
+import com.cqfy.demo.util.ResponseCode.LoginCode;
 import com.cqfy.demo.web.form.UserForm;
 
 /**
@@ -15,7 +16,7 @@ public interface UserService {
 	 * @param password
 	 * @return
 	 */
-	UserForm loginUser(UserForm user);
+	LoginCode loginUser(UserForm user);
 	/**
 	 * –ﬁ∏ƒ”√ªß√‹¬Î
 	 * @return

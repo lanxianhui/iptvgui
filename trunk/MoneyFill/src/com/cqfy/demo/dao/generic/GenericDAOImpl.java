@@ -1,7 +1,6 @@
 package com.cqfy.demo.dao.generic;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cqfy.demo.util.PagingInfo;
 
 /**
  * 
@@ -184,6 +185,23 @@ public class GenericDAOImpl<T> extends HibernateDaoSupport implements
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	@Transactional
+	public List<T> find(final String countString,final String queryString,final Object[] params,PagingInfo pagingInfo)
+	{
+		int begin,max;
+
+		//首先查询记录数目
+		Long count = (Long)queryForObject(countString, params);
+		pagingInfo.setTotalCount(count.intValue());
+		
+		//查询分页列表
+		begin=(pagingInfo.getPageIndex()-1)*pagingInfo.getPageSize();
+		max=pagingInfo.getPageSize();
+		
+		return find(queryString,params,begin,max);
 	}
 
 	@Override

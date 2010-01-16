@@ -1,8 +1,9 @@
 package com.cqfy.demo.dao.generic;
 
 import java.io.Serializable;
-
 import java.util.List;
+
+import com.cqfy.demo.util.PagingInfo;
 
 /**
  * 
@@ -23,6 +24,8 @@ public interface GenericDAO<T>{
 	T getBy(String propertyName,Object value);
 	
 	List<T> find(final String queryString,final Object[] params,final int begin,final int max);
+	
+	List<T> find(final String countString,final String queryString,final Object[] params,PagingInfo pagingInfo);
 
 	@SuppressWarnings("unchecked")
 	List query(final String queryString,final Object[] params,final int begin,final int max);

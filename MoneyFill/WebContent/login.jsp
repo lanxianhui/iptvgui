@@ -18,7 +18,7 @@
 	</tr>
 	<tr>
 		<td>用户名：</td>
-		<td><form:input path="password"/></td>
+		<td><form:password path="password"/></td>
 		<td><form:errors path="password"/></td>
 	</tr>
 	<tr>

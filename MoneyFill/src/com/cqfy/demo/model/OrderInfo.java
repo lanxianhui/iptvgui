@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 
 import javax.persistence.Entity;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ import com.cqfy.demo.util.BeanNames;
 @Entity
 @Table(name="fm_order")
 @Component(BeanNames.BEAN_MODEL_ORDER)
-@Scope("prototype")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OrderInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

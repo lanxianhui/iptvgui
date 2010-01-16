@@ -3,7 +3,6 @@ package com.cqfy.demo.web;
 import javax.servlet.ServletContext;
 
 import org.springframework.web.context.ContextLoader;
-import org.springframework.web.servlet.mvc.AbstractController;
 
 public abstract class BaseController{
 	

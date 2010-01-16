@@ -26,10 +26,13 @@ public class BeanNames {
 	 * 页面清单
 	 */
 	public static final String PAGE_LOGIN = "login.jsp";
+	public static final String PAGE_ADMIN_INDEX = "admin/index.jsp";
+	public static final String PAGE_USER_INDEX = "user/index.jsp";
 	/**
 	 * 页面对应的Action清单
 	 */
-	public static final String ACTION_LOGIN = "/login";
+	public static final String ACTION_LOGIN_INDEX = "/login";
+	public static final String ACTION_LOGIN_USER = "/loginuser";
 	public static final String ACTION_USER_INDEX = "/userindex";
 	public static final String ACTION_ADMIN_INDEX = "/adminindex";
 	

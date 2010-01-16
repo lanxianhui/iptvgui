@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ import com.cqfy.demo.util.BeanNames;
 @Entity
 @Table(name="fm_user")
 @Component(BeanNames.BEAN_MODEL_USER)
-@Scope("prototype")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class UserInfo {
 	
 	@Id

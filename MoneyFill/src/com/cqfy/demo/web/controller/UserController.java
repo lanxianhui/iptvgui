@@ -1,5 +1,7 @@
 package com.cqfy.demo.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,19 @@ public class UserController extends BaseController{
 		this.userService = userService;
 	}
 	
-	@RequestMapping(value="/loginuser",method=RequestMethod.POST)
-	public String loginUser(@Valid @ModelAttribute("loginUser") UserForm userForm, BindingResult result){
-		System.out.println("Hello");
+	@RequestMapping(value=BeanNames.ACTION_LOGIN_USER,method=RequestMethod.POST)
+	public String loginUser(HttpServletRequest request,@Valid @ModelAttribute("loginUser") UserForm userForm, BindingResult result){
 		if(result.hasErrors()){
 			return BeanNames.PAGE_LOGIN;
 		}else{
 			LoginCode resultCode = this.userService.loginUser(userForm);
+			userForm.setUserSort(UserSort.SORT_ADMIN);
+			resultCode = LoginCode.SUCCESS;
 			if(resultCode == LoginCode.SUCCESS){
+				// 设置会话
+				HttpSession session = request.getSession();
+				session.setAttribute("userFormBean",userForm);
+				
 				if(userForm.getUserSort() == UserSort.SORT_USER){
 					return BeanNames.ACTION_USER_INDEX;
 				}else{
@@ -47,11 +54,23 @@ public class UserController extends BaseController{
 			}
 		}
 	}
-	
-	@RequestMapping(value="/login")
-	public String initUser(ModelMap model) throws Exception{
+	//重定向的系列方法
+	@RequestMapping(value=BeanNames.ACTION_LOGIN_INDEX)
+	public String initLogin(ModelMap model) throws Exception{
 		UserForm form = (UserForm)getBean(BeanNames.BEAN_FORM_USER);
 		model.addAttribute("loginUser",form);
 		return BeanNames.PAGE_LOGIN;
 	}
+	
+	@RequestMapping(value=BeanNames.ACTION_ADMIN_INDEX)
+	public String initAdmin(ModelMap model) throws Exception{
+		return BeanNames.PAGE_ADMIN_INDEX;
+	}
+	
+	@RequestMapping(value=BeanNames.ACTION_USER_INDEX)
+	public String initUser(ModelMap model) throws Exception{
+		return BeanNames.PAGE_USER_INDEX;
+	}
+	
+	
 }

@@ -26,8 +26,9 @@
 		<li><a href="userbind.service">绑定手机</a><img src="images/li_48.jpg"/></li>
 		<li><a href="userpwd.service">修改口令</a><img src="images/li_48.jpg"/></li>
 		<li><a href="usercard.service">卡号充值</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userprice.service">充值记录</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userorders.service">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userprice.service?pageindex=0">绑定记录</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userorders.service?pageindex=0">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="logout.service">我要注销</a><img src="images/li_48.jpg"/></li>
 	</ul>
 	</dd>
 </dl>
@@ -39,15 +40,16 @@
 	<form:form method="POST" action="changepwd.service" commandName="userPwd">
 	<table id="tableform">
 		<tr><td>输入原口令：</td>
-		<td class="labeltd"><form:input path="oldPassword"/></td>
+		<td class="labeltd"><form:password path="oldPassword"/></td>
 		<td class="error"><form:errors path="oldPassword"/></td></tr>
 		<tr><td>输入新口令：</td>
-		<td class="labeltd"><form:input path="newPassword"/></td>
+		<td class="labeltd"><form:password path="newPassword"/></td>
 		<td class="error" style="width:200px;"><form:errors path="newPassword"/></td></tr>
 		<tr><td></td><td>
 		<input type="submit" id="sbutton" value="提交信息"/>
 		<input type="reset" id="rbutton" value="重置表单"/>
 		</td><td></td></tr>
+		<tr><td></td><td colspan="2" class="error">${changeErrorMessage}</td></tr>
 	</table>
 	</form:form>
 	</dd>

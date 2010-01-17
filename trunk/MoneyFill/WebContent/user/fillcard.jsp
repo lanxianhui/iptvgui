@@ -26,8 +26,9 @@
 		<li><a href="userbind.service">绑定手机</a><img src="images/li_48.jpg"/></li>
 		<li><a href="userpwd.service">修改口令</a><img src="images/li_48.jpg"/></li>
 		<li><a href="usercard.service">卡号充值</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userprice.service">充值记录</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userorders.service">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userprice.service?pageindex=0">绑定记录</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userorders.service?pageindex=0">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="logout.service">我要注销</a><img src="images/li_48.jpg"/></li>
 	</ul>
 	</dd>
 </dl>

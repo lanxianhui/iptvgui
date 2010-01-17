@@ -1,7 +1,10 @@
 package com.cqfy.demo.web.form;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,7 +33,16 @@ public class CardForm implements Serializable{
 	private String cardNumber;
 	@NotEmpty(message = "对不起，请输入手机号码！")
 	@Size(max = 200)
+	@Pattern(regexp="\\d{11}| ",message="格式错误，请输入11位手机号！")
 	private String mobileNumber;
+	private Date createTime;
+	public String getCreateTime() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		return format.format(createTime);
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 	private UserForm userForm;
 	public String getCardNumber() {
 		return cardNumber;

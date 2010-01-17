@@ -1,8 +1,15 @@
 package com.cqfy.demo.web;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.ui.ModelMap;
 import org.springframework.web.context.ContextLoader;
+
+import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.util.PageValue;
+import com.cqfy.demo.web.form.UserForm;
 
 public abstract class BaseController{
 	
@@ -12,15 +19,30 @@ public abstract class BaseController{
 	 * @param name
 	 * @return
 	 */
-	public Object getBean(String name){
+	protected Object getBean(String name){
 		return ContextLoader.getCurrentWebApplicationContext().getBean(name);
 	}
 	/**
 	 * 获取现在的Context
 	 * @return
 	 */
-	public ServletContext getContext(){
+	protected ServletContext getContext(){
 		return ContextLoader.getCurrentWebApplicationContext().getServletContext();
+	}
+	/**
+	 * 检测是否登陆
+	 * @param request
+	 * @return
+	 */
+	protected String checkLogin(HttpServletRequest request,ModelMap model){
+		HttpSession session = request.getSession();
+		if(session.getAttribute(PageValue.SESSION_USER) == null){
+			UserForm form = (UserForm)getBean(BeanNames.BEAN_FORM_USER);
+			model.addAttribute(PageValue.INIT_LOGINUSER,form);
+			return PageValue.PAGE_LOGIN;
+		}else{
+			return null;
+		}
 	}
 	/**
 	 * 获取物理路径
@@ -28,7 +50,7 @@ public abstract class BaseController{
 	 * @return
 	 * @throws Exception
 	 */
-	public String getPhysicalPath(String path) throws Exception {
+	protected String getPhysicalPath(String path) throws Exception {
 		if( !path.startsWith("/")){
 			System.err.println("Path format is not valid!");
 			throw new Exception();
@@ -38,7 +60,7 @@ public abstract class BaseController{
 		}
 	}
 
-	public String getServerPhysicalPath() throws Exception{
+	protected String getServerPhysicalPath() throws Exception{
 		return getPhysicalPath("/");
 	}
 }

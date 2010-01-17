@@ -26,8 +26,9 @@
 		<li><a href="userbind.service">绑定手机</a><img src="images/li_48.jpg"/></li>
 		<li><a href="userpwd.service">修改口令</a><img src="images/li_48.jpg"/></li>
 		<li><a href="usercard.service">卡号充值</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userprice.service">充值记录</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userorders.service">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userprice.service?pageindex=0">绑定记录</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userorders.service?pageindex=0">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="logout.service">我要注销</a><img src="images/li_48.jpg"/></li>
 	</ul>
 	</dd>
 </dl>
@@ -35,7 +36,13 @@
 <div id="content">
 <dl>
 	<dt><img src="images/content.jpg"/><span>口令修改成功</span></dt>
-	<dd></dd>
+	<dd>
+	<img src="images/success.png" style="float:left;width:120px;height:120px;margin-right:30px;"/>
+	<p id="msgsuccess">
+	您的口令信息已经成功修改<br/>
+	请点击&nbsp;<a href="logout.service">注销</a>&nbsp;返回登陆页面重新登陆。
+	</p>
+	</dd>
 </dl>
 </div>
 <div id="footer">

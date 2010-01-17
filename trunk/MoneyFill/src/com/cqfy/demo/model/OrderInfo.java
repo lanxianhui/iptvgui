@@ -1,8 +1,11 @@
 package com.cqfy.demo.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
 /**
  * 
@@ -41,10 +45,11 @@ public class OrderInfo {
 	private String cardNumber;
 	
 	@Column(name = "price")
-	private double price;
+	private BigDecimal price;
 	
 	@Column(name = "status")
-	private int status;
+	@Enumerated(EnumType.ORDINAL)
+	private OrderStatus status;
 	
 	@ManyToOne
 	@JoinColumn(name="userid")
@@ -75,16 +80,16 @@ public class OrderInfo {
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	public int getStatus() {
+	public OrderStatus getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
 	public UserInfo getUser() {

@@ -43,18 +43,21 @@ public class OrderController extends BaseController{
 	@RequestMapping(value=PageValue.ACTION_USER_CARDFORM)
 	public String initFillCard(HttpServletRequest request,ModelMap model) throws Exception{
 		OrderForm orderForm = (OrderForm)getBean(BeanNames.BEAN_FORM_ORDER);
-		HttpSession session = request.getSession();
-		UserForm userForm = (UserForm)session.getAttribute(BeanNames.BEAN_FORM_USER);
-		orderForm.setUserForm(userForm);
+		
 		model.addAttribute(PageValue.INIT_USERORDER,orderForm);
 		return PageValue.PAGE_USER_ORDERFORM;
 	}
 	
 	@RequestMapping(value=PageValue.ACTION_USER_ADDORDER,method=RequestMethod.POST)
-	public String addOrders(@Valid @ModelAttribute(PageValue.INIT_USERORDER) OrderForm orderForm,ModelMap map,BindingResult result) throws Exception{
+	public String addOrders(HttpServletRequest request,@Valid @ModelAttribute(PageValue.INIT_USERORDER) OrderForm orderForm,BindingResult result,ModelMap map) throws Exception{
 		if( result.hasErrors()){
 			return PageValue.PAGE_USER_ORDERFORM;
 		}else{
+			// 设置会话数据
+			HttpSession session = request.getSession();
+			UserForm userForm = (UserForm)session.getAttribute(PageValue.SESSION_USER);
+			orderForm.setUserForm(userForm);
+			
 			boolean resultCode = orderService.createOrder(orderForm);
 			if( resultCode ){
 				return PageValue.PAGE_USER_ORDERSUCCESS;

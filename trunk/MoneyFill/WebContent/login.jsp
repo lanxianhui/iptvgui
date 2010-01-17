@@ -25,6 +25,10 @@
 		<td></td>
 		<td><input type="submit" value="登陆"/></td>
 	</tr>
+	<tr>
+		<td></td>
+		<td>${loginErrorMessage}</td>
+	</tr>
 </table>
 </form:form>
 </body>

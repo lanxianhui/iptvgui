@@ -1,5 +1,7 @@
 package com.cqfy.demo.business.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.cqfy.demo.business.UserService;
 import com.cqfy.demo.dao.UserDao;
+import com.cqfy.demo.model.UserInfo;
 import com.cqfy.demo.util.BeanNames;
 import com.cqfy.demo.util.ResponseCode.LoginCode;
 import com.cqfy.demo.web.form.UserForm;
@@ -28,9 +31,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public LoginCode loginUser(UserForm user) {
-		// TODO Auto-generated method stub
-		user.setId(12);
-		return null;
+		String checkUserQuery = "username=?";
+		Object[] params = {user.getUsername()};
+		List<UserInfo> users = userDao.find(checkUserQuery,params,0,0);
+		if( users.size() == 0){
+			user.setErrorMessage("对不起，该帐号不存在！");
+			return LoginCode.USERNAME_NOT_EXIST;
+		}else{
+			UserInfo userModel = users.get(0);
+			if( userModel.getPassword().trim().equals(user.getPassword().trim())){
+				user.setId(userModel.getId());
+				user.setUserSort(userModel.getUserSort());
+				return LoginCode.SUCCESS;
+			}else{
+				user.setErrorMessage("对不起，您输入的密码错误！");
+				return LoginCode.PASSWORD_ERROR;
+			}
+		}
 	}
 
 	@Override

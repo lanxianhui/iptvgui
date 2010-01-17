@@ -40,4 +40,6 @@ public class PageValue {
 	public static final String INIT_LOGINUSER = "loginUser";
 	public static final String INIT_USERBIND = "bindUser";
 	public static final String INIT_USERORDER= "orderUser";
+	
+	public static final String MSG_LOGINERROR = "loginErrorMessage";
 }

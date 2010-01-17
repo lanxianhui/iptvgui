@@ -28,7 +28,7 @@ Header
 </dl>
 </div>
 <div id="content">
-<form:form method="POST" action="" commandName="orderUser">
+<form:form method="POST" action="addorder.service" commandName="orderUser">
 	<table>
 		<tr><td>请填写您的充值信息：</td></tr>
 		<tr><td>充值卡号：</td>

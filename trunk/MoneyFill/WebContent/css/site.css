@@ -1,14 +1,14 @@
-body{width:1004px;margin:0 auto;font-size:12px;font-family:Tahoma;}
+body{width:990px;margin:0 auto;font-size:12px;font-family:Tahoma;}
 div{margin:0px;padding:0px;border:none;}
 #header{width:100%;float:left;border-bottom:solid 2px #2D3F64;}
 #header img{ margin-left:40px; }
-#menu{width:20%;float:left;}
+#menu{width:20%;float:left; *margin-top:10px;}
 
-#menu dl{ background-color:#2D3F64; width:100%; float:left;}
+#menu dl{ background-color:#2D3F64; width:90%; float:left;margin:0px; margin-left:40px;}
 #menu dl dt{ background-color:#F6E9D2; width:92%; float:right; height:35px; color:#333B61; font-size:14px; text-align:right; text-indent:1em; line-height:2.2em; font-weight:900; padding-right:4%; }
-#menu dl dd{background-color:#F6E9D2;width:96%; float:right; }
-#menu dl dd ul{ float:left; width:100%; list-style:none; margin:0px; padding:0px; border:none; }
-#menu dl dd ul li{ float:right; list-style:none; width:100%; background-color:#ffffff; height:30px; border-bottom:solid 1px #F6E9D2; }
+#menu dl dd{background-color:#F6E9D2;width:96%; *width:100%;float:left; height:400px;margin:0px;padding:0px; margin-left:4%; }
+#menu dl dd ul{ float:left; width:100%; list-style:none; margin:0px; padding:0px; border:solid 0px #fff;background-color:#F6E9D2;  }
+#menu dl dd ul li{ float:right; list-style:none; width:95%; background-color:#ffffff; height:30px; border-bottom:solid 1px #F6E9D2; }
 #menu dl dd ul li a{ color:#837969; text-decoration:none; width:80%; text-align:right; line-height:2.5em; float:left; display:block;}
 #menu dl dd ul li a:hover{ text-decoration:underline; }
 
@@ -33,7 +33,7 @@ div{margin:0px;padding:0px;border:none;}
 #login table td #ttitle hr{ width:300px; float:left;  margin-bottom:30px;}
 #loginBg{width:572px; height:354px; border:solid 3px #818DA5;margin-left:150px; float:left; padding-left:80px;}
 
-#content{width:77%;float:right;}
+#content{width:73%;float:right; *margin-top:10px;}
 #content dl dt{ height:33px; width:100%; float:left; border-bottom:solid 2px #E2D2B6; }
 #content dl dt img{ float:left; }
 #content dl dt span{ color: #1A1608; font-size:14px; font-weight:700; display:block; float:left; margin-left:20px; line-height:2em;}

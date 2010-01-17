@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cqfy.demo.business.CardService;
 import com.cqfy.demo.dao.CardDao;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.web.form.CardForm;
 
 @Service(BeanNames.BEAN_SERVICE_CARD)
 @Scope("singleton")
@@ -21,9 +22,10 @@ public class CardServiceImpl implements CardService{
 	}
 
 	@Override
-	public boolean createCard(String cardNumber, String mobileNumber) {
+	public boolean createCard(CardForm cardForm) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 }

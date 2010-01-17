@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>用户后台</title>
+<title>修改口令</title>
 <link rel="stylesheet" href="css/site.css" type="text/css">
 </head>
 <body>
@@ -29,7 +29,25 @@ Header
 </dl>
 </div>
 <div id="content">
-Content
+<dl>
+	<dt></dt>
+	<dd>
+	<form:form method="POST" action="changepwd.service" commandName="userPwd">
+	<table>
+		<tr><td>请填写口令信息：</td></tr>
+		<tr><td>输入原口令：</td>
+		<td><form:input path="oldPassword"/></td>
+		<td><form:errors path="oldPassword"/></td></tr>
+		<tr><td>输入新口令：</td>
+		<td><form:input path="newPassword"/></td>
+		<td><form:errors path="newPassword"/></td></tr>
+		<tr><td></td><td>
+		<input type="submit" value="提交信息"/>
+		</td><td></td></tr>
+	</table>
+	</form:form>
+	</dd>
+</dl>
 </div>
 <div id="footer">
 Footer

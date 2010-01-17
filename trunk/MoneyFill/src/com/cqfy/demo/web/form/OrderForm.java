@@ -6,12 +6,15 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
 
 @Component(BeanNames.BEAN_FORM_ORDER)
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OrderForm implements Serializable{
 	
 	/**

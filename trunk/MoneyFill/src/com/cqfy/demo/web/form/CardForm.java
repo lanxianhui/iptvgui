@@ -5,11 +5,14 @@ import java.io.Serializable;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.cqfy.demo.util.BeanNames;
 
 @Component(BeanNames.BEAN_FORM_CARD)
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CardForm implements Serializable{
 	public long getId() {
 		return id;

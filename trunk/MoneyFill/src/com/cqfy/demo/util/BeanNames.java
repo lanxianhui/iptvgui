@@ -8,6 +8,7 @@ public class BeanNames {
 	public static final String BEAN_DAO_USER = "userDaoBean";
 	public static final String BEAN_SERVICE_USER = "userServiceBean";
 	public static final String BEAN_FORM_USER = "userFormBean";
+	public static final String BEAN_FORM_PWD = "pwdFormBean";
 	/**
 	 * ¿¨Ïà¹ØµÄBean
 	 */

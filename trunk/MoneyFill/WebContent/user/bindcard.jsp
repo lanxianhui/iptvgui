@@ -31,7 +31,7 @@ Header
 <dl>
 	<dt></dt>
 	<dd>
-	<form:form method="POST" action="" commandName="bindUser">
+	<form:form method="POST" action="cardadd.service" commandName="bindUser">
 	<table>
 		<tr><td>请填写您的绑定信息：</td></tr>
 		<tr><td>手机号码：</td>

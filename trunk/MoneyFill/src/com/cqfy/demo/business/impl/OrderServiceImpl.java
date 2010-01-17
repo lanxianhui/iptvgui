@@ -25,9 +25,9 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public String createOrder(OrderForm order) {
+	public boolean createOrder(OrderForm order) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	@Override

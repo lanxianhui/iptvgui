@@ -15,7 +15,7 @@ public interface OrderService {
 	 * @param order
 	 * @return
 	 */
-	String createOrder(OrderForm order);
+	boolean createOrder(OrderForm order);
 	/**
 	 * 根据用户ID返回该用户的所有订单
 	 * @param userId

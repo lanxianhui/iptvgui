@@ -32,7 +32,7 @@ public class UserController extends BaseController{
 	}
 	
 	@RequestMapping(value=PageValue.ACTION_LOGIN_USER,method=RequestMethod.POST)
-	public String loginUser(HttpServletRequest request,@Valid @ModelAttribute("loginUser") UserForm userForm, BindingResult result){
+	public String loginUser(HttpServletRequest request,@Valid @ModelAttribute(PageValue.INIT_LOGINUSER) UserForm userForm, BindingResult result){
 		if(result.hasErrors()){
 			return PageValue.PAGE_LOGIN;
 		}else{

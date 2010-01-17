@@ -24,7 +24,7 @@ public class CardServiceImpl implements CardService{
 	@Override
 	public boolean createCard(CardForm cardForm) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cqfy.demo.business.CardService;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.util.PageValue;
 import com.cqfy.demo.web.BaseController;
 import com.cqfy.demo.web.form.CardForm;
 
@@ -30,11 +31,11 @@ public class CardController extends BaseController{
 	/**
 	 * 重定向的Controller
 	 */
-	@RequestMapping(value=BeanNames.ACTION_USER_BINDCARD)
+	@RequestMapping(value=PageValue.ACTION_USER_BINDCARD)
 	public String initBind(ModelMap model) throws Exception{
 		CardForm cardForm = (CardForm)getBean(BeanNames.BEAN_FORM_CARD);
-		model.addAttribute(BeanNames.INIT_USERBIND,cardForm);
-		return BeanNames.PAGE_USER_BINDCARD;
+		model.addAttribute(PageValue.INIT_USERBIND,cardForm);
+		return PageValue.PAGE_USER_BINDCARD;
 	}
 	
 	

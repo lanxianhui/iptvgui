@@ -12,7 +12,6 @@ import com.cqfy.demo.model.constant.EnumValue.UserSort;
 import com.cqfy.demo.util.BeanNames;
 
 @Component(BeanNames.BEAN_FORM_USER)
-@Scope("session")
 public class UserForm implements Serializable{
 	/**
 	 * 

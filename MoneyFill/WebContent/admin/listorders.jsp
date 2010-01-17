@@ -53,7 +53,7 @@
 					<td><strong style="color: red">￥${item.price}</strong></td>
 					<td><strong style="color: blue">${item.statusString}</strong></td>
 					<td>${item.createTime}</td>
-					<td><a href="modifystatus.service?id=${item.id}">查看</a></td>
+					<td><a href="vieworder.service?id=${item.id}" class="link">查看</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

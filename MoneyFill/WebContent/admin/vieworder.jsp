@@ -35,22 +35,54 @@
 <dl>
 	<dt><img src="images/content.jpg"/><span>订单详情</span></dt>
 	<dd>
-	<form:form method="POST" action="modifystatus.service"
-		commandName="orderUser">
+	<form:form method="POST" action="modifystatus.service" commandName="statusForm">
+		<form:hidden path="id"/>
 		<table id="tableform">
 			<tr>
-				<td class="labeltd">帐号名称：</td>
-				<td>${orderUser.}</td>
+				<td class="labeltd">订单号：</td>
+				<td><strong>${viewOrder.lineNumber}</strong></td>
 				<td class="error"></td>
 			</tr>
 			<tr>
-				<td class="labeltd">登陆口令：</td>
-				<td></td>
+				<td class="labeltd">充值卡号：</td>
+				<td><strong>${viewOrder.cardNumber}</strong></td>
+				<td class="error" style="width: 200px;"></td>
+			</tr>
+			<tr>
+				<td class="labeltd">充值金额：</td>
+				<td><strong style="color:red">￥${viewOrder.price}</strong></td>
+				<td class="error" style="width: 200px;"></td>
+			</tr>
+			<tr>
+				<td class="labeltd">订单状态：</td>
+				<td><strong style="color:blue">${viewOrder.statusString}</strong></td>
+				<td class="error" style="width: 200px;"></td>
+			</tr>
+			<tr>
+				<td class="labeltd">创建时间：</td>
+				<td>${viewOrder.createTime}</td>
+				<td class="error" style="width: 200px;"></td>
+			</tr>
+			<tr>
+				<td class="labeltd">下定帐户：</td>
+				<td>${viewOrder.username}</td>
+				<td class="error" style="width: 200px;"></td>
+			</tr>
+			<tr>
+				<td class="labeltd">选择状态：</td>
+				<td>
+				<form:select path="status">
+					<form:option value="PRCESS_ORDER">正在处理</form:option>
+					<form:option value="ACCEPT_ORDER">已经接受</form:option>
+					<form:option value="MOVE_SEND">等待移动响应</form:option>
+					<form:option value="FINISH">处理完成</form:option>
+				</form:select>
+				</td>
 				<td class="error" style="width: 200px;"></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><input type="submit" id="sbutton" value="修改口令" />&nbsp;&nbsp;
+				<td><input type="submit" id="sbutton" value="处理订单" />&nbsp;&nbsp;
 				<input type="reset" id="rbutton" value="重置" /></td>
 			</tr>
 			<tr>

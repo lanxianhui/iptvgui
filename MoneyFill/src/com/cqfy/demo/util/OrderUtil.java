@@ -27,11 +27,11 @@ public class OrderUtil {
 		case PRCESS_ORDER:
 			return "正在处理";
 		case ACCEPT_ORDER:
-			return "已接收";
+			return "已经接受";
 		case MOVE_SEND:
 			return "等待移动响应";
 		case FINISH:
-			return "已完成";
+			return "处理完成";
 		default:
 			return "系统故障";
 		}

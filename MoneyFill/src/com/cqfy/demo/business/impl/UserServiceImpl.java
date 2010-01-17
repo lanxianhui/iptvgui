@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 		Object[] params = {user.getUserName(),user.getOldPassword()};
 		List<UserInfo> users = userDao.find(checkUserQuery, params, 0, 0);
 		if( users.size() == 0 ){
-			user.setErrorMessage("对不起，新密码输入错误！");
+			user.setErrorMessage("对不起，原密码输入错误！");
 			return false;
 		}else{
 			UserInfo userModel = users.get(0);

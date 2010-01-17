@@ -1,6 +1,8 @@
 package com.cqfy.demo.business.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +14,7 @@ import com.cqfy.demo.dao.CardDao;
 import com.cqfy.demo.dao.UserDao;
 import com.cqfy.demo.model.CardInfo;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.util.PagingInfo;
 import com.cqfy.demo.web.form.CardForm;
 
 @Service(BeanNames.BEAN_SERVICE_CARD)
@@ -37,6 +40,7 @@ public class CardServiceImpl implements CardService{
 	public void setCardInfo(@Qualifier(BeanNames.BEAN_MODEL_CARD) CardInfo cardInfo){
 		this.card = cardInfo;
 	}
+	
 
 	@Override
 	public boolean createCard(CardForm cardForm) {
@@ -52,6 +56,30 @@ public class CardServiceImpl implements CardService{
 		}catch(Exception ex){
 			return false;
 		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<CardForm> getByUserID(long userId, PagingInfo page) {
+		String NSQL = "select * from fm_card where userid=? order by createtime desc";
+		Object[] params = { Long.valueOf(userId)};
+		List<CardInfo> cards = this.cardDao.queryNativeSQL(NSQL, params,
+				(page.getPageIndex() - 1) * page.getPageSize(), page.getPageSize());
+		List<CardForm> forms  = new ArrayList<CardForm>();
+		for( CardInfo card: cards){
+			CardForm form = new CardForm();
+			fillCardForm(card,form);
+			forms.add(form);
+		}
+		return forms;
+	}
+	
+
+	private void fillCardForm(CardInfo card,CardForm cardForm){
+		cardForm.setId(card.getId());
+		cardForm.setCardNumber(card.getCardnumber());
+		cardForm.setMobileNumber(card.getMobilenumber());
+		cardForm.setCreateTime(card.getCreatetime());
 	}
 
 

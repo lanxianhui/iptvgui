@@ -2,11 +2,11 @@ body{width:990px;margin:0 auto;font-size:12px;font-family:Tahoma;}
 div{margin:0px;padding:0px;border:none;}
 #header{width:100%;float:left;border-bottom:solid 2px #2D3F64;}
 #header img{ margin-left:40px; }
-#menu{width:20%;float:left; *margin-top:10px;}
+#menu{width:20%;float:left; *margin-top:10px; *margin-bottom:10px;}
 
 #menu dl{ background-color:#2D3F64; width:90%; float:left;margin:0px; margin-left:40px;}
 #menu dl dt{ background-color:#F6E9D2; width:92%; float:right; height:35px; color:#333B61; font-size:14px; text-align:right; text-indent:1em; line-height:2.2em; font-weight:900; padding-right:4%; }
-#menu dl dd{background-color:#F6E9D2;width:96%; *width:100%;float:left; height:400px;margin:0px;padding:0px; margin-left:4%; }
+#menu dl dd{background-color:#F6E9D2;width:96%; *width:100%;float:left; min-height:400px;margin:0px;padding:0px; margin-left:4%; }
 #menu dl dd ul{ float:left; width:100%; list-style:none; margin:0px; padding:0px; border:solid 0px #fff;background-color:#F6E9D2;  }
 #menu dl dd ul li{ float:right; list-style:none; width:95%; background-color:#ffffff; height:30px; border-bottom:solid 1px #F6E9D2; }
 #menu dl dd ul li a{ color:#837969; text-decoration:none; width:80%; text-align:right; line-height:2.5em; float:left; display:block;}
@@ -14,7 +14,7 @@ div{margin:0px;padding:0px;border:none;}
 
 #login{width:99%;float:left; text-align:center; border:solid 0px #929FAF; margin-top:5px; margin-bottom:5px; padding-bottom:40px; padding-top:40px;}
 
-#footer{width:100%;height:100px;border-top:solid 2px #EDDCBF;float:left;text-align:center;}
+#footer{width:100%;height:100px;border-top:solid 2px #EDDCBF;float:left;text-align:center; margin-top:10px;}
 #footer img,#header img{border:none;float:left;}
 #copyright{float:left;width:80%;color:#908574;line-height:2em;}
 #title{float:left;width:60%;color:#2D3F64;font-size:x-large;font-weight:900;padding-top:20px;}
@@ -32,7 +32,7 @@ div{margin:0px;padding:0px;border:none;}
 #login table td #ttitle{ display:block; float:left; color:#0000a0; font-size:15px; font-weight:900;margin-left:30px; width:300px; }
 #login table td #ttitle hr{ width:300px; float:left;  margin-bottom:30px;}
 
-#tableform{border-collapse:collapse;width:70%; float:left; margin-bottom:30px; }
+#tableform{border-collapse:collapse;width:70%; float:left; margin-bottom:30px; margin-top:20px; }
 #tableform td{ height:35px;}
 #tableform td input{ border:solid 1px #004080; width:150px; }
 #tableform td #sbutton,#tableform td #rbutton{ width:80px; height:25px;}
@@ -40,11 +40,18 @@ div{margin:0px;padding:0px;border:none;}
 #tableform .labeltd{ color:#2D436C; text-align:right; }
 #tableform .error{ color:#ff0000; text-align:left;}
 
-
-
 #loginBg{width:572px; height:354px; border:solid 3px #818DA5;margin-left:150px; float:left; padding-left:80px;}
 
-#content{width:73%;float:right; *margin-top:10px;}
+#content{width:70%;float:right; *margin-top:10px;*margin-bottom:10px;margin-right: 50px;}
+#content dl dd{ width:100%; float:left;}
 #content dl dt{ height:33px; width:100%; float:left; border-bottom:solid 2px #E2D2B6; }
 #content dl dt img{ float:left; }
 #content dl dt span{ color: #1A1608; font-size:14px; font-weight:700; display:block; float:left; margin-left:20px; line-height:2em;}
+
+#listview{ border-collapse:collapse; width:90%; border-bottom:solid 2px #929FAF; float:left; }
+#listview thead tr th{ height: 30px; background-color:#FFF6D6;}
+#listview tbody tr td{ text-align:center; height:28px; }
+#listview tfoot tr td{ height:28px;}
+
+#msgsuccess{ margin-top:20px; color:#004080; line-height:2em; margin-left:40px;}
+#msgsuccess a{ font-size:12px; font-weight:700; color: #0080c0;}

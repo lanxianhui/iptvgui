@@ -34,6 +34,7 @@ public class PageValue {
 	public static final String ACTION_USER_LISTPRICE = "/userprice.service";
 	public static final String ACTION_USER_PWDFORM = "/userpwd.service";
 	public static final String ACTION_USER_CHANGEPWD = "/changepwd.service";
+	public static final String ACTION_USER_LOGOUT = "/logout.service";
 	/**
 	 * Session 里面存放的UserForm
 	 */
@@ -45,6 +46,11 @@ public class PageValue {
 	public static final String INIT_USERBIND = "bindUser";
 	public static final String INIT_USERORDER= "orderUser";
 	public static final String INIT_USERPWD = "userPwd";
+	public static final String LIST_ORDERS = "orderlist";
+	public static final String LIST_CARD = "cardlist";
+	public static final String SUCCESS_BIND = "cardSuccess";
+	public static final String SUCCESS_ORDER = "orderSuccess";
 	
 	public static final String MSG_LOGINERROR = "loginErrorMessage";
+	public static final String MSG_CHANGEERROR = "changeErrorMessage";
 }

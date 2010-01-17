@@ -1,6 +1,7 @@
 package com.cqfy.demo.business.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import com.cqfy.demo.model.OrderInfo;
 import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
 import com.cqfy.demo.util.OrderUtil;
+import com.cqfy.demo.util.PagingInfo;
 import com.cqfy.demo.web.form.OrderForm;
 
 @Service(BeanNames.BEAN_SERVICE_ORDER)
@@ -69,9 +71,28 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public List<OrderForm> getByUserID(long userId) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public List<OrderForm> getByUserID(long userId,PagingInfo page) {
+		String NSQL = "select * from fm_order where userid=? order by ordertime desc";
+		Object[] params = { Long.valueOf(userId)};
+		List<OrderInfo> orders = this.orderDao.queryNativeSQL(NSQL, params, 
+				(page.getPageIndex() - 1) * page.getPageSize(), page.getPageSize());
+		List<OrderForm> forms = new ArrayList<OrderForm>();
+		for( OrderInfo order : orders){
+			OrderForm form = new OrderForm();
+			fillOrderForm(order, form);
+			forms.add(form);
+		}
+		return forms;
+	}
+	
+	private void fillOrderForm(OrderInfo order,OrderForm orderForm){
+		orderForm.setId(order.getId());
+		orderForm.setCardNumber(order.getCardNumber());
+		orderForm.setLineNumber(order.getLineNumber());
+		orderForm.setPrice(order.getPrice().toString());
+		orderForm.setStatus(order.getStatus());
+		orderForm.setCreateTime(order.getOrderTime());
 	}
 
 	@Override

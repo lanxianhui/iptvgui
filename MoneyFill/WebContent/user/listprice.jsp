@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -26,16 +27,38 @@
 		<li><a href="userbind.service">绑定手机</a><img src="images/li_48.jpg"/></li>
 		<li><a href="userpwd.service">修改口令</a><img src="images/li_48.jpg"/></li>
 		<li><a href="usercard.service">卡号充值</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userprice.service">充值记录</a><img src="images/li_48.jpg"/></li>
-		<li><a href="userorders.service">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userprice.service?pageindex=0">绑定记录</a><img src="images/li_48.jpg"/></li>
+		<li><a href="userorders.service?pageindex=0">我的订单</a><img src="images/li_48.jpg"/></li>
+		<li><a href="logout.service">我要注销</a><img src="images/li_48.jpg"/></li>
 	</ul>
 	</dd>
 </dl>
 </div>
 <div id="content">
 <dl>
-	<dt><img src="images/content.jpg"/><span>充值记录</span></dt>
-	<dd></dd>
+	<dt><img src="images/content.jpg"/><span>绑定记录</span></dt>
+	<dd>
+	<table id="listview">
+		<thead>
+			<tr>
+				<th>绑定卡号</th>
+				<th>手机号</th>
+				<th>绑定时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="item" items="${cardlist}">
+				<tr>
+					<td><strong style="color: green">${item.cardNumber}</strong></td>
+					<td><strong style="color: blue">${item.mobileNumber}</strong></td>
+					<td>${item.createTime}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+		<tfoot>
+		</tfoot>
+	</table>
+	</dd>
 </dl>
 </div>
 <div id="footer">

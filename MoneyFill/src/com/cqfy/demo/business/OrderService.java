@@ -2,6 +2,7 @@ package com.cqfy.demo.business;
 
 import java.util.List;
 
+import com.cqfy.demo.util.PagingInfo;
 import com.cqfy.demo.web.form.OrderForm;
 
 /**
@@ -21,7 +22,7 @@ public interface OrderService {
 	 * @param userId
 	 * @return
 	 */
-	List<OrderForm> getByUserID(long userId);
+	List<OrderForm> getByUserID(long userId,PagingInfo page);
 	/**
 	 * 根据卡号获取所有订单的冲值记录
 	 * @param cardNumber

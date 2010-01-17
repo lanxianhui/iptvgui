@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.cqfy.demo.model.constant.EnumValue.UserSort;

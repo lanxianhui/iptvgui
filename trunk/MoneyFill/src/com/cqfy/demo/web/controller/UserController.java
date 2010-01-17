@@ -41,7 +41,7 @@ public class UserController extends BaseController{
 			if(resultCode == LoginCode.SUCCESS){
 				// 设置会话
 				HttpSession session = request.getSession();
-				session.setAttribute("userFormBean",userForm);
+				session.setAttribute(BeanNames.SESSION_USER,userForm);
 				
 				if(userForm.getUserSort() == UserSort.SORT_USER){
 					return BeanNames.ACTION_USER_INDEX;
@@ -58,7 +58,7 @@ public class UserController extends BaseController{
 	@RequestMapping(value=BeanNames.ACTION_LOGIN_INDEX)
 	public String initLogin(ModelMap model) throws Exception{
 		UserForm form = (UserForm)getBean(BeanNames.BEAN_FORM_USER);
-		model.addAttribute("loginUser",form);
+		model.addAttribute(BeanNames.INIT_LOGINUSER,form);
 		return BeanNames.PAGE_LOGIN;
 	}
 	
@@ -71,6 +71,13 @@ public class UserController extends BaseController{
 	public String initUser(ModelMap model) throws Exception{
 		return BeanNames.PAGE_USER_INDEX;
 	}
+	
+	
+	//资源相关
+	/*@RequestMapping(value=BeanNames.ACTION_LOAD_CSS,method=RequestMethod.GET)
+	public String loadCssFiles(){
+		return "css/site.css";
+	}*/
 	
 	
 }

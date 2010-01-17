@@ -55,3 +55,5 @@ div{margin:0px;padding:0px;border:none;}
 
 #msgsuccess{ margin-top:20px; color:#004080; line-height:2em; margin-left:40px;}
 #msgsuccess a{ font-size:12px; font-weight:700; color: #0080c0;}
+
+.link{ font-size:12px; font-weight:700; color:#0080c0; text-decoration:none;line-height:2em;}

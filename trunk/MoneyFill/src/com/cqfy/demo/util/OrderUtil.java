@@ -1,6 +1,7 @@
 package com.cqfy.demo.util;
 
 import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
+import com.cqfy.demo.model.constant.EnumValue.UserSort;
 
 public class OrderUtil {
 	
@@ -22,6 +23,17 @@ public class OrderUtil {
 			return "已完成";
 		default:
 			return "系统故障";
+		}
+	}
+	
+	public static String getUserSort(UserSort sort){
+		switch (sort) {
+		case SORT_USER:
+			return "普通用户";
+		case SORT_ADMIN:
+			return "管理员";
+			default:
+				return "未知用户";
 		}
 	}
 }

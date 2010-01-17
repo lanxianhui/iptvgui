@@ -21,7 +21,7 @@
 <div id="loginBg">
 <form:form method="POST" action="loginuser.service" commandName="loginUser">
 <table>
-	<tr><td colspan="3" style="text-align:center;"><img src="images/msn_logo.jpg" id="tlogo"></img><span id="ttitle">重庆市泛易科技有限公司登陆平台：<br/><hr /></span></td></tr>
+	<tr><td colspan="3" style="text-align:center;"><img src="images/msn_logo.jpg" id="tlogo"></img><span id="ttitle">重庆市泛易科技有限公司登陆平台：<br/></span><hr /></td></tr>
 	<tr>
 		<td class="labeltd">登陆帐号：</td>
 		<td><form:input path="username"/></td>

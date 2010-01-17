@@ -34,19 +34,19 @@
 </div>
 <div id="content">
 <dl>
-	<dt><img src="images/content.jpg"/><span>充值卡号</span></dt>
+	<dt><img src="images/content.jpg"/><span>请填写您的充值信息</span></dt>
 	<dd>
 	<form:form method="POST" action="addorder.service" commandName="orderUser">
-	<table>
-		<tr><td>请填写您的充值信息：</td></tr>
+	<table id="tableform">
 		<tr><td>充值卡号：</td>
-		<td><form:input path="cardNumber"/></td>
-		<td><form:errors path="cardNumber"/></td></tr>
-		<tr><td>充值金额：</td>
-		<td><form:input path="price"/></td>
-		<td><form:errors path="price"/></td></tr>
+		<td class="labeltd"><form:input path="cardNumber"/></td>
+		<td class="error" style="width:200px;"><form:errors path="cardNumber"/></td></tr>
+		<tr><td>充值金额：<strong style="color:red;">￥</strong></td>
+		<td class="labeltd"><form:input path="price"/></td>
+		<td class="error"><form:errors path="price"/></td></tr>
 		<tr><td></td><td>
-		<input type="submit" value="提交信息"/>
+		<input type="submit" id="sbutton" value="提交信息"/>
+		<input type="reset" id="rbutton" value="重置表单"/>
 		</td><td></td></tr>
 	</table>
 	</form:form>

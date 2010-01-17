@@ -34,19 +34,20 @@
 </div>
 <div id="content">
 <dl>
-	<dt><img src="images/content.jpg"/><span>绑定手机</span></dt>
+	<dt><img src="images/content.jpg"/><span>请填写您的绑定信息：</span></dt>
 	<dd>
 	<form:form method="POST" action="cardadd.service" commandName="bindUser">
-	<table>
-		<tr><td>请填写您的绑定信息：</td></tr>
+	
+	<table id="tableform">
 		<tr><td>手机号码：</td>
-		<td><form:input path="mobileNumber"/></td>
-		<td><form:errors path="mobileNumber"/></td></tr>
+		<td class="labeltd"><form:input path="mobileNumber"/></td>
+		<td class="error"><form:errors path="mobileNumber"/></td></tr>
 		<tr><td>充值卡号：</td>
-		<td><form:input path="cardNumber"/></td>
-		<td><form:errors path="cardNumber"/></td></tr>
+		<td class="labeltd"><form:input path="cardNumber"/></td>
+		<td class="error" style="width:200px;"><form:errors path="cardNumber"/></td></tr>
 		<tr><td></td><td>
-		<input type="submit" value="提交信息"/>
+		<input type="submit" id="sbutton" value="提交信息"/>
+		<input type="reset" id="rbutton" value="重置表单"/>
 		</td><td></td></tr>
 	</table>
 	</form:form>

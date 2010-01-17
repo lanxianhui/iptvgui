@@ -24,11 +24,11 @@ public class OrderForm implements Serializable{
 	private long id;
 	
 	private String lineNumber;
-	@NotEmpty(message = "对不起，请输入卡号，卡号不能为空！")
+	@NotEmpty(message = "请输入卡号，卡号不能为空！")
 	@Size(max = 200)
 	private String cardNumber;
-	@NotEmpty(message = "对不起，请输入您要充值的金额！")
-	@Pattern(regexp="\\d*\\.\\d{2}",message="对不起，货币格式输入错误！")
+	@NotEmpty(message = "请输入充值金额！")
+	@Pattern(regexp="\\d*\\.\\d{2}",message="货币格式输入错误！")
 	private String price;
 	
 	private OrderStatus status;

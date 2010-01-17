@@ -34,19 +34,19 @@
 </div>
 <div id="content">
 <dl>
-	<dt><img src="images/content.jpg"/><span>修改口令</span></dt>
+	<dt><img src="images/content.jpg"/><span>请填写口令信息</span></dt>
 	<dd>
 	<form:form method="POST" action="changepwd.service" commandName="userPwd">
-	<table>
-		<tr><td>请填写口令信息：</td></tr>
+	<table id="tableform">
 		<tr><td>输入原口令：</td>
-		<td><form:input path="oldPassword"/></td>
-		<td><form:errors path="oldPassword"/></td></tr>
+		<td class="labeltd"><form:input path="oldPassword"/></td>
+		<td class="error"><form:errors path="oldPassword"/></td></tr>
 		<tr><td>输入新口令：</td>
-		<td><form:input path="newPassword"/></td>
-		<td><form:errors path="newPassword"/></td></tr>
+		<td class="labeltd"><form:input path="newPassword"/></td>
+		<td class="error" style="width:200px;"><form:errors path="newPassword"/></td></tr>
 		<tr><td></td><td>
-		<input type="submit" value="提交信息"/>
+		<input type="submit" id="sbutton" value="提交信息"/>
+		<input type="reset" id="rbutton" value="重置表单"/>
 		</td><td></td></tr>
 	</table>
 	</form:form>

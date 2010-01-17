@@ -31,6 +31,17 @@ div{margin:0px;padding:0px;border:none;}
 #login table td #tlogo{width:40px;height:40px;float:left; margin-left:60px;}
 #login table td #ttitle{ display:block; float:left; color:#0000a0; font-size:15px; font-weight:900;margin-left:30px; width:300px; }
 #login table td #ttitle hr{ width:300px; float:left;  margin-bottom:30px;}
+
+#tableform{border-collapse:collapse;width:70%; float:left; margin-bottom:30px; }
+#tableform td{ height:35px;}
+#tableform td input{ border:solid 1px #004080; width:150px; }
+#tableform td #sbutton,#tableform td #rbutton{ width:80px; height:25px;}
+#tableform td #sbutton:hover,#tableform td #rbutton:hover{ cursor:hand; cursor:pointer;}
+#tableform .labeltd{ color:#2D436C; text-align:right; }
+#tableform .error{ color:#ff0000; text-align:left;}
+
+
+
 #loginBg{width:572px; height:354px; border:solid 3px #818DA5;margin-left:150px; float:left; padding-left:80px;}
 
 #content{width:73%;float:right; *margin-top:10px;}

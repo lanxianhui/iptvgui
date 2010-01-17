@@ -6,18 +6,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>用户登陆</title>
 </head>
 <body>
-<form:form method="POST" action="loginuser" commandName="loginUser">
+<form:form method="POST" action="loginuser.service" commandName="loginUser">
 <table>
 	<tr>
-		<td>用户名：</td>
+		<td>登陆帐号：</td>
 		<td><form:input path="username"/></td>
 		<td><form:errors path="username"/></td>
 	</tr>
 	<tr>
-		<td>用户名：</td>
+		<td>登陆密码：</td>
 		<td><form:password path="password"/></td>
 		<td><form:errors path="password"/></td>
 	</tr>

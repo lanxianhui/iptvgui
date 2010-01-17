@@ -68,6 +68,7 @@ public class PageValue {
 	public static final String SUCCESS_BIND = "cardSuccess";
 	public static final String SUCCESS_ORDER = "orderSuccess";
 	public static final String VIEW_ORDER = "viewOrder";
+	public static final String INIT_STATUS = "statusForm";
 	
 	public static final String MSG_LOGINERROR = "loginErrorMessage";
 	public static final String MSG_CHANGEERROR = "changeErrorMessage";

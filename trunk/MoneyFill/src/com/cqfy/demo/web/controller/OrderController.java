@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cqfy.demo.business.OrderService;
+import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
 import com.cqfy.demo.util.PageValue;
 import com.cqfy.demo.util.PagingInfo;
@@ -87,12 +88,29 @@ public class OrderController extends BaseController {
 		if (resultPage == null) {
 			OrderForm form = this.orderService.getOrderById(id);
 			model.addAttribute(PageValue.VIEW_ORDER,form);
-			return PageValue.ACTION_ADMIN_VIEWORDER;
+			
+			return PageValue.PAGE_ADMIN_VIEWORDER;
 		}else{
 			return resultPage;
 		}
 	}
-
+	
+	@RequestMapping(value = PageValue.ACTION_ADMIN_ORDERUPDATE)
+	public String modifyStatus(HttpServletRequest request,@RequestParam("id") long orderId,@RequestParam("status") OrderStatus status,ModelMap model)
+	{
+		String resultPage = checkLogin(request,model);
+		if (resultPage == null) {
+			boolean result = this.orderService.modifyStatus(orderId, status);
+			if( result ){
+				return PageValue.ACTION_ADMIN_LISTORDERS + "?id=" + orderId;
+			}else{
+				return PageValue.PAGE_ADMIN_VIEWORDER + "?id=" + orderId;
+			}
+		}else{
+			return resultPage;
+		}
+	}
+	
 	@RequestMapping(value = PageValue.ACTION_USER_ADDORDER, method = RequestMethod.POST)
 	public String addOrders(
 			HttpServletRequest request,

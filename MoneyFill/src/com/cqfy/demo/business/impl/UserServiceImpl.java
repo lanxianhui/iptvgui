@@ -12,6 +12,7 @@ import com.cqfy.demo.dao.UserDao;
 import com.cqfy.demo.model.UserInfo;
 import com.cqfy.demo.util.BeanNames;
 import com.cqfy.demo.util.ResponseCode.LoginCode;
+import com.cqfy.demo.web.form.PwdForm;
 import com.cqfy.demo.web.form.UserForm;
 /**
  * 用户业务接口实现
@@ -51,9 +52,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean modifyPassword(UserForm user) {
-		//TODO 
-		//userDao.update(user);
-		return false;
+	public boolean modifyPassword(PwdForm user) {
+		String checkUserQuery = "username=? and password=?";
+		Object[] params = {user.getUserName(),user.getOldPassword()};
+		List<UserInfo> users = userDao.find(checkUserQuery, params, 0, 0);
+		if( users.size() == 0 ){
+			user.setErrorMessage("对不起，新密码输入错误！");
+			return false;
+		}else{
+			UserInfo userModel = users.get(0);
+			userModel.setPassword(user.getNewPassword());
+			userDao.update(userModel);
+			return true;
+		}
 	}
 }

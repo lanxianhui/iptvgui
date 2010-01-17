@@ -15,6 +15,8 @@ public class PageValue {
 	public static final String PAGE_USER_LISTPRICE = "/user/listprice.jsp";
 	public static final String PAGE_USER_BINDSUCCESS = "/user/bindsuccess.jsp";
 	public static final String PAGE_USER_ORDERSUCCESS = "/user/ordersuccess.jsp";
+	public static final String PAGE_USER_CHANGEPWD = "/user/changepwd.jsp";
+	public static final String PAGE_USER_PWDSUCCESS = "/user/pwdsuccess.jsp";
 	/**
 	 * 页面对应的Action清单
 	 */
@@ -30,6 +32,8 @@ public class PageValue {
 	public static final String ACTION_USER_LISTORDERS = "/userorders.service";
 	public static final String ACTION_USER_ADDORDER = "/addorder.service";
 	public static final String ACTION_USER_LISTPRICE = "/userprice.service";
+	public static final String ACTION_USER_PWDFORM = "/userpwd.service";
+	public static final String ACTION_USER_CHANGEPWD = "/changepwd.service";
 	/**
 	 * Session 里面存放的UserForm
 	 */
@@ -40,6 +44,7 @@ public class PageValue {
 	public static final String INIT_LOGINUSER = "loginUser";
 	public static final String INIT_USERBIND = "bindUser";
 	public static final String INIT_USERORDER= "orderUser";
+	public static final String INIT_USERPWD = "userPwd";
 	
 	public static final String MSG_LOGINERROR = "loginErrorMessage";
 }

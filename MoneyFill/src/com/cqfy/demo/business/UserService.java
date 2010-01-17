@@ -1,6 +1,7 @@
 package com.cqfy.demo.business;
 
 import com.cqfy.demo.util.ResponseCode.LoginCode;
+import com.cqfy.demo.web.form.PwdForm;
 import com.cqfy.demo.web.form.UserForm;
 
 /**
@@ -20,5 +21,5 @@ public interface UserService {
 	 * –ﬁ∏ƒ”√ªß√‹¬Î
 	 * @return
 	 */
-	boolean modifyPassword(UserForm user);
+	boolean modifyPassword(PwdForm user);
 }

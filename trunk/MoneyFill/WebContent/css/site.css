@@ -1,0 +1,28 @@
+body{
+	width:1004px;
+	margin:0 auto;
+	font-size:12px;
+}
+div{
+	margin:0px;
+	padding:0px;
+	border:none;
+}
+#header{
+	width:100%;
+	height:120px;
+	float:left;
+}
+#menu{
+	width:20%;
+	float:left;
+}
+#content{
+	width:79%;
+	float:left;
+}
+#footer{
+	width:100%;
+	height:100px;
+	float:left;
+}

@@ -11,6 +11,7 @@ import com.cqfy.demo.business.OrderService;
 import com.cqfy.demo.dao.OrderDao;
 import com.cqfy.demo.model.OrderInfo;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.web.form.OrderForm;
 
 @Service(BeanNames.BEAN_SERVICE_ORDER)
 @Scope("singleton")
@@ -24,27 +25,27 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public String createOrder(OrderInfo order) {
-		// TODO Auto-generated method stub
-		this.orderDao.save(order);
-		return null;
-	}
-
-	@Override
-	public List<OrderInfo> getByCardNumber(String cardNumber) {
+	public String createOrder(OrderForm order) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OrderInfo> getByUserID(long userId) {
+	public List<OrderForm> getByCardNumber(String cardNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean modifyStatus(OrderInfo order, int status) {
+	public List<OrderForm> getByUserID(long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean modifyStatus(long orderId, int status) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

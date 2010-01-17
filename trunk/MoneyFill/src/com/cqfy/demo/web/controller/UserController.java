@@ -54,7 +54,7 @@ public class UserController extends BaseController{
 			}
 		}
 	}
-	//重定向的系列方法
+	//重定向的系列方法【初始化表单方法】
 	@RequestMapping(value=BeanNames.ACTION_LOGIN_INDEX)
 	public String initLogin(ModelMap model) throws Exception{
 		UserForm form = (UserForm)getBean(BeanNames.BEAN_FORM_USER);

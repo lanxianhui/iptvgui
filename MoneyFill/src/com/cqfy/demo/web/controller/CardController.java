@@ -35,19 +35,23 @@ public class CardController extends BaseController{
 	@RequestMapping(value=PageValue.ACTION_USER_BINDFORM)
 	public String initBind(HttpServletRequest request,ModelMap model) throws Exception{
 		CardForm cardForm = (CardForm)getBean(BeanNames.BEAN_FORM_CARD);
-		HttpSession session = request.getSession();
-		UserForm userForm = (UserForm)session.getAttribute(BeanNames.BEAN_FORM_USER);
-		cardForm.setUserForm(userForm);
+		
+		
 		model.addAttribute(PageValue.INIT_USERBIND,cardForm);
 		return PageValue.PAGE_USER_CARDFORM;
 	}
 	
 	@RequestMapping(value = PageValue.ACTION_USER_ADDCARD,method=RequestMethod.POST)
-	public String addCard(@Valid @ModelAttribute(PageValue.INIT_USERBIND) CardForm cardForm,BindingResult result){
+	public String addCard(HttpServletRequest request,@Valid @ModelAttribute(PageValue.INIT_USERBIND) CardForm cardForm,BindingResult result){
 		if(result.hasErrors()){
 			return PageValue.PAGE_USER_CARDFORM;
 		}else{
+			// 从会话中获取UserInfo
+			HttpSession session = request.getSession();
+			UserForm userForm = (UserForm)session.getAttribute(PageValue.SESSION_USER);
+			cardForm.setUserForm(userForm);
 			boolean resultCode = cardService.createCard(cardForm);
+			
 			if(resultCode){
 				return PageValue.PAGE_USER_BINDSUCCESS;
 			}else{

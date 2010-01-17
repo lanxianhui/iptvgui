@@ -1,15 +1,14 @@
 package com.cqfy.demo.web.form;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 import org.springframework.stereotype.Component;
 
+import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
 
 @Component(BeanNames.BEAN_FORM_ORDER)
@@ -26,9 +25,17 @@ public class OrderForm implements Serializable{
 	@Size(max = 200)
 	private String cardNumber;
 	@NotEmpty(message = "对不起，请输入您要充值的金额！")
-	@NumberFormat(style = Style.CURRENCY)
-	private BigDecimal price;
+	@Pattern(regexp="\\d*\\.\\d{2}",message="对不起，货币格式输入错误！")
+	private String price;
 	
+	private OrderStatus status;
+	
+	public OrderStatus getStatus() {
+		return status;
+	}
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
 	public UserForm getUserForm() {
 		return userForm;
 	}
@@ -55,10 +62,10 @@ public class OrderForm implements Serializable{
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
-	public BigDecimal getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(BigDecimal price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 }

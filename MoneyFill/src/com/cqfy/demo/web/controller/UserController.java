@@ -32,15 +32,13 @@ public class UserController extends BaseController{
 	}
 	
 	@RequestMapping(value=PageValue.ACTION_LOGIN_USER,method=RequestMethod.POST)
-	public String loginUser(HttpServletRequest request,@Valid @ModelAttribute(PageValue.INIT_LOGINUSER) UserForm userForm, BindingResult result){
+	public String loginUser(HttpServletRequest request,@Valid @ModelAttribute(PageValue.INIT_LOGINUSER) UserForm userForm,BindingResult result, ModelMap map){
 		if(result.hasErrors()){
 			return PageValue.PAGE_LOGIN;
 		}else{
 			LoginCode resultCode = this.userService.loginUser(userForm);
-			userForm.setUserSort(UserSort.SORT_ADMIN);
-			resultCode = LoginCode.SUCCESS;
 			if(resultCode == LoginCode.SUCCESS){
-				// 设置会话
+				// 设置填充用户会话
 				HttpSession session = request.getSession();
 				session.setAttribute(PageValue.SESSION_USER,userForm);
 				
@@ -50,7 +48,7 @@ public class UserController extends BaseController{
 					return PageValue.ACTION_ADMIN_INDEX;
 				}
 			}else{
-				System.out.println(userForm.getErrorMessage());
+				map.addAttribute(PageValue.MSG_LOGINERROR, userForm.getErrorMessage());
 				return PageValue.PAGE_LOGIN;
 			}
 		}

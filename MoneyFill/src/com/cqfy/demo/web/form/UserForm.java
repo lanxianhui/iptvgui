@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.cqfy.demo.model.constant.EnumValue.UserSort;
 import com.cqfy.demo.util.BeanNames;
+import com.cqfy.demo.util.OrderUtil;
 
 @Component(BeanNames.BEAN_FORM_USER)
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -35,6 +36,14 @@ public class UserForm implements Serializable{
 	private String password;
 	
 	private UserSort userSort;
+	@SuppressWarnings("unused")
+	private UserSort userSortString;
+	public String getUserSortString() {
+		return OrderUtil.getUserSort(userSort);
+	}
+	public void setUserSortString(UserSort userSortString) {
+		this.userSortString = userSortString;
+	}
 	private String errorMessage;
 	
 	public UserSort getUserSort() {

@@ -7,19 +7,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>帐号管理</title>
+<title>订单详情</title>
 <link rel="stylesheet" href="css/site.css" type="text/css">
-<script type="text/javascript">
-function deluser(userid){
-	var result = window.confirm("点击该操作不仅仅会删除账户，同样会删除账户相关的所有信息，请谨慎操作！");
-	if( result == true )
-	{
-		window.location = "deluser.service?id=" + userid;
-	}
-}
-</script>
 </head>
 <body>
+
 <div id="header">
 <img src="images/b_logo.gif"></img>
 <div id="title">
@@ -41,30 +33,32 @@ function deluser(userid){
 </div>
 <div id="content">
 <dl>
-	<dt><img src="images/content.jpg"/><span>帐号管理</span><a href="adduserform.service" class="link" style="float:right;">添加帐号</a></dt>
+	<dt><img src="images/content.jpg"/><span>订单详情</span></dt>
 	<dd>
-	<table id="listview">
-		<thead>
+	<form:form method="POST" action="modifystatus.service"
+		commandName="orderUser">
+		<table id="tableform">
 			<tr>
-				<th>帐号名</th>
-				<th>帐号类型</th>
-				<th>选择操作</th>
-				<th>&nbsp;</th>
+				<td class="labeltd">帐号名称：</td>
+				<td>${orderUser.}</td>
+				<td class="error"></td>
 			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="item" items="${userlist}">
-				<tr>
-					<td>${item.username}</td>
-					<td>${item.userSortString}</td>
-					<td><a href="#" onclick="deluser(${item.id});return false;" class="link">删除该账户</a></td>
-					<td><a href="changepwdform.service?id=${item.id}" class="link">修改口令</a></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-		<tfoot>
-		</tfoot>
-	</table>
+			<tr>
+				<td class="labeltd">登陆口令：</td>
+				<td></td>
+				<td class="error" style="width: 200px;"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" id="sbutton" value="修改口令" />&nbsp;&nbsp;
+				<input type="reset" id="rbutton" value="重置" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td colspan="2" class="error">${createUserErrorMessage}</td>
+			</tr>
+		</table>
+	</form:form>
 	</dd>
 </dl>
 </div>

@@ -36,6 +36,14 @@ public class OrderForm implements Serializable{
 	
 	private OrderStatus status;
 	
+	private String username;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	@SuppressWarnings("unused")
 	private String statusString;
 	

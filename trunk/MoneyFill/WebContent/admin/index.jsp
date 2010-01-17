@@ -24,9 +24,8 @@
 	<dd>
 	<ul>
 		<li><a href="listuser.service?pageindex=0">帐号管理</a><img src="images/li_48.jpg"/></li>
-		<li><a href="">账务查询</a><img src="images/li_48.jpg"/></li>
-		<li><a href="">订单管理</a><img src="images/li_48.jpg"/></li>
-		<li><a href="logout.service">我要注销</a><img src="images/li_48.jpg"/></li>
+		<li><a href="listorders.service?pageindex=0">订单账务</a><img src="images/li_48.jpg" /></li>
+		<li><a href="logout.service">我要注销</a><img src="images/li_48.jpg" /></li>
 	</ul>
 	</dd>
 </dl>

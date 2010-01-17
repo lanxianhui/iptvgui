@@ -93,12 +93,42 @@ public class OrderServiceImpl implements OrderService{
 		orderForm.setPrice(order.getPrice().toString());
 		orderForm.setStatus(order.getStatus());
 		orderForm.setCreateTime(order.getOrderTime());
+		orderForm.setUsername(order.getUser().getUserName());
 	}
 
 	@Override
-	public boolean modifyStatus(long orderId, int status) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modifyStatus(long orderId, OrderStatus status) {
+		try{
+			String NSQL = "update fm_order set status=" + OrderUtil.getOrderStatusValue(status) + "where id=" + orderId;
+			this.orderDao.executeNativeSQL(NSQL);
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<OrderForm> getAllOrders(PagingInfo page) {
+		String NSQL = "select * from fm_order order by ordertime desc";
+		Object[] params = {};
+		List<OrderInfo> orders = this.orderDao.queryNativeSQL(NSQL, params, 
+				(page.getPageIndex() - 1) * page.getPageSize(), page.getPageSize());
+		List<OrderForm> forms = new ArrayList<OrderForm>();
+		for( OrderInfo order : orders){
+			OrderForm form = new OrderForm();
+			fillOrderForm(order, form);
+			forms.add(form);
+		}
+		return forms;
+	}
+
+	@Override
+	public OrderForm getOrderById(long orderId) {
+		OrderInfo order = this.orderDao.read(orderId);
+		OrderForm form = new OrderForm();
+		fillOrderForm(order, form);
+		return form;
 	}
 
 }

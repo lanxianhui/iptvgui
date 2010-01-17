@@ -10,6 +10,8 @@ public class PageValue {
 	public static final String PAGE_ADMIN_ACCOUNTMANAGE = "/admin/accountmanage.jsp";
 	public static final String PAGE_ADMIN_ACCOUNTADD = "/admin/accountadd.jsp";
 	public static final String PAGE_ADMIN_CHANGEPWD = "/admin/changepwd.jsp";
+	public static final String PAGE_ADMIN_LISTORDERS = "/admin/listorders.jsp";
+	public static final String PAGE_ADMIN_VIEWORDER = "/admin/vieworder.jsp";
 	
 	public static final String PAGE_USER_INDEX = "/user/index.jsp";
 	public static final String PAGE_USER_ORDERFORM = "/user/fillcard.jsp";
@@ -20,6 +22,7 @@ public class PageValue {
 	public static final String PAGE_USER_ORDERSUCCESS = "/user/ordersuccess.jsp";
 	public static final String PAGE_USER_CHANGEPWD = "/user/changepwd.jsp";
 	public static final String PAGE_USER_PWDSUCCESS = "/user/pwdsuccess.jsp";
+	
 	/**
 	 * 页面对应的Action清单
 	 */
@@ -28,11 +31,14 @@ public class PageValue {
 	
 	public static final String ACTION_ADMIN_INDEX = "/adminindex.service";
 	public static final String ACTION_ADMIN_LISTUSERS = "/listuser.service";
+	public static final String ACTION_ADMIN_LISTORDERS = "/listorders.service";
 	public static final String ACTION_ADMIN_ADDUSER = "/adduser.service";
 	public static final String ACTION_ADMIN_ADDUSERFORM = "/adduserform.service";
 	public static final String ACTION_ADMIN_DELETEUSER = "/deluser.service";
 	public static final String ACTION_ADMIN_CHANGEFORM = "/changepwdform.service";
 	public static final String ACTION_ADMIN_CHANGEUSERPWD = "/changeuserpwd.service";
+	public static final String ACTION_ADMIN_ORDERUPDATE = "/modifystatus.service";
+	public static final String ACTION_ADMIN_VIEWORDER = "/vieworder.service";
 	
 	public static final String ACTION_USER_INDEX = "/userindex.service";
 	public static final String ACTION_USER_CARDFORM = "/usercard.service";
@@ -61,6 +67,7 @@ public class PageValue {
 	public static final String LIST_USERS = "userlist";
 	public static final String SUCCESS_BIND = "cardSuccess";
 	public static final String SUCCESS_ORDER = "orderSuccess";
+	public static final String VIEW_ORDER = "viewOrder";
 	
 	public static final String MSG_LOGINERROR = "loginErrorMessage";
 	public static final String MSG_CHANGEERROR = "changeErrorMessage";

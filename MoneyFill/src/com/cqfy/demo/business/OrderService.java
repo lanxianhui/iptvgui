@@ -2,6 +2,7 @@ package com.cqfy.demo.business;
 
 import java.util.List;
 
+import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.PagingInfo;
 import com.cqfy.demo.web.form.OrderForm;
 
@@ -33,5 +34,17 @@ public interface OrderService {
 	 * 修改订单的状态
 	 * @return
 	 */
-	boolean modifyStatus(long orderId,int status);
+	boolean modifyStatus(long orderId,OrderStatus status);
+	/**
+	 * 读取所有的订单信息
+	 * @param page
+	 * @return
+	 */
+	List<OrderForm> getAllOrders(PagingInfo page);
+	/**
+	 * 根据订单id获取订单对象
+	 * @param orderId
+	 * @return
+	 */
+	OrderForm getOrderById(long orderId);
 }

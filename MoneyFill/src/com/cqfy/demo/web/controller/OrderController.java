@@ -53,6 +53,19 @@ public class OrderController extends BaseController {
 			return resultPage;
 		}
 	}
+	
+	@RequestMapping(value = PageValue.ACTION_ADMIN_LISTORDERS)
+	public String listAllOrders(HttpServletRequest request,@RequestParam("pageindex") int pageindex,ModelMap model){
+		String resultPage = checkLogin(request,model);
+		if (resultPage == null) {
+			PagingInfo page = new PagingInfo(pageindex, 10);
+			List<OrderForm> orders = orderService.getAllOrders(page);
+			model.addAttribute(PageValue.LIST_ORDERS, orders);
+			return PageValue.PAGE_ADMIN_LISTORDERS;
+		}else{
+			return resultPage;
+		}
+	}
 
 	@RequestMapping(value = PageValue.ACTION_USER_CARDFORM)
 	public String initFillCard(HttpServletRequest request, ModelMap model)
@@ -60,10 +73,22 @@ public class OrderController extends BaseController {
 		String resultPage = checkLogin(request,model);
 		if (resultPage == null) {
 			OrderForm orderForm = (OrderForm) getBean(BeanNames.BEAN_FORM_ORDER);
-
 			model.addAttribute(PageValue.INIT_USERORDER, orderForm);
 			return PageValue.PAGE_USER_ORDERFORM;
 		} else {
+			return resultPage;
+		}
+	}
+	
+	@RequestMapping(value = PageValue.ACTION_ADMIN_VIEWORDER)
+	public String viewOrder(HttpServletRequest request,@RequestParam("id") long id,ModelMap model)
+	{
+		String resultPage = checkLogin(request,model);
+		if (resultPage == null) {
+			OrderForm form = this.orderService.getOrderById(id);
+			model.addAttribute(PageValue.VIEW_ORDER,form);
+			return PageValue.ACTION_ADMIN_VIEWORDER;
+		}else{
 			return resultPage;
 		}
 	}

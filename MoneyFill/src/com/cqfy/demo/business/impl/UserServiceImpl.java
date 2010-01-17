@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cqfy.demo.business.UserService;
 import com.cqfy.demo.dao.UserDao;
@@ -124,9 +123,9 @@ public class UserServiceImpl implements UserService {
 	public boolean deleteUserById(long userId) {
 		try {
 			this.userDao.remove(userId);
-			String NSQL = "delete from db_card where userid=" + userId;
+			String NSQL = "delete from fm_card where userid=" + userId;
 			this.userDao.executeNativeSQL(NSQL);
-			NSQL = "delete from db_order where userid=" + userId;
+			NSQL = "delete from fm_order where userid=" + userId;
 			this.userDao.executeNativeSQL(NSQL);
 			return true;
 		} catch (Exception ex) {

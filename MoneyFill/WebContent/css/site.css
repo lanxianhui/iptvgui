@@ -1,28 +1,39 @@
-body{
-	width:1004px;
-	margin:0 auto;
-	font-size:12px;
-}
-div{
-	margin:0px;
-	padding:0px;
-	border:none;
-}
-#header{
-	width:100%;
-	height:120px;
-	float:left;
-}
-#menu{
-	width:20%;
-	float:left;
-}
-#content{
-	width:79%;
-	float:left;
-}
-#footer{
-	width:100%;
-	height:100px;
-	float:left;
-}
+body{width:1004px;margin:0 auto;font-size:12px;font-family:Tahoma;}
+div{margin:0px;padding:0px;border:none;}
+#header{width:100%;float:left;border-bottom:solid 2px #2D3F64;}
+#header img{ margin-left:40px; }
+#menu{width:20%;float:left;}
+
+#menu dl{ background-color:#2D3F64; width:100%; float:left;}
+#menu dl dt{ background-color:#F6E9D2; width:92%; float:right; height:35px; color:#333B61; font-size:14px; text-align:right; text-indent:1em; line-height:2.2em; font-weight:900; padding-right:4%; }
+#menu dl dd{background-color:#F6E9D2;width:96%; float:right; }
+#menu dl dd ul{ float:left; width:100%; list-style:none; margin:0px; padding:0px; border:none; }
+#menu dl dd ul li{ float:right; list-style:none; width:100%; background-color:#ffffff; height:30px; border-bottom:solid 1px #F6E9D2; }
+#menu dl dd ul li a{ color:#837969; text-decoration:none; width:80%; text-align:right; line-height:2.5em; float:left; display:block;}
+#menu dl dd ul li a:hover{ text-decoration:underline; }
+
+#login{width:99%;float:left; text-align:center; border:solid 0px #929FAF; margin-top:5px; margin-bottom:5px; padding-bottom:40px; padding-top:40px;}
+
+#footer{width:100%;height:100px;border-top:solid 2px #EDDCBF;float:left;text-align:center;}
+#footer img,#header img{border:none;float:left;}
+#copyright{float:left;width:80%;color:#908574;line-height:2em;}
+#title{float:left;width:60%;color:#2D3F64;font-size:x-large;font-weight:900;padding-top:20px;}
+
+#login table{border-collapse:collapse;width:100%; float:left; margin-top:40px; margin-bottom:30px; }
+#login table td{ height:35px;}
+#login table td input{ border:solid 1px #004080; width:150px; }
+
+#login table td #sbutton,#login table td #rbutton{ width:80px; height:25px;}
+#login table td #sbutton:hover,#login table td #rbutton:hover{ cursor:hand; cursor:pointer;}
+
+#login table .labeltd{ color:#2D436C; text-align:right; }
+#login table .error{ color:#ff0000; text-align:left;}
+#login table td #tlogo{width:40px;height:40px;float:left; margin-left:60px;}
+#login table td #ttitle{ display:block; float:left; color:#0000a0; font-size:15px; font-weight:900;margin-left:30px; width:300px; }
+#login table td #ttitle hr{ width:300px; float:left;  margin-bottom:30px;}
+#loginBg{width:572px; height:354px; border:solid 3px #818DA5;margin-left:150px; float:left; padding-left:80px;}
+
+#content{width:77%;float:right;}
+#content dl dt{ height:33px; width:100%; float:left; border-bottom:solid 2px #E2D2B6; }
+#content dl dt img{ float:left; }
+#content dl dt span{ color: #1A1608; font-size:14px; font-weight:700; display:block; float:left; margin-left:20px; line-height:2em;}

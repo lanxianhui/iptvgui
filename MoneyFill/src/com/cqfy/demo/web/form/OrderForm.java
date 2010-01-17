@@ -28,6 +28,15 @@ public class OrderForm implements Serializable{
 	@NotEmpty(message = "对不起，请输入您要充值的金额！")
 	@NumberFormat(style = Style.CURRENCY)
 	private BigDecimal price;
+	
+	public UserForm getUserForm() {
+		return userForm;
+	}
+	public void setUserForm(UserForm userForm) {
+		this.userForm = userForm;
+	}
+	private UserForm userForm;
+	
 	public long getId() {
 		return id;
 	}

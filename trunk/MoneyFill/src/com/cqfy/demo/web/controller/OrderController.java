@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cqfy.demo.business.OrderService;
-import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
 import com.cqfy.demo.util.PageValue;
 import com.cqfy.demo.util.PagingInfo;
 import com.cqfy.demo.web.BaseController;
 import com.cqfy.demo.web.form.OrderForm;
+import com.cqfy.demo.web.form.StatusForm;
 import com.cqfy.demo.web.form.UserForm;
 
 @Controller
@@ -88,7 +88,8 @@ public class OrderController extends BaseController {
 		if (resultPage == null) {
 			OrderForm form = this.orderService.getOrderById(id);
 			model.addAttribute(PageValue.VIEW_ORDER,form);
-			
+			StatusForm statusForm = (StatusForm)getBean(BeanNames.BEAN_FORM_STATUS);
+			model.addAttribute(PageValue.INIT_STATUS, statusForm);
 			return PageValue.PAGE_ADMIN_VIEWORDER;
 		}else{
 			return resultPage;
@@ -96,15 +97,17 @@ public class OrderController extends BaseController {
 	}
 	
 	@RequestMapping(value = PageValue.ACTION_ADMIN_ORDERUPDATE)
-	public String modifyStatus(HttpServletRequest request,@RequestParam("id") long orderId,@RequestParam("status") OrderStatus status,ModelMap model)
+	public String modifyStatus(HttpServletRequest request,@ModelAttribute(PageValue.INIT_STATUS) StatusForm status,ModelMap model)
 	{
 		String resultPage = checkLogin(request,model);
 		if (resultPage == null) {
-			boolean result = this.orderService.modifyStatus(orderId, status);
+			System.out.println(status.getId());
+			System.out.println(status.getStatus());
+			boolean result = this.orderService.modifyStatus(status.getId(), status.getStatus());
 			if( result ){
-				return PageValue.ACTION_ADMIN_LISTORDERS + "?id=" + orderId;
+				return PageValue.ACTION_ADMIN_LISTORDERS + "?pageindex=0";
 			}else{
-				return PageValue.PAGE_ADMIN_VIEWORDER + "?id=" + orderId;
+				return PageValue.ACTION_ADMIN_VIEWORDER + "?id=" + status.getId();
 			}
 		}else{
 			return resultPage;
@@ -132,6 +135,7 @@ public class OrderController extends BaseController {
 					map.addAttribute(PageValue.SUCCESS_ORDER, orderForm);
 					return PageValue.PAGE_USER_ORDERSUCCESS;
 				} else {
+					map.addAttribute(PageValue.MSG_ORDERERROR, orderForm.getErrorMessage());
 					return PageValue.PAGE_USER_ORDERFORM;
 				}
 			}

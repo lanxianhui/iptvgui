@@ -73,4 +73,5 @@ public class PageValue {
 	public static final String MSG_LOGINERROR = "loginErrorMessage";
 	public static final String MSG_CHANGEERROR = "changeErrorMessage";
 	public static final String MSG_CREATEUSERERROR = "createUserErrorMessage";
+	public static final String MSG_ORDERERROR = "orderErrorMessage";
 }

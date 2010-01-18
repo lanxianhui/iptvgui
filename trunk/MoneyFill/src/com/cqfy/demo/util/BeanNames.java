@@ -23,5 +23,6 @@ public class BeanNames {
 	public static final String BEAN_DAO_ORDER = "orderDaoBean";
 	public static final String BEAN_SERVICE_ORDER = "orderServiceBean";
 	public static final String BEAN_FORM_ORDER = "orderFormBean";
+	public static final String BEAN_FORM_STATUS = "statusFormBean";
 	
 }

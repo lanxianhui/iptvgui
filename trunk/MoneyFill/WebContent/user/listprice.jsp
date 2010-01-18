@@ -36,7 +36,9 @@
 </div>
 <div id="content">
 <dl>
-	<dt><img src="images/content.jpg"/><span>绑定记录</span></dt>
+	<dt><img src="images/content.jpg"/><span>绑定记录</span>
+	
+	</dt>
 	<dd>
 	<table id="listview">
 		<thead>

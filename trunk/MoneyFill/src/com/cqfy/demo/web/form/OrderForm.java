@@ -36,6 +36,8 @@ public class OrderForm implements Serializable{
 	
 	private OrderStatus status;
 	
+	private String errorMessage;
+	
 	private String username;
 	
 	public String getUsername() {
@@ -99,5 +101,11 @@ public class OrderForm implements Serializable{
 	}
 	public void setPrice(String price) {
 		this.price = price;
+	}
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

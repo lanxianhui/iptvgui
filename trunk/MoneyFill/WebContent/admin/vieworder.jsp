@@ -36,7 +36,7 @@
 	<dt><img src="images/content.jpg"/><span>订单详情</span></dt>
 	<dd>
 	<form:form method="POST" action="modifystatus.service" commandName="statusForm">
-		<form:hidden path="id"/>
+		<input type="hidden" value="${viewOrder.id}" id="id" name="id"/>
 		<table id="tableform">
 			<tr>
 				<td class="labeltd">订单号：</td>

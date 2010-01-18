@@ -163,12 +163,20 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	@SuppressWarnings("unchecked")
 	public Map<String, BigDecimal> getTotalOrders(Date fromDate,
-			Date toDate, long userId) {
+			Date toDate, long userId,String cardNumber) {
 		Map<String, BigDecimal> orderMap = new TreeMap<String,BigDecimal>();
 		for( OrderStatus status : OrderStatus.values()){
-			String queryString = "select sum(price) from OrderInfo order where order.user.id=? and order.orderTime < ? and order.orderTime > ? and order.status=?";
-			Object[] params = { Long.valueOf(userId),toDate,fromDate,status};
-			List<BigDecimal> sumValue = this.orderDao.query(queryString, params, 0, 0);
+			String queryString = "";
+			List<BigDecimal> sumValue = new ArrayList<BigDecimal>();
+			if(cardNumber == null || cardNumber.trim().equals("")){
+				queryString = "select sum(price) from OrderInfo order where order.user.id=? and order.orderTime < ? and order.orderTime > ? and order.status=?";
+				Object[] params = { Long.valueOf(userId),toDate,fromDate,status};
+				sumValue = this.orderDao.query(queryString, params, 0, 0);
+			}else{
+				queryString = "select sum(price) from OrderInfo order where order.cardNumber = ? and order.user.id=? and order.orderTime < ? and order.orderTime > ? and order.status=?";
+				Object[] params = {cardNumber,Long.valueOf(userId),toDate,fromDate,status};
+				sumValue = this.orderDao.query(queryString, params, 0, 0);
+			}
 			if( sumValue.size() != 0){
 				orderMap.put(OrderUtil.getOrderStatus(status), sumValue.get(0));
 			}else{
@@ -183,6 +191,29 @@ public class OrderServiceImpl implements OrderService{
 	public List<OrderForm> loadOrders() {
 		String NSQL = "select * from fm_order order by ordertime desc";
 		List<OrderInfo> orders = this.orderDao.queryNativeSQL(NSQL);
+		List<OrderForm> forms = new ArrayList<OrderForm>();
+		for( OrderInfo order : orders){
+			OrderForm form = new OrderForm();
+			fillOrderForm(order, form);
+			forms.add(form);
+		}
+		return forms;
+	}
+
+	@Override
+	public List<OrderForm> getOrders(Date from, Date to, long userId,String cardNumber,PagingInfo page) {
+		List<OrderInfo> orders = new ArrayList<OrderInfo>();
+		if(cardNumber == null || cardNumber.equals("")){
+			String queryString = "user.id=? and orderTime < ? and orderTime > ? order by orderTime desc";
+			Object[] params = { Long.valueOf(userId),to,from};
+			orders = this.orderDao.find(queryString, params, 
+					(page.getPageIndex() - 1) * page.getPageSize(), page.getPageSize());
+		}else{
+			String queryString = "user.id=? and orderTime < ? and orderTime > ? and cardNumber=? order by orderTime desc";
+			Object[] params = { Long.valueOf(userId),to,from,cardNumber};
+			orders = this.orderDao.find(queryString, params, 
+					(page.getPageIndex() - 1) * page.getPageSize(), page.getPageSize());
+		}
 		List<OrderForm> forms = new ArrayList<OrderForm>();
 		for( OrderInfo order : orders){
 			OrderForm form = new OrderForm();

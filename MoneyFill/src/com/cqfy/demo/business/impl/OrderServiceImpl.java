@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.cqfy.demo.business.OrderService;
+import com.cqfy.demo.dao.CardDao;
 import com.cqfy.demo.dao.OrderDao;
 import com.cqfy.demo.dao.UserDao;
+import com.cqfy.demo.model.CardInfo;
 import com.cqfy.demo.model.OrderInfo;
 import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.BeanNames;
@@ -26,8 +28,14 @@ public class OrderServiceImpl implements OrderService{
 	
 	private OrderDao orderDao;
 	private UserDao userDao;
+	private CardDao cardDao;
 	
 	private OrderInfo orderInfo;
+	
+	@Autowired
+	public void setCardDao(@Qualifier(BeanNames.BEAN_DAO_CARD) CardDao cardDao){
+		this.cardDao = cardDao;
+	}
 	
 	@Autowired
 	public void setOrderDao(@Qualifier(BeanNames.BEAN_DAO_ORDER) OrderDao orderDao){
@@ -46,8 +54,14 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	public boolean createOrder(OrderForm order) {
+		boolean check = checkCard(order.getCardNumber(),order.getUserForm().getId());
+		if( !check ){
+			System.out.println("Error!");
+			order.setErrorMessage("对不起，您输入的卡号没有绑定，请重新输入！");
+			return false;
+		}
 		orderInfo.setCardNumber(order.getCardNumber());
-		orderInfo.setLineNumber(OrderUtil.createLineNumber());
+		orderInfo.setLineNumber(OrderUtil.createLineNumber(order.getUserForm().getId(),this.orderDao));
 		orderInfo.setOrderTime(new Date());
 		orderInfo.setModifyTime(new Date());
 		orderInfo.setUser(userDao.read(order.getUserForm().getId()));
@@ -62,6 +76,17 @@ public class OrderServiceImpl implements OrderService{
 			ex.printStackTrace();
 			return false;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean checkCard(String cardNumber,long userid){
+		String NSQL = "select * from fm_card where cardNumber=? and userid=?";
+		Object[] params = { cardNumber,Long.valueOf(userid)};
+		List<CardInfo> cards = this.cardDao.queryNativeSQL(NSQL, params, 0, 0);
+		if( cards.size() == 0 )
+			return false;
+		else
+			return true;
 	}
 
 	@Override
@@ -99,7 +124,7 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public boolean modifyStatus(long orderId, OrderStatus status) {
 		try{
-			String NSQL = "update fm_order set status=" + OrderUtil.getOrderStatusValue(status) + "where id=" + orderId;
+			String NSQL = "update fm_order set status=" + OrderUtil.getOrderStatusValue(status) + " where id=" + orderId;
 			this.orderDao.executeNativeSQL(NSQL);
 			return true;
 		}catch(Exception ex){

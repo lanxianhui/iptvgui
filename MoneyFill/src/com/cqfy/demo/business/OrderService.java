@@ -1,6 +1,9 @@
 package com.cqfy.demo.business;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.cqfy.demo.model.constant.EnumValue.OrderStatus;
 import com.cqfy.demo.util.PagingInfo;
@@ -47,4 +50,12 @@ public interface OrderService {
 	 * @return
 	 */
 	OrderForm getOrderById(long orderId);
+	/**
+	 * 
+	 * @param fromDate
+	 * @param toDate
+	 * @param userId
+	 * @return
+	 */
+	Map<String, BigDecimal> getTotalOrders(Date fromDate,Date toDate,long userId);
 }

@@ -47,10 +47,13 @@ function submitFilterForm(){
 </dl>
 </div>
 <div id="content">
+<form id="filterForm" action="filtercard.service"
+	method="POST">
 <dl>
 	<dt><img src="images/content.jpg" /><span>绑定记录</span>
-	<form id="filterForm" action="filtercard.service" style="float: right;"
-		method="POST">选择卡号： <input type="hidden"
+	<span style="float:right;font-size:12px;">
+		选择卡号：
+		<input type="hidden"
 		value="${param.pageindex}" name="pageindex" /> <select
 		name="cardSelect" id="cardSelect">
 		<option value="-1">未选择</option>
@@ -64,8 +67,10 @@ function submitFilterForm(){
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
-	</select>&nbsp;&nbsp;录入卡号： <input type="text" name="cardNumber" id="cardNumber" /><input
-		type="button" onclick="submitFilterForm();" value="查询" /></form>
+	</select>&nbsp;&nbsp;录入卡号：<input type="text"
+		name="cardNumber" id="cardNumber" class="inputtext" />&nbsp;&nbsp;<input type="button"
+		onclick="submitFilterForm();" value="查询" />
+	</span>
 	</dt>
 	<dd>
 	<table id="listview">
@@ -90,6 +95,7 @@ function submitFilterForm(){
 	</table>
 	</dd>
 </dl>
+</form>
 </div>
 <div id="footer"><img src="images/b_logo.gif"></img>
 <div id="copyright">

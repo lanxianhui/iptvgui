@@ -1,6 +1,11 @@
 package com.cqfy.demo.web.controller;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,6 +39,27 @@ public class OrderController extends BaseController {
 	public void setOrderService(
 			@Qualifier(BeanNames.BEAN_SERVICE_ORDER) OrderService orderService) {
 		this.orderService = orderService;
+	}
+	
+	@RequestMapping(value = PageValue.ACTION_USER_ORDERTOTAL,method = RequestMethod.POST)
+	public String countTotalOrders(HttpServletRequest request,
+			@RequestParam("x_fromDate") String fromDate,@RequestParam("x_toDate") String toDate,
+			ModelMap model) throws ParseException{
+		String resultPage = checkLogin(request,model);
+		if (resultPage == null) {
+			HttpSession session = request.getSession();
+			UserForm user = (UserForm) session
+					.getAttribute(PageValue.SESSION_USER);
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date from = format.parse(fromDate);
+			Date to = format.parse(toDate);
+			Map<String, BigDecimal> resultTotal = this.orderService.getTotalOrders(from, to, user.getId());
+			model.addAttribute(PageValue.VIEW_TOTAL_MAP,resultTotal);
+			return PageValue.PAGE_USER_ORDERTOTAL;
+		}else{
+			return resultPage;
+		}
 	}
 
 	@RequestMapping(value = PageValue.ACTION_USER_LISTORDERS, method = RequestMethod.GET)

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -124,8 +126,10 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public boolean modifyStatus(long orderId, OrderStatus status) {
 		try{
-			String NSQL = "update fm_order set status=" + OrderUtil.getOrderStatusValue(status) + " where id=" + orderId;
-			this.orderDao.executeNativeSQL(NSQL);
+			this.orderInfo = this.orderDao.read(orderId);
+			this.orderInfo.setStatus(status);
+			this.orderInfo.setModifyTime(new Date());
+			this.orderDao.update(this.orderInfo);
 			return true;
 		}catch(Exception ex){
 			return false;
@@ -154,6 +158,24 @@ public class OrderServiceImpl implements OrderService{
 		OrderForm form = new OrderForm();
 		fillOrderForm(order, form);
 		return form;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Map<String, BigDecimal> getTotalOrders(Date fromDate,
+			Date toDate, long userId) {
+		Map<String, BigDecimal> orderMap = new TreeMap<String,BigDecimal>();
+		for( OrderStatus status : OrderStatus.values()){
+			String queryString = "select sum(price) from OrderInfo order where order.user.id=? and order.orderTime < ? and order.orderTime > ? and order.status=?";
+			Object[] params = { Long.valueOf(userId),toDate,fromDate,status};
+			List<BigDecimal> sumValue = this.orderDao.query(queryString, params, 0, 0);
+			if( sumValue.size() != 0){
+				orderMap.put(OrderUtil.getOrderStatus(status), sumValue.get(0));
+			}else{
+				orderMap.put(OrderUtil.getOrderStatus(status), new BigDecimal("0.00"));
+			}
+		}
+		return orderMap;
 	}
 
 }

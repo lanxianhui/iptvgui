@@ -53,14 +53,12 @@ function submitOrderTotal(){
 </dl>
 </div>
 <div id="content">
-<form id="orderForm" action="ordertotal.service"
-	method="POST">
-	<input type="hidden" value="${sessionScope.loginUser.id}" name="userid" id="userid"/>
 <dl>
-	<dt><img src="images/content.jpg" /><span>我的订单</span> <span
-		style="font-size: 12px;"> 开始时间： <input type="text" value=""
-		class="inputtext" id="x_fromDate" name="x_fromDate" readonly="readonly" />&nbsp;&nbsp;<img
-		src="images/calendar.png" id="x_fromImg" name="x_fromImg" alt="选择日期"
+	<dt><img src="images/content.jpg" /><span>账务查询</span> <span
+		style="font-size: 12px;">开始时间： <input type="text" value=""
+		class="inputtext" id="x_fromDate" name="x_fromDate"
+		readonly="readonly" />&nbsp;&nbsp;<img src="images/calendar.png"
+		id="x_fromImg" name="x_fromImg" alt="选择日期"
 		style="cursor: pointer; cursor: hand; float: none;"> <script
 		type="text/javascript">
 Calendar.setup({
@@ -68,9 +66,9 @@ Calendar.setup({
 	ifFormat : "%Y-%m-%d", // the date format
 	button : "x_fromImg" // ID of the button
 });
-</script> &nbsp;&nbsp; 结束时间： <input type="text" value="" class="inputtext"  readonly="readonly" 
-		id="x_toDate" name="x_toDate" />&nbsp;&nbsp;<img src="images/calendar.png"
-		id="x_toImg" name="x_toImg" alt="选择日期"
+</script> &nbsp;&nbsp; 结束时间： <input type="text" value="" class="inputtext"
+		readonly="readonly" id="x_toDate" name="x_toDate" />&nbsp;&nbsp;<img
+		src="images/calendar.png" id="x_toImg" name="x_toImg" alt="选择日期"
 		style="cursor: pointer; cursor: hand; float: none;"> <script
 		type="text/javascript">
 Calendar.setup({
@@ -78,35 +76,51 @@ Calendar.setup({
 	ifFormat : "%Y-%m-%d", // the date format
 	button : "x_toImg" // ID of the button
 });
-</script> <a href="#" onclick="submitOrderTotal();return false;" class="link">账务查询</a></span></dt>
+</script> <a href="#" onclick="submitOrderTotal();return false;" class="link">账务查询</a>
+	</span></dt>
 	<dd>
-	<table id="listview">
-		<thead>
+	<table id="tableform">
+		<tr>
+			<td><span class="link">账务详细信息</span></td>
+			<td></td>
+		</tr>
+		<c:forEach items="${viewTotal}" var="item">
 			<tr>
-				<th>订单号</th>
-				<th>充值卡号</th>
-				<th>充值金额</th>
-				<th>订单状态</th>
-				<th>充值时间</th>
+				<td><c:choose>
+					<c:when test="${item.key == '处理完成'}">
+						<strong style="color:green;">${item.key}</strong>
+				</c:when>
+				<c:when test="${item.key == '新订单'}">
+						<strong style="color:red;">${item.key}</strong>
+				</c:when>
+					<c:otherwise>
+					<strong>${item.key}</strong>
+				</c:otherwise>
+				</c:choose>
+				</td>
+				<td><c:choose>
+					<c:when test="${item.value == null}">
+						￥0.00
+					</c:when>
+					<c:otherwise>
+					<c:choose>
+					<c:when test="${item.key == '处理完成'}">
+						<strong style="color:green;">￥${item.value}</strong>
+				</c:when>
+				<c:when test="${item.key == '新订单'}">
+						<strong style="color:red;">￥${item.value}</strong>
+				</c:when>
+					<c:otherwise>
+					<strong>￥${item.value}</strong>
+				</c:otherwise>
+				</c:choose>
+				</c:otherwise>
+				</c:choose></td>
 			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="item" items="${orderlist}">
-				<tr>
-					<td>${item.lineNumber}</td>
-					<td>${item.cardNumber}</td>
-					<td><strong style="color: red">￥${item.price}</strong></td>
-					<td><strong style="color: blue">${item.statusString}</strong></td>
-					<td>${item.createTime}</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-		<tfoot>
-		</tfoot>
+		</c:forEach>
 	</table>
 	</dd>
 </dl>
-</form>
 </div>
 <div id="footer"><img src="images/b_logo.gif"></img>
 <div id="copyright">

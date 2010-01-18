@@ -140,6 +140,18 @@ public class OrderController extends BaseController {
 		}
 	}
 	
+	@RequestMapping(value = "/loadorders.service",method=RequestMethod.POST)
+	public String loadOrders(HttpServletRequest request,ModelMap model){
+		String resultPage = checkLogin(request,model);
+		if (resultPage == null) {
+			List<OrderForm> orders = this.orderService.loadOrders();
+			model.addAttribute("ajaxOrders",orders);
+			return "admin/orderlist.jsp";
+		}else{
+			return resultPage;
+		}
+	}
+	
 	@RequestMapping(value = PageValue.ACTION_USER_ADDORDER, method = RequestMethod.POST)
 	public String addOrders(
 			HttpServletRequest request,

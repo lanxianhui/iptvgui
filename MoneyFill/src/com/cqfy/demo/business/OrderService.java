@@ -58,4 +58,9 @@ public interface OrderService {
 	 * @return
 	 */
 	Map<String, BigDecimal> getTotalOrders(Date fromDate,Date toDate,long userId);
+	/**
+	 * 获取所有的订单列表
+	 * @return
+	 */
+	List<OrderForm> loadOrders();
 }

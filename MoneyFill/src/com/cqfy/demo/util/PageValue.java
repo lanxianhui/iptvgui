@@ -22,6 +22,7 @@ public class PageValue {
 	public static final String PAGE_USER_ORDERSUCCESS = "/user/ordersuccess.jsp";
 	public static final String PAGE_USER_CHANGEPWD = "/user/changepwd.jsp";
 	public static final String PAGE_USER_PWDSUCCESS = "/user/pwdsuccess.jsp";
+	public static final String PAGE_USER_FILTERCARD = "/user/listpricefilter.jsp";
 	
 	/**
 	 * 页面对应的Action清单
@@ -50,6 +51,7 @@ public class PageValue {
 	public static final String ACTION_USER_PWDFORM = "/userpwd.service";
 	public static final String ACTION_USER_CHANGEPWD = "/changepwd.service";
 	public static final String ACTION_USER_LOGOUT = "/logout.service";
+	public static final String ACTION_USER_CARDFILTER = "/filtercard.service";
 	/**
 	 * Session 里面存放的UserForm
 	 */
@@ -65,6 +67,9 @@ public class PageValue {
 	public static final String LIST_ORDERS = "orderlist";
 	public static final String LIST_CARD = "cardlist";
 	public static final String LIST_USERS = "userlist";
+	
+	public static final String LIST_CARD_SELECT = "cardselect";
+	
 	public static final String SUCCESS_BIND = "cardSuccess";
 	public static final String SUCCESS_ORDER = "orderSuccess";
 	public static final String VIEW_ORDER = "viewOrder";
@@ -74,4 +79,6 @@ public class PageValue {
 	public static final String MSG_CHANGEERROR = "changeErrorMessage";
 	public static final String MSG_CREATEUSERERROR = "createUserErrorMessage";
 	public static final String MSG_ORDERERROR = "orderErrorMessage";
+
+	public static final String SELECT_CARD_NUMBER = "selectCardNumber";
 }

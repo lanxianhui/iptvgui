@@ -9,6 +9,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>用户后台</title>
 <link rel="stylesheet" href="css/site.css" type="text/css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+function submitFilterForm(){
+	var selectValue = jQuery("#cardSelect").attr("value");
+	var numberInput = jQuery("#cardNumber").attr("value");
+	if( Number(selectValue) == -1 && numberInput == "")
+	{
+		alert("请录入卡号或者选择卡号！");
+	}else{
+		jQuery("#filterForm").submit();
+	}
+}
+</script>
 </head>
 <body>
 
@@ -37,7 +50,17 @@
 <div id="content">
 <dl>
 	<dt><img src="images/content.jpg"/><span>绑定记录</span>
-	
+	<form id="filterForm" action="filtercard.service"  style="float:right;" method="POST">
+			选择卡号：
+			<input type="hidden" value="${param.pageindex}" name="pageindex"/>
+			<select name="cardSelect" id="cardSelect">
+				<option value="-1">未选择</option>
+				<c:forEach var="item"  items="${cardselect}">
+					<option value="${item}">${item}</option>
+				</c:forEach>
+			</select>&nbsp;&nbsp;录入卡号：
+			<input type="text" name="cardNumber" id="cardNumber"/><input type="button" onclick="submitFilterForm();" value="查询"/>
+	</form>
 	</dt>
 	<dd>
 	<table id="listview">

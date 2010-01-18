@@ -73,13 +73,41 @@ public class CardServiceImpl implements CardService{
 		}
 		return forms;
 	}
-	
 
 	private void fillCardForm(CardInfo card,CardForm cardForm){
 		cardForm.setId(card.getId());
 		cardForm.setCardNumber(card.getCardnumber());
 		cardForm.setMobileNumber(card.getMobilenumber());
 		cardForm.setCreateTime(card.getCreatetime());
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<CardForm> getAllCard(long userId) {
+		String NSQL = "select * from fm_card where userid=" + userId + " order by createtime desc";
+		List<CardInfo> cards = this.cardDao.queryNativeSQL(NSQL);
+		List<CardForm> forms  = new ArrayList<CardForm>();
+		for( CardInfo card: cards){
+			CardForm form = new CardForm();
+			fillCardForm(card,form);
+			forms.add(form);
+		}
+		return forms;
+	}
+
+	@Override
+	public List<CardForm> getByCardNumber(String cardNumber,PagingInfo page) {
+		String queryString = "cardNumber=?";
+		Object[] params = {cardNumber};
+		List<CardInfo> cards = cardDao.find(queryString, params, 
+				(page.getPageIndex() - 1) * page.getPageSize(), page.getPageSize());
+		List<CardForm> forms  = new ArrayList<CardForm>();
+		for( CardInfo card: cards){
+			CardForm form = new CardForm();
+			fillCardForm(card,form);
+			forms.add(form);
+		}
+		return forms;
 	}
 
 

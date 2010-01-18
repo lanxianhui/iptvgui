@@ -1,6 +1,8 @@
 package com.cqfy.demo.web.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,6 +36,38 @@ public class CardController extends BaseController {
 			@Qualifier(BeanNames.BEAN_SERVICE_CARD) CardService cardService) {
 		this.cardService = cardService;
 	}
+	
+	@RequestMapping(value = PageValue.ACTION_USER_CARDFILTER)
+	public String cardFilter(HttpServletRequest request,
+			@RequestParam("pageindex") int pageindex,
+			@RequestParam("cardSelect") String selectValue,
+			@RequestParam("cardNumber") String cardNumber,ModelMap model){
+		String resultPage = checkLogin(request,model);
+		if (resultPage == null) {
+			String cardNumberValue = "";
+			if(Long.parseLong(selectValue) == -1){
+				cardNumberValue = cardNumber;
+			}else{
+				cardNumberValue = selectValue;
+			}
+			HttpSession session = request.getSession();
+			UserForm user = (UserForm) session
+					.getAttribute(PageValue.SESSION_USER);
+			PagingInfo page = new PagingInfo(pageindex, 10);
+			List<CardForm> cards = this.cardService.getByCardNumber(cardNumberValue, page);
+			Set<String> cardNumbers = new HashSet<String>();
+			List<CardForm> cardSelects = this.cardService.getAllCard(user.getId());
+			for( CardForm form: cardSelects){
+				cardNumbers.add(form.getCardNumber());
+			}
+			model.addAttribute(PageValue.SELECT_CARD_NUMBER,cardNumberValue);
+			model.addAttribute(PageValue.LIST_CARD_SELECT, cardNumbers);
+			model.addAttribute(PageValue.LIST_CARD,cards);
+			return PageValue.PAGE_USER_FILTERCARD;
+		}else{
+			return resultPage;
+		}
+	}
 
 	/**
 	 * 重定向的Controller
@@ -61,6 +95,12 @@ public class CardController extends BaseController {
 					.getAttribute(PageValue.SESSION_USER);
 			PagingInfo page = new PagingInfo(pageindex, 10);
 			List<CardForm> cards = this.cardService.getByUserID(user.getId(), page);
+			Set<String> cardNumbers = new HashSet<String>();
+			List<CardForm> cardSelects = this.cardService.getAllCard(user.getId());
+			for( CardForm form: cardSelects){
+				cardNumbers.add(form.getCardNumber());
+			}
+			model.addAttribute(PageValue.LIST_CARD_SELECT, cardNumbers);
 			model.addAttribute(PageValue.LIST_CARD,cards);
 			return PageValue.PAGE_USER_LISTPRICE;
 		} else {

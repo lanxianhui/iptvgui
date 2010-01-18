@@ -25,4 +25,16 @@ public interface CardService {
 	 * @return
 	 */
 	List<CardForm> getByUserID(long userId,PagingInfo page);
+	/**
+	 * 获取所有卡号
+	 * @param userId
+	 * @return
+	 */
+	List<CardForm> getAllCard(long userId);
+	/**
+	 * 按照卡号获取所有绑定记录
+	 * @param cardNumber
+	 * @return
+	 */
+	List<CardForm> getByCardNumber(String cardNumber,PagingInfo page);
 }

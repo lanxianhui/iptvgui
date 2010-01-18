@@ -10,12 +10,11 @@ public class OrderUtil {
 
 	@SuppressWarnings("unchecked")
 	public static String createLineNumber(long userId,OrderDao orderDao) {
-		List<String> l = orderDao
-				.query(
+		List<String> l = orderDao.query(
 						"select max(lineNumber) from OrderInfo order where order.user.id=?",
 						new Object[] { userId }, 0, 0);
 		String lineNumber = "";
-		if (l.size() > 0) {
+		if (l.size() > 0 && l.get(0) != null) {
 			lineNumber = l.get(0);
 			int serial = Integer.parseInt(lineNumber.substring(12, 17));
 			serial++;

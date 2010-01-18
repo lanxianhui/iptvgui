@@ -178,4 +178,18 @@ public class OrderServiceImpl implements OrderService{
 		return orderMap;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<OrderForm> loadOrders() {
+		String NSQL = "select * from fm_order order by ordertime desc";
+		List<OrderInfo> orders = this.orderDao.queryNativeSQL(NSQL);
+		List<OrderForm> forms = new ArrayList<OrderForm>();
+		for( OrderInfo order : orders){
+			OrderForm form = new OrderForm();
+			fillOrderForm(order, form);
+			forms.add(form);
+		}
+		return forms;
+	}
+
 }

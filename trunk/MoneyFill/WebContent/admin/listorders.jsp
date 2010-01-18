@@ -25,7 +25,6 @@ function loadOrders(){
 		url:"loadorders.service",
 		success:function(responseText,textStatus){
 			jQuery("#loadingDiv").css("display","none");
-			
 			var jsonArray = eval(responseText);
 			databaseCount = jsonArray.length - 1;
 			if( databaseCount != pageCount ){

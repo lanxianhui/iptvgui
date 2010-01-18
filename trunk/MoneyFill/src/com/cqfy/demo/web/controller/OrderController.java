@@ -41,21 +41,25 @@ public class OrderController extends BaseController {
 		this.orderService = orderService;
 	}
 	
-	@RequestMapping(value = PageValue.ACTION_USER_ORDERTOTAL,method = RequestMethod.POST)
+	@RequestMapping(value = PageValue.ACTION_USER_ORDERTOTAL,method = RequestMethod.GET)
 	public String countTotalOrders(HttpServletRequest request,
 			@RequestParam("x_fromDate") String fromDate,@RequestParam("x_toDate") String toDate,
+			@RequestParam("x_Card") String cardNumber,
+			@RequestParam("pageindex") int pageindex,
 			ModelMap model) throws ParseException{
 		String resultPage = checkLogin(request,model);
 		if (resultPage == null) {
 			HttpSession session = request.getSession();
 			UserForm user = (UserForm) session
 					.getAttribute(PageValue.SESSION_USER);
-			
+			PagingInfo page = new PagingInfo(pageindex, 10);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date from = format.parse(fromDate);
 			Date to = format.parse(toDate);
-			Map<String, BigDecimal> resultTotal = this.orderService.getTotalOrders(from, to, user.getId());
+			Map<String, BigDecimal> resultTotal = this.orderService.getTotalOrders(from, to, user.getId(),cardNumber);
+			List<OrderForm> orders = this.orderService.getOrders(from, to, user.getId(),cardNumber, page);
 			model.addAttribute(PageValue.VIEW_TOTAL_MAP,resultTotal);
+			model.addAttribute(PageValue.LIST_ORDERS,orders);
 			return PageValue.PAGE_USER_ORDERTOTAL;
 		}else{
 			return resultPage;
@@ -75,6 +79,7 @@ public class OrderController extends BaseController {
 			List<OrderForm> orders = orderService.getByUserID(user.getId(),
 					page);
 			model.addAttribute(PageValue.LIST_ORDERS, orders);
+			//model.addAttribute(PageValue.INIT_PAGEINDEX, page);
 			return PageValue.PAGE_USER_LISTORDERS;
 		} else {
 			return resultPage;

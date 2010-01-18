@@ -53,32 +53,47 @@ function submitOrderTotal(){
 </dl>
 </div>
 <div id="content">
-<form id="orderForm" action="ordertotal.service"
-	method="POST">
-	<input type="hidden" value="${sessionScope.loginUser.id}" name="userid" id="userid"/>
+<form id="orderForm" action="ordertotal.service" method="GET"><input
+	type="hidden" name="pageindex" value="0" />
 <dl>
-	<dt><img src="images/content.jpg" /><span>我的订单</span> <span
-		style="font-size: 12px;"> 开始时间： <input type="text" value=""
-		class="inputtext" id="x_fromDate" name="x_fromDate" readonly="readonly" />&nbsp;&nbsp;<img
-		src="images/calendar.png" id="x_fromImg" name="x_fromImg" alt="选择日期"
-		style="cursor: pointer; cursor: hand; float: none;"> <script
-		type="text/javascript">
+	<dt><img src="images/content.jpg" /><span>我的订单</span></dt>
+	<dt style="border-bottom: none; padding: 5px; height: 60px;">
+	<table style="font-size: 12px;width:100%;">
+		<tr>
+			<td>开始时间：</td>
+			<td><input type="text" value="" class="inputtext"
+				id="x_fromDate" name="x_fromDate" readonly="readonly" />&nbsp;&nbsp;<img
+				src="images/calendar.png" id="x_fromImg" name="x_fromImg" alt="选择日期"
+				style="cursor: pointer; cursor: hand; float: none;"> <script
+				type="text/javascript">
 Calendar.setup({
 	inputField : "x_fromDate", // ID of the input field
 	ifFormat : "%Y-%m-%d", // the date format
 	button : "x_fromImg" // ID of the button
 });
-</script> &nbsp;&nbsp; 结束时间： <input type="text" value="" class="inputtext"  readonly="readonly" 
-		id="x_toDate" name="x_toDate" />&nbsp;&nbsp;<img src="images/calendar.png"
-		id="x_toImg" name="x_toImg" alt="选择日期"
-		style="cursor: pointer; cursor: hand; float: none;"> <script
-		type="text/javascript">
+</script></td>
+			<td>结束时间：</td>
+			<td><input type="text" value="" class="inputtext"
+				readonly="readonly" id="x_toDate" name="x_toDate" />&nbsp;&nbsp;<img
+				src="images/calendar.png" id="x_toImg" name="x_toImg" alt="选择日期"
+				style="cursor: pointer; cursor: hand; float: none;"> <script
+				type="text/javascript">
 Calendar.setup({
 	inputField : "x_toDate", // ID of the input field
 	ifFormat : "%Y-%m-%d", // the date format
 	button : "x_toImg" // ID of the button
 });
-</script> <a href="#" onclick="submitOrderTotal();return false;" class="link">账务查询</a></span></dt>
+</script></td>
+		</tr>
+		<tr>
+			<td>填写卡号：</td>
+			<td><input type="text" value="" class="inputtext" name="x_Card"
+				id="x_Card" /></td>
+			<td><input type="button" onclick="submitOrderTotal();return false;" value="账务查询"/></td>
+			<td></td>
+		</tr>
+	</table>
+	</dt>
 	<dd>
 	<table id="listview">
 		<thead>
@@ -97,11 +112,14 @@ Calendar.setup({
 					<td>${item.cardNumber}</td>
 					<td><strong style="color: red">￥${item.price}</strong></td>
 					<td><strong style="color: blue">${item.statusString}</strong></td>
-					<td>${item.createTime}</td>
+					<td><strong>${item.createTime}</strong></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 		<tfoot>
+			<tr>
+
+			</tr>
 		</tfoot>
 	</table>
 	</dd>

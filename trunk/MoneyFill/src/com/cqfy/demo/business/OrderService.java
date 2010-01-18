@@ -57,7 +57,15 @@ public interface OrderService {
 	 * @param userId
 	 * @return
 	 */
-	Map<String, BigDecimal> getTotalOrders(Date fromDate,Date toDate,long userId);
+	Map<String, BigDecimal> getTotalOrders(Date fromDate,Date toDate,long userId,String cardNumber);
+	/**
+	 * 根据时间获取订单列表
+	 * @param from
+	 * @param to
+	 * @param userId
+	 * @return
+	 */
+	List<OrderForm> getOrders(Date from,Date to,long userId,String cardNumber,PagingInfo page);
 	/**
 	 * 获取所有的订单列表
 	 * @return

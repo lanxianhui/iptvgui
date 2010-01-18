@@ -31,7 +31,7 @@ public class OrderForm implements Serializable{
 	@Size(max = 200)
 	private String cardNumber;
 	@NotEmpty(message = "请输入充值金额！")
-	@Pattern(regexp="\\d*\\.\\d{2}| ",message="货币格式输入错误！")
+	@Pattern(regexp="(((-\\d+)|(0+)))| |((([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*)))",message="货币格式输入错误！")
 	private String price;
 	
 	private OrderStatus status;

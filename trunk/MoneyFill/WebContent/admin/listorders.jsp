@@ -13,40 +13,38 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	loadOrders();
-	setInterval("startTime()",5000);
+	setInterval("loadOrders()",5000);
 });
 
 var pageCount = 0;
 var databaseCount = 0;
 
-function startTime(){
-		jQuery("#loadingDiv").
-			fadeIn("slow").animate({opacity:0.8},5000)
-			.fadeOut("slow",function(){
-				loadOrders();
-		});
-}
 function loadOrders(){
 	jQuery.ajax({
 		type:"POST",
 		url:"loadorders.service",
 		success:function(responseText,textStatus){
 			jQuery("#loadingDiv").css("display","none");
-			jQuery("#listcontent").empty();
+			
 			var jsonArray = eval(responseText);
 			databaseCount = jsonArray.length - 1;
-			for( var i = 0; i < jsonArray.length - 1; i++){
-				var rowHtml = "<tr>" + 
-					"<td>" + jsonArray[i].LineNumber + "</td>" +
-					"<td>" + jsonArray[i].CardNumber + "</td>" + 
-					"<td><strong style='color:red'>￥" + jsonArray[i].Price + "</td>" + 
-					"<td><strong style='color:blue'>" + jsonArray[i].StatusStr + "</td>" +
-					"<td>" + jsonArray[i].CreateTime + "</td>" + 
-					"<td><a href='vieworder.service?id=" + jsonArray[i].ID + "' class='link'>查看</a></td>" + 
-					"</tr>";
-					jQuery("#listcontent").append(rowHtml);
-			}
-			if(pageCount == 0){
+			if( databaseCount != pageCount ){
+				jQuery("#loadingDiv").
+				fadeIn("slow").animate({opacity:0.8},5000)
+				.fadeOut("slow",function(){
+					jQuery("#listcontent").empty();
+					for( var i = 0; i < jsonArray.length - 1; i++){
+						var rowHtml = "<tr>" + 
+							"<td>" + jsonArray[i].LineNumber + "</td>" +
+							"<td>" + jsonArray[i].CardNumber + "</td>" + 
+							"<td><strong style='color:red'>￥" + jsonArray[i].Price + "</td>" + 
+							"<td><strong style='color:blue'>" + jsonArray[i].StatusStr + "</td>" +
+							"<td>" + jsonArray[i].CreateTime + "</td>" + 
+							"<td><a href='vieworder.service?id=" + jsonArray[i].ID + "' class='link'>查看</a></td>" + 
+							"</tr>";
+							jQuery("#listcontent").append(rowHtml);
+					}
+				});
 				pageCount = databaseCount;
 			}
 		}

@@ -54,6 +54,10 @@
 	<?php endforeach;?>
 	</ul>
 	<?php }?>
+	<div id="sign">
+	<a href="#"><img src="images/button_03.gif"/></a>
+	<a href="#"><img src="images/button_06.jpg"/></a>
+	</div>
 	</dd>
 </dl>
 <?php endforeach;?>

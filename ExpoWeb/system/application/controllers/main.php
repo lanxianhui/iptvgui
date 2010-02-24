@@ -43,6 +43,18 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"partnerinfo");
 	}
+	// 我看世博详细页
+	function myexpoinfo($rid,$catid,$serviceid){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		//$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["partnerinfo"] = $this->getServiceByID($serviceid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"myexpoinfo");
+	}
 	// 项目概况子页面
 	function scatinfo($rid,$catid = 12){
 		$data = array();
@@ -52,13 +64,49 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"scatinfo");
 	}
-	
+	//我看世博
+	function myexpo($rid,$catid =2 ){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["servicelist"] = $this->getServiceByCat($catid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"myexpo");
+	}
+	//沟通推荐
+	function recommend($rid,$catid=5){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["servicelist"] = $this->getServiceByCat($catid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"recommend");
+	}
+	//沟通推荐子页面
+function recommendinfo($rid,$catid,$serviceid){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		//$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["partnerinfo"] = $this->getServiceByID($serviceid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"recommendinfo");
+	}
+	//智慧城市
+	function knowledgecity(){
+		
+	}
 	function newslist($catid,$offset){
 		$data = array();
 		$data["newscat"] = $this->getNewsCat();
 		$this->executeFrame($data,1);
 		$this->showView($data,"newslist.php");
 	}
+	
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
 	function getNewsByCat($catid,$offset){
 		

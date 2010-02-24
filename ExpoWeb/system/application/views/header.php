@@ -38,6 +38,9 @@
 <?php }else if($navitem["id"] == 5){?>
 <li><a href="index.php/main/recommend/<?php echo $navitem["id"] ?>/9"><?php echo $navitem["rootname"] ?></a></li>
 <li class="vline"><img src="images/vline.gif"/></li>
+<?php }else if($navitem["id"] == 4){?>
+<li><a href="index.php/main/knowledgecity/<?php echo $navitem["id"] ?>/5"><?php echo $navitem["rootname"] ?></a></li>
+<li class="vline"><img src="images/vline.gif"/></li>
 <?php }else{?>
 <li><a href="index.php/main/service/<?php echo $navitem["id"] ?>"><?php echo $navitem["rootname"] ?></a></li>
 <?php if($navitem["id"] != 6){?>

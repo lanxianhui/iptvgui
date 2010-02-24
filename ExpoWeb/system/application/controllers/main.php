@@ -97,8 +97,14 @@ class Main extends Controller {
 		$this->showView($data,"recommendinfo");
 	}
 	//智慧城市
-	function knowledgecity(){
-		
+	function knowledgecity($rid,$catid=4){
+		$data = array();
+		$data["catmenu"]=$this->getServiceCat($rid);
+		$data["selectcat"]=$catid;
+		$data["content"]=$this->getServiceCatByID($catid);
+		$data["servicelist"]=$this->getServiceByCat($catid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"knowledgecity");
 	}
 	function newslist($catid,$offset){
 		$data = array();

@@ -1,7 +1,9 @@
 <?php
 
 class Main extends Controller {
-
+	var $methodName;
+	var $pagesize = 3;
+	
 	function Main()
 	{
 		parent::Controller();	
@@ -92,17 +94,19 @@ class Main extends Controller {
 		$this->showView($data,"myexpo");
 	}
 	//沟通推荐
-	function recommend($rid,$catid=5){
+	function recommend($rid,$catid=5,$offset=0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
+		$this->pagiServiceNation("recommend",$rid,$catid,"service",$this->pagesize);
 		$data["content"] = $this->getServiceCatByID($catid);
-		$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
+		$data["offset"] = $offset;
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"recommend");
 	}
 	//沟通推荐子页面
-	function recommendinfo($rid,$catid,$serviceid){
+	function recommendinfo($rid,$catid,$serviceid,$offset=0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
@@ -110,6 +114,7 @@ class Main extends Controller {
 		//$data["partner"] = $this->getAllPartners();
 		//$data["servicelist"] = $this->getServiceByCat($catid);
 		$data["partnerinfo"] = $this->getServiceByID($serviceid);
+		$data["offset"] = $offset;
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"recommendinfo");
 	}
@@ -133,13 +138,15 @@ class Main extends Controller {
 //		$this->executeFrame($data,$rid);
 //		$this->showView($data,"news");
 //	}
-	function newslist($catid,$offset){
+	function news($rid,$catid,$offset = 0){
 		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["newscat"] = $this->getNewsCat();
+		$data["selectcat"] = $catid;
 		$data["content"]=$this->getNewsCatByID($catid);
 		$data["newslist"]=$this->getNewsByCat($catid,1);
 		$this->executeFrame($data,1);
-		$this->showView($data,"newslist.php");
+		$this->showView($data,"news");
 	}
 	
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
@@ -173,9 +180,9 @@ class Main extends Controller {
 		return $result->result_array();
 	}
 	
-	function getServiceByCat($catid){
+	function getServiceByCat($catid,$offset){
 		$this->db->order_by("pubtime desc");
-		$result = $this->db->get_where("service",array("catid"=>$catid));
+		$result = $this->db->get_where("service",array("catid"=>$catid),$this->pagesize,$offset);
 		return $result->result_array();
 	}
 	
@@ -214,6 +221,24 @@ class Main extends Controller {
 		$this->db->where("id < ",7);
 		$result = $this->db->get("serviceroot");
 		return $result->result_array();
+	}
+	// -------------------------------------------分页用函数-------------------------------------------------
+	function pagiServiceNation($commend,$rootid,$catid, $table, $perpage, $base_url = null, $uri_segment = 5, $total = null) {
+		$this->load->library ( 'pagination' );
+		if (! $base_url) {
+			$config ['base_url'] = base_url () . 'index.php/main/'.$commend.'/' . $rootid . "/" . $catid . "/" . $this->methodName;
+		} else {
+			$config ['base_url'] = $base_url;
+		}
+		if (! $total) {
+			$rownumber = $this->db->query ( "select * from service where catid=" . $catid." and rootid=".$rootid);
+			$config ['total_rows'] = $rownumber->num_rows;
+		} else {
+			$config ['total_rows'] = $total;
+		}
+		$config ['uri_segment'] = $uri_segment;
+		$config ['per_page'] = $perpage;
+		$this->pagination->initialize ( $config );
 	}
 	// -------------------------------------------视图展示方法-----------------------------------------------
 	// 视图展示

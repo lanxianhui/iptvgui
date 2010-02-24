@@ -50,7 +50,7 @@
 	<div><?php echo $pitem["servicedesc"] ?></div>
 	</div>
 	<div style="float:left;width:100%;">
-	<a style="color:blue;" href="index.php/main/recommend/<?php echo $pitem["rootid"] ?>/<?php echo $pitem["catid"]?>">&lt;&lt;返回</a>
+	<a style="color:blue;" href="index.php/main/recommend/<?php echo $pitem["rootid"] ?>/<?php echo $pitem["catid"]?>/<?php echo $offset ?>">&lt;&lt;返回</a>
 	</div>
 	<?php endforeach;?>
 	</dd>

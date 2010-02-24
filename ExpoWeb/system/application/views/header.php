@@ -25,7 +25,7 @@
 <ul>
 <?php foreach ($nav as $navitem):?>
 <?php if($navitem["id"] == 1){?>
-<li><a href="index.php/main/newslist/-1/0"><?php echo $navitem["rootname"] ?></a></li>
+<li><a href="index.php/main/news/1/1"><?php echo $navitem["rootname"] ?></a></li>
 <li class="vline"><img src="images/vline.gif"/></li>
 <?php }else if($navitem["id"] == 2){?>
 <li><a href="index.php/main/scatinfo/<?php echo $navitem["id"] ?>/12"><?php echo $navitem["rootname"] ?></a></li>

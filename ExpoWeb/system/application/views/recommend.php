@@ -46,7 +46,7 @@
 	<?php }else{?>
 	<ul id="listview">
 	<?php foreach($servicelist as $listitem):?>
-	<li><a href="index.php/main/recommendinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>"><?php echo $listitem["servicename"] ?></a>
+	<li><a href="index.php/main/recommendinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>/<?php echo $offset ?>"><?php echo $listitem["servicename"] ?></a>
 	<span><?php $date =  (explode(" ", $listitem["pubtime"])); ?>
 		<?php $result =  (explode("-", $date[0])); ?>
 		<?php echo $result[0]."-".$result[1]."-".$result[2] ?></span>
@@ -57,6 +57,7 @@
 	</dd>
 </dl>
 <?php endforeach;?>
+<div class="page"><?php echo $this->pagination->create_links();?></div>
 </div>
 </div>
 

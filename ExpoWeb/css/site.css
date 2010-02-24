@@ -78,3 +78,8 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 
 icontent{ float:left; width:100%;}
 iflash{ float:left;width:308px; height:451px;}
+
+.page{ width:100%; float:left; padding-top:5px; padding-bottom:5px; margin-top:5px; }
+.page a{ color:#4C88D2; margin-left:5px; margin-right:5px; float:left;}
+.page span{ float:left; padding-left:1px; padding-right:1px;}
+.page strong{ float:left;padding-left:5px; padding-right:5px;}

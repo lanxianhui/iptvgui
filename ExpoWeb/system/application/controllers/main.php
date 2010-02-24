@@ -24,6 +24,7 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"servicelist");
 	}
+
 	// 站点内容
 	function catinfo($rid=7,$catid=15){
 		$data = array();
@@ -35,6 +36,7 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"catinfo");
 	}
+
 	// 合作伙伴页面，活动掠影
 	function partner($rid,$catid = 0){
 		$data = array();
@@ -121,18 +123,45 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"knowledgecity");
 	}
+//信息咨询
+//	function  news($rid,$catid =1){
+//		$data = array();
+//		$data["catmenu"] = $this->getNewsCat($rid);
+//		$data["selectcat"] = $catid;
+//		$data["partner"] =$this->getAllPartners();
+//		$data["newslist"] = $this->getNewsByCat($catid);
+//		$this->executeFrame($data,$rid);
+//		$this->showView($data,"news");
+//	}
 	function newslist($catid,$offset){
 		$data = array();
 		$data["newscat"] = $this->getNewsCat();
+		$data["content"]=$this->getNewsCatByID($catid);
+		$data["newslist"]=$this->getNewsByCat($catid,1);
 		$this->executeFrame($data,1);
 		$this->showView($data,"newslist.php");
 	}
 	
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
 	function getNewsByCat($catid,$offset){
-		
+	     $this->db->order_by("pubtime desc");
+	     $result =  $this->db->get_where("news",array("catid"=>$catid));
+	     return $result->result_array();
 	}
-	
+     function getNewsCat(){
+		$this->db->order_by("catorder");
+		$result = $this->db->get("newscat");
+		return $result->result_array();
+	}
+	 function getNewsByID($newsid){
+		$result = $this->db->get_where("news",array("id"=>$newsid));
+		return $result->result_array();
+	}
+      function getNewsCatByID($catid){
+		$this->db->order_by("catorder");
+		$result = $this->db->get_where("newscat",array("id"=>$catid));
+		return $result->result_array();
+	}
 	function getAllPartners(){
 		//$this->db->order_by("porder");
 		$result = $this->db->get("partner");
@@ -162,11 +191,7 @@ class Main extends Controller {
 		return $result->result_array();
 	}
 	
-	function getNewsCat(){
-		$this->db->order_by("catorder");
-		$result = $this->db->get("newscat");
-		return $result->result_array();
-	}
+	
 	
 	function getServiceRootByID($rid){
 		$result = $this->db->get_where("serviceroot",array("id"=>$rid));

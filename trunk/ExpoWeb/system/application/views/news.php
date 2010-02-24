@@ -60,10 +60,10 @@
 	<dd>
 	<div id="picbar">
 	<?php foreach($newspiclist as $picitem):?>
-	<a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $picitem["id"] ?>/<?php echo $offset ?>">
+	<a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $picitem["id"] ?>/<?php echo $offset ?>" target="_blank">
 	<img src="upload/<?php echo $picitem["newsimg"] ?>"/>
 	</a><br/>
-	<a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $picitem["id"] ?>/<?php echo $offset ?>"><?php echo $picitem["newstitle"] ?></a>
+	<a class="link" title="<?php echo $picitem["newstitle"] ?>" href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $picitem["id"] ?>/<?php echo $offset ?>"  target="_blank">&gt;&nbsp;<?php echo $picitem["newstitle"] ?></a>
 	<?php endforeach;?>
 	</div>
 	</dd>
@@ -79,15 +79,22 @@
 	</a>
 	</dt>
 	<dd>
-	<ul id="nlistview">
-	<?php foreach($newslist as $listitem):?>
-	<li><a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>/<?php echo $offset ?>"><?php echo $listitem["newstitle"] ?></a>
-	<span><?php $date =  (explode(" ", $listitem["pubtime"])); ?>
+	<div id="newspic">
+	<?php foreach ($newslist as $sitem):?>
+	<div class="line">
+		<img src="upload/<?php echo $sitem["newsimg"] ?>"/>
+		<div>
+		<h4><a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>"><?php echo $sitem["newstitle"] ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<?php $date =  (explode(" ", $sitem["pubtime"])); ?>
 		<?php $result =  (explode("-", $date[0])); ?>
-		<?php echo "[".$result[0]."-".$result[1]."]" ?></span>
-	</li>
+		<?php echo "[".$result[0]."-".$result[1]."]" ?>
+		</h4>
+		<div class="info"><?php echo $sitem["newsdesc"]?></div>
+		<a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>">+点击查看更多</a>
+		</div>
+	</div>
 	<?php endforeach;?>
-	</ul>
+	</div>
 	<div class="page"  style="width:420px;float:left;"><?php echo $this->pagination->create_links();?></div>
 	</dd>
 </dl>

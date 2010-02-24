@@ -40,7 +40,7 @@ style="font-weight:900;"
 <li><a href="index.php/main/partner/<?php echo $navitem["id"] ?>/8"<?php if($selectroot == $navitem["id"]){?>
 style="font-weight:900;"
 <?php }?>><?php echo $navitem["rootname"] ?></a></li>
-<li class="vline"><img src="images/vline.gif"/></li>
+
 <?php }else if($navitem["id"] == 3){?>
 <li><a href="index.php/main/myexpo/<?php echo $navitem["id"] ?>/2"<?php if($selectroot == $navitem["id"]){?>
 style="font-weight:900;"

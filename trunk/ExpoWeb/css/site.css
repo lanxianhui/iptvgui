@@ -73,3 +73,8 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 						#listview li span{ color:#7f7f7f; float:right; }
 					#sign{ float:right; width:171px; margin-top:20px;}
 							#sign a img{ padding-top:0px; margin-bottom:4px;}
+					#notice{ float:left; width:100%; height:30px;}
+							#notice span{ color:#FFA400; float:left; font-weight:700; line-height:1.8em; padding-top:4px;}
+
+icontent{ float:left; width:100%;}
+iflash{ float:left;width:308px; height:451px;}

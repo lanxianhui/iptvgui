@@ -6,16 +6,17 @@
 <title>SHANGHAI CHINA EXPO主页</title>
 <link href="css/site.css" type="text/css" rel="stylesheet"/>
 <script src="js/swfobject.js" type="text/javascript"></script>
+<script src="js/common.js" type="text/javascript"></script>
 </head>
 <body>
 <!--站点头部-->
 <div id="header">
 <ul id="h_u_link">
-<li><a href="">收藏本站</a></li>
+<li><a href="javascript:window.external.AddFavorite('<?php echo base_url(); ?>', '“SHANGHAI EXPO”')" target="_self">收藏本站</a></li>
 <li>&nbsp;|&nbsp;</li>
-<li><a href="">设为首页</a></li>
+<li><a href="#" onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('<?php echo base_url(); ?>');return(false);" style="behavior: url(#default#homepage)">设为首页</a></li>
 <li>&nbsp;|&nbsp;</li>
-<li><a href="">联系我们</a></li>
+<li><a href="mailto:silentbalanceyh@126.com">联系我们</a></li>
 </ul>
 </div>
 <!--站点导航栏-->

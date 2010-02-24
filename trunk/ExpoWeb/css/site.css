@@ -71,3 +71,5 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 					#listview li{ float:left; width:99%; background:url(../images/lfront_03.jpg) no-repeat; padding-left:20px; border-bottom:dotted 1px #7F7f7f; padding-bottom:5px; margin-bottom:4px;}
 						#listview li a{ color:#7f7f7f; float:left; line-height:1.8em; }
 						#listview li span{ color:#7f7f7f; float:right; }
+					#sign{ float:right; width:171px; margin-top:20px;}
+							#sign a img{ padding-top:0px; margin-bottom:4px;}

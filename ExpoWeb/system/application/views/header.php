@@ -11,6 +11,7 @@
 <body>
 <!--站点头部-->
 <div id="header">
+<a href="index.php"><img src="images/logo_03.jpg"/></a>
 <ul id="h_u_link">
 <li><a href="javascript:window.external.AddFavorite('<?php echo base_url(); ?>', '“SHANGHAI EXPO”')" target="_self">收藏本站</a></li>
 <li>&nbsp;|&nbsp;</li>

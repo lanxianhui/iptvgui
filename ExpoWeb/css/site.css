@@ -169,5 +169,7 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 	#back dl dd{ border-top:none;width:390px; height:200px; overflow:hidden;}
 
 #backcontent{ width:370px; height:200px; padding:15px; float:left;overflow:hidden; line-height:1.9em; color:#7F7F7F;}
+
+.friendlink{color:#7F7F7F; margin-left:10px; margin-right:10px; line-height:1.8em; float:left;}
 	
 	

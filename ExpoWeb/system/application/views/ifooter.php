@@ -2,7 +2,7 @@
 <ul>
 	<li><a href="index.php/main/index">返回首页</a></li>
 	<li>&nbsp;|&nbsp;</li>
-    <li><a href="#">相关链接</a></li>
+    <li><a href="index.php/main/linklist/7/15">相关链接</a></li>
     <?php foreach($footer as $fitem ):?>
     <li>&nbsp;|&nbsp;</li>
     <li><a href="index.php/main/catinfo/7/<?php echo $fitem["id"] ?>"><?php echo $fitem["catname"] ?></a></li>

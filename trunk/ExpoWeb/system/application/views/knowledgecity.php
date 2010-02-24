@@ -46,7 +46,7 @@
 	<?php }else{?>
 	<ul id="listview" style="width:490px;">
 	<?php foreach($servicelist as $listitem):?>
-	<li><a href="index.php/main/knowledgeinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>"><?php echo $listitem["servicename"] ?></a>
+	<li><a href="index.php/main/knowledgecityinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>/<?php echo $offset ?>"><?php echo $listitem["servicename"] ?></a>
 	<span><?php $date =  (explode(" ", $listitem["pubtime"])); ?>
 		<?php $result =  (explode("-", $date[0])); ?>
 		<?php echo $result[0]."-".$result[1]."-".$result[2] ?></span>
@@ -54,10 +54,12 @@
 	<?php endforeach;?>
 	</ul>
 	<?php }?>
+	
 	<div id="sign">
 	<a href="#"><img src="images/button_03.gif"/></a>
 	<a href="#"><img src="images/button_06.jpg"/></a>
 	</div>
+	<div class="page"  style="width:480px;float:left;"><?php echo $this->pagination->create_links();?></div>
 	</dd>
 </dl>
 <?php endforeach;?>

@@ -40,13 +40,14 @@ class Main extends Controller {
 	}
 
 	// 合作伙伴页面，活动掠影
-	function partner($rid,$catid = 0){
+	function partner($rid,$catid = 0,$offset=0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
 		$data["partner"] = $this->getAllPartners();
-		$data["servicelist"] = $this->getServiceByCat($catid);
+		$this->pagiServiceNation("partner",$rid,$catid,"service",$this->pagesize);
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"partner");
 	}
@@ -63,12 +64,13 @@ class Main extends Controller {
 		$this->showView($data,"partnerinfo");
 	}
 	// 我看世博详细页
-	function myexpoinfo($rid,$catid,$serviceid){
+	function myexpoinfo($rid,$catid,$serviceid,$offset){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
 		//$data["partner"] = $this->getAllPartners();
+		$data["offset"] = $offset;
 		//$data["servicelist"] = $this->getServiceByCat($catid);
 		$data["partnerinfo"] = $this->getServiceByID($serviceid);
 		$this->executeFrame($data,$rid);
@@ -84,12 +86,14 @@ class Main extends Controller {
 		$this->showView($data,"scatinfo");
 	}
 	//我看世博
-	function myexpo($rid,$catid =2 ){
+	function myexpo($rid,$catid =2,$offset=0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
-		$data["servicelist"] = $this->getServiceByCat($catid);
+		$this->pagiServiceNation("myexpo",$rid,$catid,"service",$this->pagesize);
+		$data["offset"] = $offset;
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"myexpo");
 	}
@@ -119,14 +123,29 @@ class Main extends Controller {
 		$this->showView($data,"recommendinfo");
 	}
 	//智慧城市
-	function knowledgecity($rid,$catid=4){
+	function knowledgecity($rid,$catid=4,$offset=0){
 		$data = array();
 		$data["catmenu"]=$this->getServiceCat($rid);
 		$data["selectcat"]=$catid;
 		$data["content"]=$this->getServiceCatByID($catid);
-		$data["servicelist"]=$this->getServiceByCat($catid);
+		$this->pagiServiceNation("knowledgecity",$rid,$catid,"service",$this->pagesize);
+		$data["servicelist"]=$this->getServiceByCat($catid,$offset);
+		$data["offset"] = $offset;
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"knowledgecity");
+	}
+	
+	function knowledgecityinfo($rid,$catid=4,$serviceid,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		//$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["partnerinfo"] = $this->getServiceByID($serviceid);
+		$data["offset"] = $offset;
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"knowledgecityinfo");
 	}
 //信息咨询
 //	function  news($rid,$catid =1){
@@ -213,6 +232,7 @@ class Main extends Controller {
 	function executeFrame(&$data,$rid){
 		$data["nav"] = $this->getRootNav();
 		$data["root"] = $this->getServiceRootByID($rid);
+		$data["selectroot"] = $rid;
 		$data["footer"] = $this->getServiceCat(7);
 	}
 	// 头部导航栏

@@ -7,11 +7,15 @@ class Main extends Controller {
 		parent::Controller();	
 	}
 	
-	function index()
+	function index($rid=7,$catid=15)
 	{
 		$data = array();
-		$data["nav"] = $this->getRootNav();
-		$this->showView($data,"index");
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["notice"] = $this->getNotice();
+		$this->executeFrame($data,7);
+		$this->showIndexView($data,"index");
 	}
 	
 	function service($rid){
@@ -19,6 +23,17 @@ class Main extends Controller {
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"servicelist");
+	}
+	// 站点内容
+	function catinfo($rid=7,$catid=15){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["partner"] = $this->getAllPartners();
+		$data["servicelist"] = $this->getServiceByCat($catid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"catinfo");
 	}
 	// 合作伙伴页面，活动掠影
 	function partner($rid,$catid = 0){
@@ -157,14 +172,21 @@ class Main extends Controller {
 		$result = $this->db->get_where("serviceroot",array("id"=>$rid));
 		return $result->result_array();
 	}
+	
+	function getNotice(){
+		$result = $this->db->get_where("servicecat",array("id"=>19));
+		return $result->result_array();
+	}
 	// -------------------------------------------整个页面需要用到的方法-------------------------------------
 	function executeFrame(&$data,$rid){
 		$data["nav"] = $this->getRootNav();
 		$data["root"] = $this->getServiceRootByID($rid);
+		$data["footer"] = $this->getServiceCat(7);
 	}
 	// 头部导航栏
 	function getRootNav(){
 		$this->db->order_by("rootorder");
+		$this->db->where("id < ",7);
 		$result = $this->db->get("serviceroot");
 		return $result->result_array();
 	}

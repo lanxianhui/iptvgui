@@ -41,42 +41,21 @@
 	</a>
 	</dt>
 	<dd>
-	<?php if($selectcat ==6){?>
-	<div id="expert">
-	<?php foreach ($expert as $sitem):?>
-	<div class="line">
-		<img src="upload/<?php echo $sitem["userpic"] ?>"/>
-		<div>
-		<h4><a><?php echo $sitem["title"] ?>：</a><a href="index.php/main/expertinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>/<?php echo $offset; ?>"><?php echo $sitem["username"] ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-		</h4>
-		<div class="info"><?php echo $sitem["userdesc"]?></div>
-		<a href="index.php/main/expertinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>/<?php echo $offset; ?>">+点击查看更多</a>
-		</div>
+	<?php foreach ($partnerinfo as $pitem):?>
+	<div class="infocontent" id="serviceinfo">
+	<h4><?php echo $pitem["username"] ?></h4>
+	<h5>专家头衔：<?php echo $pitem["title"]?></h5>
+	<img src="upload/<?php echo $pitem["userpic"] ?>"/>
+	<div><?php echo $pitem["userdesc"] ?></div>
+	</div>
+	<div style="float:left;width:100%;">
+	<a style="color:blue;" href="index.php/main/knowledgecity/<?php echo $rootid ?>/6/<?php echo $offset ?>">&lt;&lt;返回</a>
 	</div>
 	<?php endforeach;?>
-	</div>
-	
-	<?php }else{?>
-	<ul id="listview" style="width:490px;">
-	<?php foreach($servicelist as $listitem):?>
-	<li><a href="index.php/main/knowledgecityinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>/<?php echo $offset ?>"><?php echo $listitem["servicename"] ?></a>
-	<span><?php $date =  (explode(" ", $listitem["pubtime"])); ?>
-		<?php $result =  (explode("-", $date[0])); ?>
-		<?php echo $result[0]."-".$result[1]."-".$result[2] ?></span>
-	</li>
-	<?php endforeach;?>
-	</ul>
-	<?php }?>
-	
-	<div id="sign">
-	<a href="#"><img src="images/button_03.gif"/></a>
-	<a href="#"><img src="images/button_06.jpg"/></a>
-	</div>
-	<div class="page"  style="width:480px;float:left;"><?php echo $this->pagination->create_links();?></div>
 	</dd>
 </dl>
 <?php endforeach;?>
 </div>
 </div>
+
 

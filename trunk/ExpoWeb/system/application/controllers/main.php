@@ -25,6 +25,18 @@ class Main extends Controller {
 		$this->showIndexView($data,"index");
 	}
 	
+	function linklist($rid=7,$catid=15){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["friend"] = $this->getAllFriend();
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"linklist");
+	}
+	
 	function service($rid){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
@@ -134,14 +146,30 @@ class Main extends Controller {
 		$data["catmenu"]=$this->getServiceCat($rid);
 		$data["selectcat"]=$catid;
 		$data["content"]=$this->getServiceCatByID($catid);
-		$data["exper"] = $this->getAllexpert();
-//		$this->pagiServiceNation("expert",$rid,$catid,"service",$this->pagesize);
-		
-		$this->pagiServiceNation("exper",$rid,$catid,"service",$this->pagesize);
-		$data["servicelist"]=$this->getServiceByCat($catid,$offset);
-		$data["offset"] = $offset;
+		if($catid == 6){
+			$this->pagiExpertNation("knowledgecity",$rid,"service",4);
+			$data["expert"] = $this->getAllexpert($offset);
+			$data["offset"] = $offset;
+		}else{
+			$this->pagiServiceNation("knowledgecity",$rid,$catid,"service",$this->pagesize);
+			$data["servicelist"]=$this->getServiceByCat($catid,$offset);
+			$data["offset"] = $offset;
+		}
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"knowledgecity");
+	}
+	
+	function expertinfo($rid,$catid=6,$expertid,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		//$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["partnerinfo"] = $this->getExpertByID($expertid);
+		$data["offset"] = $offset;
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"expertinfo");
 	}
 	
 	function knowledgecityinfo($rid,$catid=4,$serviceid,$offset=0){
@@ -210,6 +238,11 @@ class Main extends Controller {
 	     return $result->result_array();
 	}
 	
+	function getExpertByID($expertID){
+		$result =  $this->db->get_where("expert",array("id"=>$expertID));
+	     return $result->result_array();
+	}
+	
 	function getIndexNews($catid){
 		 $this->db->order_by("pubtime desc");
 	     $result =  $this->db->get_where("news",array("catid"=>$catid),6,0);
@@ -219,6 +252,11 @@ class Main extends Controller {
 	function getIndexPartners(){
 		//$this->db->order_by("porder");
 		$result = $this->db->get("partner",5,0);
+		return $result->result_array();
+	}
+	
+	function getAllFriend(){
+		$result = $this->db->get("friendlink");
 		return $result->result_array();
 	}
 	
@@ -252,8 +290,8 @@ class Main extends Controller {
 		$result = $this->db->get("partner");
 		return $result->result_array();
 	}
-	function getAllexpert(){
-		$result = $this->db->get("expert");
+	function getAllexpert($offset){
+		$result = $this->db->get("expert",4,$offset);
 		return $result->result_array();
 	}
 	function getServiceByID($serviceid){
@@ -278,8 +316,6 @@ class Main extends Controller {
 		$result = $this->db->get_where("servicecat",array("rootid"=>$rid));
 		return $result->result_array();
 	}
-	
-	
 	
 	function getServiceRootByID($rid){
 		$result = $this->db->get_where("serviceroot",array("id"=>$rid));
@@ -323,7 +359,25 @@ class Main extends Controller {
 		$this->pagination->initialize ( $config );
 	}
 	
-function pagiNewsNation($rootid,$catid, $table, $perpage, $base_url = null, $uri_segment = 5, $total = null) {
+	function pagiExpertNation($commend,$rootid,$table, $perpage, $base_url = null, $uri_segment = 5, $total = null) {
+		$this->load->library ( 'pagination' );
+		if (! $base_url) {
+			$config ['base_url'] = base_url () . 'index.php/main/'.$commend.'/' . $rootid . "/6/" . $this->methodName;
+		} else {
+			$config ['base_url'] = $base_url;
+		}
+		if (! $total) {
+			$rownumber = $this->db->query ( "select * from expert");
+			$config ['total_rows'] = $rownumber->num_rows;
+		} else {
+			$config ['total_rows'] = $total;
+		}
+		$config ['uri_segment'] = $uri_segment;
+		$config ['per_page'] = $perpage;
+		$this->pagination->initialize ( $config );
+	}
+	
+	function pagiNewsNation($rootid,$catid, $table, $perpage, $base_url = null, $uri_segment = 5, $total = null) {
 		$this->load->library ( 'pagination' );
 		if (! $base_url) {
 			$config ['base_url'] = base_url () . 'index.php/main/news/' . $rootid . "/" . $catid . "/" . $this->methodName;

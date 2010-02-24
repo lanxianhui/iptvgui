@@ -42,7 +42,21 @@
 	</dt>
 	<dd>
 	<?php if($selectcat ==6){?>
+	<div id="expert">
+	<?php foreach ($exper as $sitem):?>
+	<div class="line">
+		<img src="upload/<?php echo $sitem["userpic"] ?>"/>
+		<div>
+		<h4><a href=""><?php echo $sitem["title"] ?>：</a><a href="index.php/main/knowledgecityinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>"><?php echo $sitem["username"] ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+		</h4>
+		<div class="info"><?php echo $sitem["userdesc"]?></div>
+		<a href="index.php/main/knowledgecityinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>">+点击查看更多</a>
+		</div>
+	</div>
+	<?php endforeach;?>
+	</div>
+	
 	<?php }else{?>
 	<ul id="listview" style="width:490px;">
 	<?php foreach($servicelist as $listitem):?>

@@ -63,6 +63,7 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"partnerinfo");
 	}
+	
 	// 我看世博详细页
 	function myexpoinfo($rid,$catid,$serviceid,$offset){
 		$data = array();
@@ -128,7 +129,10 @@ class Main extends Controller {
 		$data["catmenu"]=$this->getServiceCat($rid);
 		$data["selectcat"]=$catid;
 		$data["content"]=$this->getServiceCatByID($catid);
-		$this->pagiServiceNation("knowledgecity",$rid,$catid,"service",$this->pagesize);
+		$data["exper"] = $this->getAllexpert();
+//		$this->pagiServiceNation("expert",$rid,$catid,"service",$this->pagesize);
+		
+		$this->pagiServiceNation("exper",$rid,$catid,"service",$this->pagesize);
 		$data["servicelist"]=$this->getServiceByCat($catid,$offset);
 		$data["offset"] = $offset;
 		$this->executeFrame($data,$rid);
@@ -210,7 +214,10 @@ class Main extends Controller {
 		$result = $this->db->get("partner");
 		return $result->result_array();
 	}
-	
+	function getAllexpert(){
+		$result = $this->db->get("expert");
+		return $result->result_array();
+	}
 	function getServiceByID($serviceid){
 		$result = $this->db->get_where("service",array("id"=>$serviceid));
 		return $result->result_array();

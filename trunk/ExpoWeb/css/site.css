@@ -59,6 +59,16 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 											  /* css hack to IE6 */_margin-left:0px; _margin-right:0px;}
 					#partnerlist a{padding-bottom:30px;}
 						#partnerlist a img{ width:120px; height:75px; border-bottom:dotted 1px #7F7F7F;}
+
+#expert{ margin-left:0px; margin-top:0px; margin-right:0px; float:left; width:490px;}
+					#expert .line{ margin:0px;float:left; width:100%; margin-bottom:20px; margin-top:20px;}
+						#expert .line img{ width:120px; height:120px; border:solid 1px #c1c1c1; padding:5px; float:left; }
+						#expert .line a{ color:black;}
+						#expert .line div{ margin:0px;float:left; height:120px; width:250px; padding-left:15px; line-height:1.8em;}
+							#expert .line div .info{ font-size:12px; overflow:hidden; height:90px; width:100%; float:left; font-weight:100; color:#7f7f7f;}
+							#expert .line div h4{ font-size:12px; }
+
+
 				#sport{ margin-left:0px; margin-top:0px; margin-right:0px;}
 					#sport .line{ margin:0px;float:left; width:100%; margin-bottom:20px; margin-top:20px;}
 						#sport .line img{ width:255px; height:120px; border:solid 1px #c1c1c1; padding:5px; float:left; }

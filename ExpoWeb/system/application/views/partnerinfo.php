@@ -41,30 +41,19 @@
 	</a>
 	</dt>
 	<dd>
-	<?php if($selectcat == 8){?>
-	<div id="partnerlist" class="infocontent">
-	<?php foreach ($partner as $pitem):?>
-	<a href="<?php echo $pitem["paddress"] ?>" target="_blank"><img src="upload/<?php echo $pitem["pimage"] ?>"/></a>
-	<?php endforeach;?>
-	</div>
-	<?php }else{?>
-	<div id="sport">
-	<?php foreach ($servicelist as $sitem):?>
-	<div class="line">
-		<img src="upload/<?php echo $sitem["servicepic"] ?>"/>
-		<div>
-		<h4><a href="index.php/main/partnerinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>"><?php echo $sitem["servicename"] ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php $date =  (explode(" ", $sitem["pubtime"])); ?>
+	<?php foreach ($partnerinfo as $pitem):?>
+	<div class="infocontent" id="serviceinfo">
+	<h4><?php echo $pitem["servicename"] ?></h4>
+	<h5>发布时间：<?php $date =  (explode(" ", $pitem["pubtime"])); ?>
 		<?php $result =  (explode("-", $date[0])); ?>
-		<?php echo $result[0]."-".$result[1]."-".$result[2] ?>
-		</h4>
-		<div class="info"><?php echo $sitem["servicedesc"]?></div>
-		<a href="index.php/main/partnerinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sitem["id"] ?>">+点击查看更多</a>
-		</div>
+		<?php echo $result[0]."-".$result[1]."-".$result[2] ?></h5>
+	<img src="upload/<?php echo $pitem["servicepic"] ?>"/>
+	<div><?php echo $pitem["servicedesc"] ?></div>
+	</div>
+	<div style="float:left;width:100%;">
+	<a style="color:blue;" href="index.php/main/partner/<?php echo $pitem["rootid"] ?>/<?php echo $pitem["catid"]?>">&lt;&lt;返回</a>
 	</div>
 	<?php endforeach;?>
-	</div>
-	<?php }?>
 	</dd>
 </dl>
 <?php endforeach;?>

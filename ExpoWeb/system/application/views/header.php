@@ -29,6 +29,9 @@
 <?php }else if($navitem["id"] == 2){?>
 <li><a href="index.php/main/scatinfo/<?php echo $navitem["id"] ?>/12"><?php echo $navitem["rootname"] ?></a></li>
 <li class="vline"><img src="images/vline.gif"/></li>
+<?php }else if($navitem["id"] == 6){?>
+<li><a href="index.php/main/partner/<?php echo $navitem["id"] ?>/8"><?php echo $navitem["rootname"] ?></a></li>
+<li class="vline"><img src="images/vline.gif"/></li>
 <?php }else{?>
 <li><a href="index.php/main/service/<?php echo $navitem["id"] ?>"><?php echo $navitem["rootname"] ?></a></li>
 <?php if($navitem["id"] != 6){?>

@@ -86,8 +86,8 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 					#notice{ float:left; width:100%; height:30px;}
 							#notice span{ color:#FFA400; float:left; font-weight:700; line-height:1.8em; padding-top:4px;}
 
-icontent{ float:left; width:100%;}
-iflash{ float:left;width:308px; height:451px;}
+#icontent{ float:left; width:100%;}
+#iflash{ float:left;width:308px; height:451px;}
 
 .page{ width:100%; float:left; padding-top:5px; padding-bottom:5px; margin-top:5px; }
 .page a{ color:#4C88D2; margin-left:5px; margin-right:5px; float:left;}
@@ -107,6 +107,11 @@ iflash{ float:left;width:308px; height:451px;}
 						#nlistview li a{ color:#7f7f7f; float:left; line-height:1.8em; }
 						#nlistview li span{ color:#7f7f7f; float:right; }
 
+#inlistview{ float:left; width:376px; margin-top:20px;}
+					#inlistview li{ float:left; width:99%; background:url(../images/lfront_03.jpg) no-repeat; padding-left:20px; border-bottom:dotted 1px #7F7f7f; padding-bottom:2px; margin-bottom:1px;}
+						#inlistview li a{ color:#7f7f7f; float:left; line-height:1.8em; width:276px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; }
+						#inlistview li span{ color:#7f7f7f; float:right; margin-right:10px; }
+
 #content .barcontent{ float:right; width:236px; min-height:450px; margin-left:20px;}
 		#content .barcontent dl{ float:left; width:100%;}
 			#content .barcontent dl dt{ float:left; width:100%; border-bottom:solid 1px #CCC; }
@@ -115,3 +120,54 @@ iflash{ float:left;width:308px; height:451px;}
 			#content .barcontent dl dd{ float:left; width:100%;}
 				#content .barcontent dl dd .infocontent{ margin-left:14px; margin-top:20px; margin-right:15px; line-height:1.8em; text-align:justify;
 											  /* css hack to IE6 */_margin-left:0px; _margin-right:0px;}
+
+#picbar{ float:left; width:100%; margin-top:20px;}
+	#picbar img{ border:solid 3px #D4d4d4; width:230px;}
+	#picbar a{ color:#248922; font-weight:700; margin-bottom:10px;}
+	#picbar .link{overflow: hidden;white-space: nowrap;text-overflow: ellipsis; width:200px;}
+	
+				#newspic{ margin-left:0px; margin-top:0px; margin-right:0px;}
+					#newspic .line{ margin:0px;float:left; width:100%; margin-bottom:20px; margin-top:20px;}
+						#newspic .line img{ width:200px; height:138px; border:solid 1px #c1c1c1; padding:5px; float:left; }
+						#newspic .line a{ color:black;}
+						#newspic .line div{ margin:0px;float:left; height:138px; width:450px; padding-left:15px; line-height:1.8em;}
+							#newspic .line div .info{ font-size:12px; overflow:hidden; height:108px; width:100%; float:left; font-weight:100; color:#7f7f7f;}
+							#newspic .line div h4{ font-size:12px; }
+#bottom{ float:left; width:940px; border:solid 1px #DDD; padding:10px; height:40px; margin-top:15px;}
+	#bottom div{ width:450px;float:left;}
+		#friend{ border-right:dotted 1px #DDD;}
+	#bottom div .title{ color:#397FCF; font-weight:700;}
+		#bottom div ul{ float:left; width:100%;}
+		#bottom div ul li{ float:left; }
+		#bottom div a{ color:#7F7F7F; margin-left:10px; margin-right:10px; line-height:1.8em; float:left;}
+
+#iexpert{ float:left; width:100%; height:153px; border:solid 1px #D9D9D9; margin-top:11px;}
+	#iexpert dl{ float:left; width:100%;}
+	#iexpert dl dt{ height:25px; background:url(../images/bexpert_03.jpg) repeat-x;}
+	#iexpert dl dt a{ float:left; margin-top:8px; margin-left:15px; color:#397FCF; font-weight:700; }
+	#iexpert dl dd{ padding-top:10px; padding-left:15px;}
+	#iexpert dl dd a{ margin-right:23px;}
+	#iexpert dl dd img{ height:108px; width:90px; float:left; border:solid 1px #7F7F7F;}
+
+#rcontent{ height:451px; width:245px; float:right;}
+	#rcontent div{ border:solid 1px #BFBFBF;}
+	#rcontent #search{ height:31px; border-bottom:none;}
+	#rcontent #impnews{ height:314px;}
+	#rcontent #call{ height:90px; margin-top:13px;}
+
+#mcontent{ height:451px; width: 392px; float:left; margin-left:10px;}
+	#mcontent dl{ height:203px;}
+		#mcontent dl dt{ border-bottom:solid 2px #B7B7B7; height:24px;}
+			#mcontent dl dt a{ line-height:2.2em; text-align:center; margin-right:5px;}
+			#mcontent dl dt .right{ float:right; color:#5f5f5f; margin-right:10px;}
+			#mcontent dl dt .active{ color:#e77110; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_03.jpg); }
+			#mcontent dl dt .deactive{ color:#30990F; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_05.jpg);}
+
+#back{ border:solid 1px #C9C9C9; width:390px; float:left; height:234px; margin-top:14px;}
+	#back dl dt{ border-bottom:none; background-image:url(../images/iback_10.jpg); background-repeat:repeat-x; height:28px;}
+	#back dl dt .leftlink{ font-weight:700; color:#397FCF; margin-left:15px;}
+	#back dl dd{ border-top:none;width:390px; height:200px; overflow:hidden;}
+
+#backcontent{ width:370px; height:200px; padding:15px; float:left;overflow:hidden; line-height:1.9em; color:#7F7F7F;}
+	
+	

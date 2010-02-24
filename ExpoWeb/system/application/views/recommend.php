@@ -53,11 +53,12 @@
 	</li>
 	<?php endforeach;?>
 	</ul>
+	<div class="page"><?php echo $this->pagination->create_links();?></div>
 	<?php }?>
 	</dd>
 </dl>
 <?php endforeach;?>
-<div class="page"><?php echo $this->pagination->create_links();?></div>
+
 </div>
 </div>
 

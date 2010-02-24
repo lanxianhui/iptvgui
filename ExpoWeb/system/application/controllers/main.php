@@ -162,16 +162,33 @@ class Main extends Controller {
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["newscat"] = $this->getNewsCat();
 		$data["selectcat"] = $catid;
+		$this->pagiNewsNation($rid,$catid,"service",$this->pagesize);
+		$data["offset"] = $offset;
 		$data["content"]=$this->getNewsCatByID($catid);
-		$data["newslist"]=$this->getNewsByCat($catid,1);
+		$data["newslist"]=$this->getNewsByCat($catid,$offset);
+		$data["newspiclist"]=$this->getNewsByCat(3,0);
 		$this->executeFrame($data,1);
 		$this->showView($data,"news");
+	}
+	
+	function newsinfo($rid,$catid,$nid,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["newscat"] = $this->getNewsCat();
+		$data["selectcat"] = $catid;
+		$data["offset"] = $offset;
+		$data["content"]=$this->getNewsCatByID($catid);
+		$data["newslist"]=$this->getNewsByCat($catid,$offset);
+		
+		$data["newsinfo"] = $this->getNewsByID($nid);
+		$this->executeFrame($data,1);
+		$this->showView($data,"newsinfo");
 	}
 	
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
 	function getNewsByCat($catid,$offset){
 	     $this->db->order_by("pubtime desc");
-	     $result =  $this->db->get_where("news",array("catid"=>$catid));
+	     $result =  $this->db->get_where("news",array("catid"=>$catid),$this->pagesize,$offset);
 	     return $result->result_array();
 	}
      function getNewsCat(){
@@ -252,6 +269,24 @@ class Main extends Controller {
 		}
 		if (! $total) {
 			$rownumber = $this->db->query ( "select * from service where catid=" . $catid." and rootid=".$rootid);
+			$config ['total_rows'] = $rownumber->num_rows;
+		} else {
+			$config ['total_rows'] = $total;
+		}
+		$config ['uri_segment'] = $uri_segment;
+		$config ['per_page'] = $perpage;
+		$this->pagination->initialize ( $config );
+	}
+	
+function pagiNewsNation($rootid,$catid, $table, $perpage, $base_url = null, $uri_segment = 5, $total = null) {
+		$this->load->library ( 'pagination' );
+		if (! $base_url) {
+			$config ['base_url'] = base_url () . 'index.php/main/news/' . $rootid . "/" . $catid . "/" . $this->methodName;
+		} else {
+			$config ['base_url'] = $base_url;
+		}
+		if (! $total) {
+			$rownumber = $this->db->query ( "select * from news where catid=" . $catid."");
 			$config ['total_rows'] = $rownumber->num_rows;
 		} else {
 			$config ['total_rows'] = $total;

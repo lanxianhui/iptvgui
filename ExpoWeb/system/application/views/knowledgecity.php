@@ -44,7 +44,7 @@
 	<?php if($selectcat ==6){?>
 
 	<?php }else{?>
-	<ul id="listview">
+	<ul id="listview" style="width:490px;">
 	<?php foreach($servicelist as $listitem):?>
 	<li><a href="index.php/main/knowledgeinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $listitem["id"] ?>"><?php echo $listitem["servicename"] ?></a>
 	<span><?php $date =  (explode(" ", $listitem["pubtime"])); ?>

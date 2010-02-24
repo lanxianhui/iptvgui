@@ -21,14 +21,10 @@
 <ul>
 <?php foreach ($catmenu as $citem):?>
 <!-- 判断是否项目概况，就是需要介绍详细内容的页面 -->
-<?php if($rootid == 2){?>
 <?php if($selectcat == $citem["id"]){?>
 <li><img src="images/front.jpg"/><a href="index.php/main/scatinfo/<?php echo $rootid ?>/<?php echo $citem["id"] ?>" style="font-weight:700;margin-left:6px;"><?php echo $citem["catname"] ?></a></li>
 <?php }else{?>
 <li><a href="index.php/main/scatinfo/<?php echo $rootid ?>/<?php echo $citem["id"] ?>"><?php echo $citem["catname"] ?></a></li>
-<?php }?>
-<?php }else{?>
-<li><a href=""><?php echo $citem["catname"] ?></a></li>
 <?php }?>
 <?php endforeach;?>
 </ul>
@@ -45,7 +41,7 @@
 	</a>
 	</dt>
 	<dd>
-	<div>
+	<div class="infocontent">
 	<?php echo $catitem["catdesc"]?>
 	</div>
 	</dd>

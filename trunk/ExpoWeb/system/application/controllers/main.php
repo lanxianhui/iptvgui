@@ -20,6 +20,29 @@ class Main extends Controller {
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"servicelist");
 	}
+	// 合作伙伴页面，活动掠影
+	function partner($rid,$catid = 0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["partner"] = $this->getAllPartners();
+		$data["servicelist"] = $this->getServiceByCat($catid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"partner");
+	}
+	// 活动掠影详细页面
+	function partnerinfo($rid,$catid,$serviceid){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		//$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["partnerinfo"] = $this->getServiceByID($serviceid);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"partnerinfo");
+	}
 	// 项目概况子页面
 	function scatinfo($rid,$catid = 12){
 		$data = array();
@@ -28,11 +51,6 @@ class Main extends Controller {
 		$data["content"] = $this->getServiceCatByID($catid);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"scatinfo");
-	}
-	// 合作伙伴
-	function partner(){
-		$data = array();
-		$this->showView($data,"index");
 	}
 	
 	function newslist($catid,$offset){
@@ -44,6 +62,23 @@ class Main extends Controller {
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
 	function getNewsByCat($catid,$offset){
 		
+	}
+	
+	function getAllPartners(){
+		//$this->db->order_by("porder");
+		$result = $this->db->get("partner");
+		return $result->result_array();
+	}
+	
+	function getServiceByID($serviceid){
+		$result = $this->db->get_where("service",array("id"=>$serviceid));
+		return $result->result_array();
+	}
+	
+	function getServiceByCat($catid){
+		$this->db->order_by("pubtime desc");
+		$result = $this->db->get_where("service",array("catid"=>$catid));
+		return $result->result_array();
 	}
 	
 	function getServiceCatByID($catid){

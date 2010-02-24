@@ -63,6 +63,10 @@ var ew_DHTMLEditors = [];
 
 //-->
 </script>
+<link rel="stylesheet" type="text/css" media="all" href="calendar/calendar-win2k-1.css" title="win2k-1">
+<script type="text/javascript" src="calendar/calendar.js"></script>
+<script type="text/javascript" src="calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="calendar/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -172,10 +176,10 @@ if ($Security->IsLoggedIn()) {
 <?php } ?>		
 <?php if ($service->rootid->Visible) { // rootid ?>
 	<?php if ($service->SortUrl($service->rootid) == "") { ?>
-		<td>跟类型</td>
+		<td>根类型</td>
 	<?php } else { ?>
 		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $service->SortUrl($service->rootid) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>跟类型</td><td style="width: 10px;"><?php if ($service->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($service->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>根类型</td><td style="width: 10px;"><?php if ($service->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($service->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
 		</td>
 	<?php } ?>
 <?php } ?>		

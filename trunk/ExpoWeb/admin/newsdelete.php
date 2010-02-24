@@ -92,8 +92,8 @@ if ($news_deletelTotalRecs <= 0) { // No record found, exit
 	<thead>
 	<tr class="ewTableHeader">
 		<td valign="top">新闻ID</td>
-		<td valign="top">新闻类型</td>
 		<td valign="top">新闻标题</td>
+		<td valign="top">新闻类型</td>
 		<td valign="top">发布时间</td>
 	</tr>
 	</thead>
@@ -118,10 +118,10 @@ while (!$rs->EOF) {
 	<tr<?php echo $news->RowAttributes() ?>>
 		<td<?php echo $news->id->CellAttributes() ?>>
 <div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ListViewValue() ?></div></td>
-		<td<?php echo $news->catid->CellAttributes() ?>>
-<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ListViewValue() ?></div></td>
 		<td<?php echo $news->newstitle->CellAttributes() ?>>
 <div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ListViewValue() ?></div></td>
+		<td<?php echo $news->catid->CellAttributes() ?>>
+<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ListViewValue() ?></div></td>
 		<td<?php echo $news->pubtime->CellAttributes() ?>>
 <div<?php echo $news->pubtime->ViewAttributes() ?>><?php echo $news->pubtime->ListViewValue() ?></div></td>
 	</tr>
@@ -478,8 +478,8 @@ class cnews_delete {
 	function LoadRowValues(&$rs) {
 		global $news;
 		$news->id->setDbValue($rs->fields('id'));
-		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newstitle->setDbValue($rs->fields('newstitle'));
+		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
 		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
@@ -498,13 +498,13 @@ class cnews_delete {
 		$news->id->CellCssStyle = "";
 		$news->id->CellCssClass = "";
 
-		// catid
-		$news->catid->CellCssStyle = "";
-		$news->catid->CellCssClass = "";
-
 		// newstitle
 		$news->newstitle->CellCssStyle = "";
 		$news->newstitle->CellCssClass = "";
+
+		// catid
+		$news->catid->CellCssStyle = "";
+		$news->catid->CellCssClass = "";
 
 		// pubtime
 		$news->pubtime->CellCssStyle = "";
@@ -516,6 +516,12 @@ class cnews_delete {
 			$news->id->CssStyle = "";
 			$news->id->CssClass = "";
 			$news->id->ViewCustomAttributes = "";
+
+			// newstitle
+			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
+			$news->newstitle->CssStyle = "";
+			$news->newstitle->CssClass = "";
+			$news->newstitle->ViewCustomAttributes = "";
 
 			// catid
 			if (strval($news->catid->CurrentValue) <> "") {
@@ -534,12 +540,6 @@ class cnews_delete {
 			$news->catid->CssClass = "";
 			$news->catid->ViewCustomAttributes = "";
 
-			// newstitle
-			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
-			$news->newstitle->CssStyle = "";
-			$news->newstitle->CssClass = "";
-			$news->newstitle->ViewCustomAttributes = "";
-
 			// pubtime
 			$news->pubtime->ViewValue = $news->pubtime->CurrentValue;
 			$news->pubtime->ViewValue = ew_FormatDateTime($news->pubtime->ViewValue, 5);
@@ -550,11 +550,11 @@ class cnews_delete {
 			// id
 			$news->id->HrefValue = "";
 
-			// catid
-			$news->catid->HrefValue = "";
-
 			// newstitle
 			$news->newstitle->HrefValue = "";
+
+			// catid
+			$news->catid->HrefValue = "";
 
 			// pubtime
 			$news->pubtime->HrefValue = "";

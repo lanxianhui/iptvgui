@@ -94,7 +94,7 @@ if ($service_deletelTotalRecs <= 0) { // No record found, exit
 		<td valign="top">服务ID</td>
 		<td valign="top">服务名称</td>
 		<td valign="top">发布时间</td>
-		<td valign="top">跟类型</td>
+		<td valign="top">根类型</td>
 		<td valign="top">服务类型</td>
 		<td valign="top">服务图片</td>
 	</tr>

@@ -62,7 +62,7 @@ service_edit.ValidateForm = function(fobj) {
 			return ew_OnError(this, elm, "必填项 - 服务描述");
 		elm = fobj.elements["x" + infix + "_rootid"];
 		if (elm && !ew_HasValue(elm))
-			return ew_OnError(this, elm, "必填项 - 跟类型");
+			return ew_OnError(this, elm, "必填项 - 根类型");
 		elm = fobj.elements["x" + infix + "_catid"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 服务类型");
@@ -131,6 +131,10 @@ function ew_FocusDHTMLEditor(name) {
 
 //-->
 </script>
+<link rel="stylesheet" type="text/css" media="all" href="calendar/calendar-win2k-1.css" title="win2k-1">
+<script type="text/javascript" src="calendar/calendar.js"></script>
+<script type="text/javascript" src="calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="calendar/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -171,6 +175,14 @@ function ew_FocusDHTMLEditor(name) {
 		<td class="ewTableHeader">发布时间<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $service->pubtime->CellAttributes() ?>><span id="el_pubtime">
 <input type="text" name="x_pubtime" id="x_pubtime" value="<?php echo $service->pubtime->EditValue ?>"<?php echo $service->pubtime->EditAttributes() ?>>
+&nbsp;<img src="images/calendar.png" id="cal_x_pubtime" name="cal_x_pubtime" alt="选择日期" style="cursor:pointer;cursor:hand;">
+<script type="text/javascript">
+Calendar.setup({
+	inputField : "x_pubtime", // ID of the input field
+	ifFormat : "%Y/%m/%d", // the date format
+	button : "cal_x_pubtime" // ID of the button
+});
+</script>
 </span><?php echo $service->pubtime->CustomMsg ?></td>
 	</tr>
 <?php } ?>
@@ -195,9 +207,9 @@ ew_DHTMLEditors.push(new ew_DHTMLEditor("x_servicedesc", function() {
 <?php } ?>
 <?php if ($service->rootid->Visible) { // rootid ?>
 	<tr<?php echo $service->rootid->RowAttributes ?>>
-		<td class="ewTableHeader">跟类型<span class='ewmsg'>&nbsp;*</span></td>
+		<td class="ewTableHeader">根类型<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $service->rootid->CellAttributes() ?>><span id="el_rootid">
-<select id="x_rootid" name="x_rootid"<?php echo $service->rootid->EditAttributes() ?>>
+<select id="x_rootid" name="x_rootid" onchange="ew_UpdateOpt('x_catid','x_rootid',service_edit.ar_x_catid);"<?php echo $service->rootid->EditAttributes() ?>>
 <?php
 if (is_array($service->rootid->EditValue)) {
 	$arwrk = $service->rootid->EditValue;
@@ -240,6 +252,26 @@ if (is_array($service->catid->EditValue)) {
 }
 ?>
 </select>
+<?php
+$jswrk = "";
+if (is_array($service->catid->EditValue)) {
+	$arwrk = $service->catid->EditValue;
+	$arwrkcnt = count($arwrk);
+	for ($rowcntwrk = 1; $rowcntwrk < $arwrkcnt; $rowcntwrk++) {
+		if ($jswrk <> "") $jswrk .= ",";
+		$jswrk .= "['" . ew_JsEncode($arwrk[$rowcntwrk][0]) . "',"; // Value
+		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][1]) . "',"; // Display field 1
+		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][2]) . "',"; // Display field 2
+		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][3]) . "']"; // Filter field
+	}
+}
+?>
+<script type="text/javascript">
+<!--
+service_edit.ar_x_catid = [<?php echo $jswrk ?>];
+
+//-->
+</script>
 </span><?php echo $service->catid->CustomMsg ?></td>
 	</tr>
 <?php } ?>
@@ -281,6 +313,12 @@ if (is_array($service->catid->EditValue)) {
 <p>
 <input type="button" name="btnAction" id="btnAction" value="    编辑    " onclick="ew_SubmitForm(service_edit, this.form);">
 </form>
+<script language="JavaScript">
+<!--
+ew_UpdateOpts([['x_catid','x_rootid',service_edit.ar_x_catid]]);
+
+//-->
+</script>
 <script type="text/javascript">
 <!--
 ew_CreateEditor();  // Create DHTML editor(s)
@@ -732,13 +770,13 @@ class cservice_edit {
 
 			// catid
 			$service->catid->EditCustomAttributes = "";
-			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `servicecat`";
+			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, `rootid` FROM `servicecat`";
 			$sWhereWrk = "";
 			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
 			$rswrk = $conn->Execute($sSqlWrk);
 			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
 			if ($rswrk) $rswrk->Close();
-			array_unshift($arwrk, array("", "请选择"));
+			array_unshift($arwrk, array("", "请选择", ""));
 			$service->catid->EditValue = $arwrk;
 
 			// servicepic
@@ -814,7 +852,7 @@ class cservice_edit {
 		}
 		if ($service->rootid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "必填项 - 跟类型";
+			$gsFormError .= "必填项 - 根类型";
 		}
 		if ($service->catid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";

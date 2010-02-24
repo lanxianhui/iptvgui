@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://localhost/ExpoWeb/";
+$config['base_url']	= "http://192.168.0.100/ExpoWeb/";
 
 /*
 |--------------------------------------------------------------------------

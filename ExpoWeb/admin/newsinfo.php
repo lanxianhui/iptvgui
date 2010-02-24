@@ -11,8 +11,8 @@ class cnews {
 	var $TableName;
 	var $SelectLimit = FALSE;
 	var $id;
-	var $catid;
 	var $newstitle;
+	var $catid;
 	var $newsdesc;
 	var $pubtime;
 	var $newsimg;
@@ -30,10 +30,10 @@ class cnews {
 		$this->SelectLimit = TRUE;
 		$this->id = new cField('news', 'x_id', 'id', "`id`", 20, -1, FALSE);
 		$this->fields['id'] =& $this->id;
-		$this->catid = new cField('news', 'x_catid', 'catid', "`catid`", 20, -1, FALSE);
-		$this->fields['catid'] =& $this->catid;
 		$this->newstitle = new cField('news', 'x_newstitle', 'newstitle', "`newstitle`", 200, -1, FALSE);
 		$this->fields['newstitle'] =& $this->newstitle;
+		$this->catid = new cField('news', 'x_catid', 'catid', "`catid`", 20, -1, FALSE);
+		$this->fields['catid'] =& $this->catid;
 		$this->newsdesc = new cField('news', 'x_newsdesc', 'newsdesc', "`newsdesc`", 201, -1, FALSE);
 		$this->fields['newsdesc'] =& $this->newsdesc;
 		$this->pubtime = new cField('news', 'x_pubtime', 'pubtime', "`pubtime`", 135, 5, FALSE);
@@ -381,8 +381,8 @@ class cnews {
 	// Load row values from recordset
 	function LoadListRowValues(&$rs) {
 		$this->id->setDbValue($rs->fields('id'));
-		$this->catid->setDbValue($rs->fields('catid'));
 		$this->newstitle->setDbValue($rs->fields('newstitle'));
+		$this->catid->setDbValue($rs->fields('catid'));
 		$this->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$this->pubtime->setDbValue($rs->fields('pubtime'));
 		$this->newsimg->Upload->DbValue = $rs->fields('newsimg');
@@ -401,6 +401,12 @@ class cnews {
 		$this->id->CssClass = "";
 		$this->id->ViewCustomAttributes = "";
 
+		// newstitle
+		$this->newstitle->ViewValue = $this->newstitle->CurrentValue;
+		$this->newstitle->CssStyle = "";
+		$this->newstitle->CssClass = "";
+		$this->newstitle->ViewCustomAttributes = "";
+
 		// catid
 		if (strval($this->catid->CurrentValue) <> "") {
 			$sSqlWrk = "SELECT `catname` FROM `newscat` WHERE `id` = " . ew_AdjustSql($this->catid->CurrentValue) . "";
@@ -418,12 +424,6 @@ class cnews {
 		$this->catid->CssClass = "";
 		$this->catid->ViewCustomAttributes = "";
 
-		// newstitle
-		$this->newstitle->ViewValue = $this->newstitle->CurrentValue;
-		$this->newstitle->CssStyle = "";
-		$this->newstitle->CssClass = "";
-		$this->newstitle->ViewCustomAttributes = "";
-
 		// pubtime
 		$this->pubtime->ViewValue = $this->pubtime->CurrentValue;
 		$this->pubtime->ViewValue = ew_FormatDateTime($this->pubtime->ViewValue, 5);
@@ -434,11 +434,11 @@ class cnews {
 		// id
 		$this->id->HrefValue = "";
 
-		// catid
-		$this->catid->HrefValue = "";
-
 		// newstitle
 		$this->newstitle->HrefValue = "";
+
+		// catid
+		$this->catid->HrefValue = "";
 
 		// pubtime
 		$this->pubtime->HrefValue = "";

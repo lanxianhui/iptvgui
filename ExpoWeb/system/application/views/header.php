@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>SHANGHAI CHINA EXPO主页</title>
 <link href="css/site.css" type="text/css" rel="stylesheet"/>
+<script src="js/swfobject.js" type="text/javascript"></script>
 </head>
 <body>
 <!--站点头部-->
@@ -22,8 +23,18 @@
 <img src="images/navleft.jpg"/>
 <ul>
 <?php foreach ($nav as $navitem):?>
-<li><a href="#"><?php echo $navitem["rootname"] ?></a></li>
+<?php if($navitem["id"] == 1){?>
+<li><a href="index.php/main/newslist/-1/0"><?php echo $navitem["rootname"] ?></a></li>
 <li class="vline"><img src="images/vline.gif"/></li>
+<?php }else if($navitem["id"] == 2){?>
+<li><a href="index.php/main/scatinfo/<?php echo $navitem["id"] ?>/12"><?php echo $navitem["rootname"] ?></a></li>
+<li class="vline"><img src="images/vline.gif"/></li>
+<?php }else{?>
+<li><a href="index.php/main/service/<?php echo $navitem["id"] ?>"><?php echo $navitem["rootname"] ?></a></li>
+<?php if($navitem["id"] != 6){?>
+<li class="vline"><img src="images/vline.gif"/></li>
+<?php }?>
+<?php }?>
 <?php endforeach;?>
 </ul>
 <img src="images/navright.jpg"/>

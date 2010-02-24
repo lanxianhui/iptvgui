@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* common-reset css */
-body{ margin:0 auto; padding:0; width:990px;font-family:Tahoma, Geneva, sans-serif; font-size:12px; }
+body{ margin:0 auto; padding:0; width:961px;font-family:Tahoma, Geneva, sans-serif; font-size:12px; }
 img{ border:0; padding:0; margin:0;}
 h1,h2,h3,h4,h5,h6,div{border:0; margin:0; padding:0; }
 
@@ -13,20 +13,47 @@ span{float:left; line-height:1.8em;}
 hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 /* header css */
 #header{ background:url(../images/header.jpg) no-repeat; width:100%; float:left; height:117px;}
-	#h_u_link{ width:200px; float:right; margin-top:40px;}
+	#h_u_link{ width:175px; float:right; margin-top:40px;}
 		#h_u_link li{ float:left;}
 			#h_u_link li a{ text-decoration:none; color:black;
 			/* css hack to IE6,7,8,FF */padding-top:0px;padding-top:2px\9;+padding-top:2px;_padding-top:0px;}
 #nav{ float:left; width:100%; height:37px; background:url(../images/navbg.jpg) repeat-x;}
 	#nav img{ float:left; border:none;}
-	#nav ul{ float:left; width:983px;}
-		#nav ul li{ float:left;width:160px;}
+	#nav ul{ float:left; width:954px;}
+		#nav ul li{ float:left;width:153px;}
 		#nav ul .vline{ width:1px;}
 			#nav ul li a{ float:left; color:white; font-size:14px; font-weight:100px; width:100%; text-align:center; line-height:2.4em;}
 /* footer css */
-#footer{ float:left; width:100%; height:32px; }
+#footer{ float:left; width:100%; height:32px; margin-top:80px; }
 	#footer ul{ float:left; text-align:center; margin-left:320px;_margin-left:160px; margin-top:16px; margin-bottom:9px;}
 		#footer ul li{ float:left; }
 			#footer ul li a{ float:left; text-decoration:none; color:black;
 			/* css hack to IE6,7,8,FF */padding-top:0px;padding-top:2px\9;+padding-top:2px;_padding-top:0px;}
 #copyright{ width:100%; color:#7F7F7F; text-align:center; border-top:solid 1px #E5E5E5; float:left; line-height:1.8em;}
+/* ad css */
+#ad{ float:left; width:100%; margin-top:5px; }
+#adnav{ float:left; width:100%; height:25px; border-bottom:dotted 1px #7F7F7F; padding-top:5px;
+		/* css hack to IE6 */_padding-top:3px; _height:27px;}
+	#adnav span{ float:left;color:#7F7F7F;}
+	#adnav a{ color:#7F7F7F; line-height:2em;}
+/* left bar css */
+#content{ float:left; width:100%; margin-top:12px;}
+	#content .lcontent{ float:left; width:244px;}
+		#content .lcontent dl{ display:block; float:left; width:100%; height:230px; background-image:url(../images/leftbar.jpg);padding:0px; margin:0px;}
+		#content .lcontent img{ float:left; margin-top:29px;}
+		#content .lcontent dl dt{ display:block; float:left; width:100%; height:44px; padding:0px; margin:0px;}
+			#content .lcontent dl dt a{ font-family:Verdana, Geneva, sans-serif; font-size:14px; font-weight:700px; height:17px; float:left; margin-left:62px; _margin-left:31px;}
+			#content .lcontent dl dt a img{ margin-top:17px;}
+		#content .lcontent dl dd{ float:left; display:block; width:100%;}
+			#content .lcontent dl dd ul{ float:left; width:100%;}
+				#content .lcontent dl dd ul li{ height:33px; width:100%;float:left;}
+					#content .lcontent dl dd ul li a{ color:#248922; float:left; margin-left:66px; line-height:3.5em;_line-height:3.0em;_margin-left:33px;}
+					#content .lcontent dl dd ul li img{ float:left; margin-left:45px;margin-top:13px;}
+	#content .rcontent{ float:right; width:695px;}
+		#content .rcontent dl{ float:left; width:100%;}
+			#content .rcontent dl dt{ float:left; width:100%; border-bottom:solid 1px #CCC;}
+				#content .rcontent dl dt img{ float:left;}
+				#content .rcontent dl dt a{ float:left;color:#666; font-weight:700; line-height:2.3em;}
+			#content .rcontent dl dd{ float:left; width:100%;}
+				#content .rcontent dl dd div{ margin-left:14px; margin-top:20px; margin-right:15px; line-height:1.8em; text-align:justify;
+											  _margin-left:0px; _margin-right:0px;}

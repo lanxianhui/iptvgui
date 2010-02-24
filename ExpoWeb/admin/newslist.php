@@ -156,21 +156,21 @@ if ($Security->IsLoggedIn()) {
 		</td>
 	<?php } ?>
 <?php } ?>		
-<?php if ($news->catid->Visible) { // catid ?>
-	<?php if ($news->SortUrl($news->catid) == "") { ?>
-		<td>新闻类型</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->catid) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻类型</td><td style="width: 10px;"><?php if ($news->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
 <?php if ($news->newstitle->Visible) { // newstitle ?>
 	<?php if ($news->SortUrl($news->newstitle) == "") { ?>
 		<td>新闻标题</td>
 	<?php } else { ?>
 		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->newstitle) ?>',1);">
 			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻标题&nbsp;(*)</td><td style="width: 10px;"><?php if ($news->newstitle->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->newstitle->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($news->catid->Visible) { // catid ?>
+	<?php if ($news->SortUrl($news->catid) == "") { ?>
+		<td>新闻类型</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->catid) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻类型</td><td style="width: 10px;"><?php if ($news->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
 		</td>
 	<?php } ?>
 <?php } ?>		
@@ -246,14 +246,14 @@ while (($news->CurrentAction == "gridadd" || !$rs->EOF) &&
 <div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ListViewValue() ?></div>
 </td>
 	<?php } ?>
-	<?php if ($news->catid->Visible) { // catid ?>
-		<td<?php echo $news->catid->CellAttributes() ?>>
-<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ListViewValue() ?></div>
-</td>
-	<?php } ?>
 	<?php if ($news->newstitle->Visible) { // newstitle ?>
 		<td<?php echo $news->newstitle->CellAttributes() ?>>
 <div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($news->catid->Visible) { // catid ?>
+		<td<?php echo $news->catid->CellAttributes() ?>>
+<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ListViewValue() ?></div>
 </td>
 	<?php } ?>
 	<?php if ($news->pubtime->Visible) { // pubtime ?>
@@ -727,8 +727,8 @@ class cnews_list {
 			$news->CurrentOrder = ew_StripSlashes(@$_GET["order"]);
 			$news->CurrentOrderType = @$_GET["ordertype"];
 			$news->UpdateSort($news->id); // Field 
-			$news->UpdateSort($news->catid); // Field 
 			$news->UpdateSort($news->newstitle); // Field 
+			$news->UpdateSort($news->catid); // Field 
 			$news->UpdateSort($news->pubtime); // Field 
 			$news->setStartRecordNumber(1); // Reset start position
 		}
@@ -766,8 +766,8 @@ class cnews_list {
 				$sOrderBy = "";
 				$news->setSessionOrderBy($sOrderBy);
 				$news->id->setSort("");
-				$news->catid->setSort("");
 				$news->newstitle->setSort("");
+				$news->catid->setSort("");
 				$news->pubtime->setSort("");
 			}
 
@@ -868,8 +868,8 @@ class cnews_list {
 	function LoadRowValues(&$rs) {
 		global $news;
 		$news->id->setDbValue($rs->fields('id'));
-		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newstitle->setDbValue($rs->fields('newstitle'));
+		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
 		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
@@ -888,13 +888,13 @@ class cnews_list {
 		$news->id->CellCssStyle = "";
 		$news->id->CellCssClass = "";
 
-		// catid
-		$news->catid->CellCssStyle = "";
-		$news->catid->CellCssClass = "";
-
 		// newstitle
 		$news->newstitle->CellCssStyle = "";
 		$news->newstitle->CellCssClass = "";
+
+		// catid
+		$news->catid->CellCssStyle = "";
+		$news->catid->CellCssClass = "";
 
 		// pubtime
 		$news->pubtime->CellCssStyle = "";
@@ -906,6 +906,12 @@ class cnews_list {
 			$news->id->CssStyle = "";
 			$news->id->CssClass = "";
 			$news->id->ViewCustomAttributes = "";
+
+			// newstitle
+			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
+			$news->newstitle->CssStyle = "";
+			$news->newstitle->CssClass = "";
+			$news->newstitle->ViewCustomAttributes = "";
 
 			// catid
 			if (strval($news->catid->CurrentValue) <> "") {
@@ -924,12 +930,6 @@ class cnews_list {
 			$news->catid->CssClass = "";
 			$news->catid->ViewCustomAttributes = "";
 
-			// newstitle
-			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
-			$news->newstitle->CssStyle = "";
-			$news->newstitle->CssClass = "";
-			$news->newstitle->ViewCustomAttributes = "";
-
 			// pubtime
 			$news->pubtime->ViewValue = $news->pubtime->CurrentValue;
 			$news->pubtime->ViewValue = ew_FormatDateTime($news->pubtime->ViewValue, 5);
@@ -940,11 +940,11 @@ class cnews_list {
 			// id
 			$news->id->HrefValue = "";
 
-			// catid
-			$news->catid->HrefValue = "";
-
 			// newstitle
 			$news->newstitle->HrefValue = "";
+
+			// catid
+			$news->catid->HrefValue = "";
 
 			// pubtime
 			$news->pubtime->HrefValue = "";
@@ -989,8 +989,8 @@ class cnews_list {
 			if ($sExportStyle <> "v" || $news->Export == "csv") {
 				$sExportStr = "";
 				ew_ExportAddValue($sExportStr, 'id', $news->Export);
-				ew_ExportAddValue($sExportStr, 'catid', $news->Export);
 				ew_ExportAddValue($sExportStr, 'newstitle', $news->Export);
+				ew_ExportAddValue($sExportStr, 'catid', $news->Export);
 				ew_ExportAddValue($sExportStr, 'pubtime', $news->Export);
 				echo ew_ExportLine($sExportStr, $news->Export);
 			}
@@ -1013,21 +1013,21 @@ class cnews_list {
 				if ($news->Export == "xml") {
 					$XmlDoc->BeginRow();
 					$XmlDoc->AddField('id', $news->id->CurrentValue);
-					$XmlDoc->AddField('catid', $news->catid->CurrentValue);
 					$XmlDoc->AddField('newstitle', $news->newstitle->CurrentValue);
+					$XmlDoc->AddField('catid', $news->catid->CurrentValue);
 					$XmlDoc->AddField('pubtime', $news->pubtime->CurrentValue);
 					$XmlDoc->EndRow();
 				} else {
 					if ($sExportStyle == "v" && $news->Export <> "csv") { // Vertical format
 						echo ew_ExportField('id', $news->id->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
-						echo ew_ExportField('catid', $news->catid->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
 						echo ew_ExportField('newstitle', $news->newstitle->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						echo ew_ExportField('catid', $news->catid->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
 						echo ew_ExportField('pubtime', $news->pubtime->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
 					}	else { // Horizontal format
 						$sExportStr = "";
 						ew_ExportAddValue($sExportStr, $news->id->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
-						ew_ExportAddValue($sExportStr, $news->catid->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
 						ew_ExportAddValue($sExportStr, $news->newstitle->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						ew_ExportAddValue($sExportStr, $news->catid->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
 						ew_ExportAddValue($sExportStr, $news->pubtime->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
 						echo ew_ExportLine($sExportStr, $news->Export);
 					}

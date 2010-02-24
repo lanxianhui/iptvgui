@@ -97,18 +97,18 @@ news_view.ValidateRequired = false; // no JavaScript validation
 <div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ViewValue ?></div></td>
 	</tr>
 <?php } ?>
-<?php if ($news->catid->Visible) { // catid ?>
-	<tr<?php echo $news->catid->RowAttributes ?>>
-		<td class="ewTableHeader">新闻类型</td>
-		<td<?php echo $news->catid->CellAttributes() ?>>
-<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
 <?php if ($news->newstitle->Visible) { // newstitle ?>
 	<tr<?php echo $news->newstitle->RowAttributes ?>>
 		<td class="ewTableHeader">新闻标题</td>
 		<td<?php echo $news->newstitle->CellAttributes() ?>>
 <div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($news->catid->Visible) { // catid ?>
+	<tr<?php echo $news->catid->RowAttributes ?>>
+		<td class="ewTableHeader">新闻类型</td>
+		<td<?php echo $news->catid->CellAttributes() ?>>
+<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ViewValue ?></div></td>
 	</tr>
 <?php } ?>
 <?php if ($news->newsdesc->Visible) { // newsdesc ?>
@@ -511,8 +511,8 @@ class cnews_view {
 	function LoadRowValues(&$rs) {
 		global $news;
 		$news->id->setDbValue($rs->fields('id'));
-		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newstitle->setDbValue($rs->fields('newstitle'));
+		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
 		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
@@ -531,13 +531,13 @@ class cnews_view {
 		$news->id->CellCssStyle = "";
 		$news->id->CellCssClass = "";
 
-		// catid
-		$news->catid->CellCssStyle = "";
-		$news->catid->CellCssClass = "";
-
 		// newstitle
 		$news->newstitle->CellCssStyle = "";
 		$news->newstitle->CellCssClass = "";
+
+		// catid
+		$news->catid->CellCssStyle = "";
+		$news->catid->CellCssClass = "";
 
 		// newsdesc
 		$news->newsdesc->CellCssStyle = "";
@@ -558,6 +558,12 @@ class cnews_view {
 			$news->id->CssClass = "";
 			$news->id->ViewCustomAttributes = "";
 
+			// newstitle
+			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
+			$news->newstitle->CssStyle = "";
+			$news->newstitle->CssClass = "";
+			$news->newstitle->ViewCustomAttributes = "";
+
 			// catid
 			if (strval($news->catid->CurrentValue) <> "") {
 				$sSqlWrk = "SELECT `catname` FROM `newscat` WHERE `id` = " . ew_AdjustSql($news->catid->CurrentValue) . "";
@@ -574,12 +580,6 @@ class cnews_view {
 			$news->catid->CssStyle = "";
 			$news->catid->CssClass = "";
 			$news->catid->ViewCustomAttributes = "";
-
-			// newstitle
-			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
-			$news->newstitle->CssStyle = "";
-			$news->newstitle->CssClass = "";
-			$news->newstitle->ViewCustomAttributes = "";
 
 			// newsdesc
 			$news->newsdesc->ViewValue = $news->newsdesc->CurrentValue;
@@ -608,11 +608,11 @@ class cnews_view {
 			// id
 			$news->id->HrefValue = "";
 
-			// catid
-			$news->catid->HrefValue = "";
-
 			// newstitle
 			$news->newstitle->HrefValue = "";
+
+			// catid
+			$news->catid->HrefValue = "";
 
 			// newsdesc
 			$news->newsdesc->HrefValue = "";

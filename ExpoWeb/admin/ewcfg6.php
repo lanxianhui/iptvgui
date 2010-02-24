@@ -141,7 +141,7 @@ define("EW_SENDER_EMAIL", "", TRUE); // Sender email
 define("EW_RECIPIENT_EMAIL", "", TRUE); // Receiver email
 
 // File upload
-define("EW_UPLOAD_DEST_PATH", "", TRUE); // Upload destination path (relative to app root)
+define("EW_UPLOAD_DEST_PATH", "../upload/", TRUE); // Upload destination path (relative to app root)
 define("EW_UPLOAD_ALLOWED_FILE_EXT", "gif,jpg,jpeg,bmp,png,doc,xls,pdf,zip", TRUE); // Allowed file extensions
 define("EW_IMAGE_ALLOWED_FILE_EXT", "gif,jpg,png,bmp", TRUE); // Allowed file extensions for images
 define("EW_MAX_FILE_SIZE", 2000000, TRUE); // Max file size

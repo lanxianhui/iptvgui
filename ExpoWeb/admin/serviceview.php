@@ -120,7 +120,7 @@ service_view.ValidateRequired = false; // no JavaScript validation
 <?php } ?>
 <?php if ($service->rootid->Visible) { // rootid ?>
 	<tr<?php echo $service->rootid->RowAttributes ?>>
-		<td class="ewTableHeader">跟类型</td>
+		<td class="ewTableHeader">根类型</td>
 		<td<?php echo $service->rootid->CellAttributes() ?>>
 <div<?php echo $service->rootid->ViewAttributes() ?>><?php echo $service->rootid->ViewValue ?></div></td>
 	</tr>

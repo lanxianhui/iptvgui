@@ -31,7 +31,7 @@ var FCKeditor = function( instanceName, width, height, toolbarSet, value )
 	// Properties
 	this.InstanceName	= instanceName ;
 	this.Width			= width			|| '100%' ;
-	this.Height			= height		|| '200' ;
+	this.Height			= height		|| '400' ;
 	this.ToolbarSet		= toolbarSet	|| 'Default' ;
 	this.Value			= value			|| '' ;
 	this.BasePath		= FCKeditor.BasePath ;
@@ -52,7 +52,7 @@ FCKeditor.BasePath = '/fckeditor/' ;
 /**
  * The minimum height used when replacing textareas.
  */
-FCKeditor.MinHeight = 200 ;
+FCKeditor.MinHeight = 400 ;
 
 /**
  * The minimum width used when replacing textareas.

@@ -48,12 +48,12 @@ news_edit.ValidateForm = function(fobj) {
 	var rowcnt = (fobj.key_count) ? Number(fobj.key_count.value) : 1;
 	for (i=0; i<rowcnt; i++) {
 		infix = (fobj.key_count) ? String(i+1) : "";
-		elm = fobj.elements["x" + infix + "_catid"];
-		if (elm && !ew_HasValue(elm))
-			return ew_OnError(this, elm, "必填项 - 新闻类型");
 		elm = fobj.elements["x" + infix + "_newstitle"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 新闻标题");
+		elm = fobj.elements["x" + infix + "_catid"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 新闻类型");
 		elm = fobj.elements["x" + infix + "_newsdesc"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 新闻内容");
@@ -164,6 +164,14 @@ function ew_FocusDHTMLEditor(name) {
 </span><?php echo $news->id->CustomMsg ?></td>
 	</tr>
 <?php } ?>
+<?php if ($news->newstitle->Visible) { // newstitle ?>
+	<tr<?php echo $news->newstitle->RowAttributes ?>>
+		<td class="ewTableHeader">新闻标题<span class='ewmsg'>&nbsp;*</span></td>
+		<td<?php echo $news->newstitle->CellAttributes() ?>><span id="el_newstitle">
+<input type="text" name="x_newstitle" id="x_newstitle" size="30" maxlength="200" value="<?php echo $news->newstitle->EditValue ?>"<?php echo $news->newstitle->EditAttributes() ?>>
+</span><?php echo $news->newstitle->CustomMsg ?></td>
+	</tr>
+<?php } ?>
 <?php if ($news->catid->Visible) { // catid ?>
 	<tr<?php echo $news->catid->RowAttributes ?>>
 		<td class="ewTableHeader">新闻类型<span class='ewmsg'>&nbsp;*</span></td>
@@ -187,14 +195,6 @@ if (is_array($news->catid->EditValue)) {
 ?>
 </select>
 </span><?php echo $news->catid->CustomMsg ?></td>
-	</tr>
-<?php } ?>
-<?php if ($news->newstitle->Visible) { // newstitle ?>
-	<tr<?php echo $news->newstitle->RowAttributes ?>>
-		<td class="ewTableHeader">新闻标题<span class='ewmsg'>&nbsp;*</span></td>
-		<td<?php echo $news->newstitle->CellAttributes() ?>><span id="el_newstitle">
-<input type="text" name="x_newstitle" id="x_newstitle" size="30" maxlength="200" value="<?php echo $news->newstitle->EditValue ?>"<?php echo $news->newstitle->EditAttributes() ?>>
-</span><?php echo $news->newstitle->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 <?php if ($news->newsdesc->Visible) { // newsdesc ?>
@@ -497,8 +497,8 @@ class cnews_edit {
 		// Load from form
 		global $objForm, $news;
 		$news->id->setFormValue($objForm->GetValue("x_id"));
-		$news->catid->setFormValue($objForm->GetValue("x_catid"));
 		$news->newstitle->setFormValue($objForm->GetValue("x_newstitle"));
+		$news->catid->setFormValue($objForm->GetValue("x_catid"));
 		$news->newsdesc->setFormValue($objForm->GetValue("x_newsdesc"));
 		$news->pubtime->setFormValue($objForm->GetValue("x_pubtime"));
 		$news->pubtime->CurrentValue = ew_UnFormatDateTime($news->pubtime->CurrentValue, 5);
@@ -509,8 +509,8 @@ class cnews_edit {
 		global $news;
 		$this->LoadRow();
 		$news->id->CurrentValue = $news->id->FormValue;
-		$news->catid->CurrentValue = $news->catid->FormValue;
 		$news->newstitle->CurrentValue = $news->newstitle->FormValue;
+		$news->catid->CurrentValue = $news->catid->FormValue;
 		$news->newsdesc->CurrentValue = $news->newsdesc->FormValue;
 		$news->pubtime->CurrentValue = $news->pubtime->FormValue;
 		$news->pubtime->CurrentValue = ew_UnFormatDateTime($news->pubtime->CurrentValue, 5);
@@ -549,8 +549,8 @@ class cnews_edit {
 	function LoadRowValues(&$rs) {
 		global $news;
 		$news->id->setDbValue($rs->fields('id'));
-		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newstitle->setDbValue($rs->fields('newstitle'));
+		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
 		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
@@ -569,13 +569,13 @@ class cnews_edit {
 		$news->id->CellCssStyle = "";
 		$news->id->CellCssClass = "";
 
-		// catid
-		$news->catid->CellCssStyle = "";
-		$news->catid->CellCssClass = "";
-
 		// newstitle
 		$news->newstitle->CellCssStyle = "";
 		$news->newstitle->CellCssClass = "";
+
+		// catid
+		$news->catid->CellCssStyle = "";
+		$news->catid->CellCssClass = "";
 
 		// newsdesc
 		$news->newsdesc->CellCssStyle = "";
@@ -596,6 +596,12 @@ class cnews_edit {
 			$news->id->CssClass = "";
 			$news->id->ViewCustomAttributes = "";
 
+			// newstitle
+			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
+			$news->newstitle->CssStyle = "";
+			$news->newstitle->CssClass = "";
+			$news->newstitle->ViewCustomAttributes = "";
+
 			// catid
 			if (strval($news->catid->CurrentValue) <> "") {
 				$sSqlWrk = "SELECT `catname` FROM `newscat` WHERE `id` = " . ew_AdjustSql($news->catid->CurrentValue) . "";
@@ -612,12 +618,6 @@ class cnews_edit {
 			$news->catid->CssStyle = "";
 			$news->catid->CssClass = "";
 			$news->catid->ViewCustomAttributes = "";
-
-			// newstitle
-			$news->newstitle->ViewValue = $news->newstitle->CurrentValue;
-			$news->newstitle->CssStyle = "";
-			$news->newstitle->CssClass = "";
-			$news->newstitle->ViewCustomAttributes = "";
 
 			// newsdesc
 			$news->newsdesc->ViewValue = $news->newsdesc->CurrentValue;
@@ -646,11 +646,11 @@ class cnews_edit {
 			// id
 			$news->id->HrefValue = "";
 
-			// catid
-			$news->catid->HrefValue = "";
-
 			// newstitle
 			$news->newstitle->HrefValue = "";
+
+			// catid
+			$news->catid->HrefValue = "";
 
 			// newsdesc
 			$news->newsdesc->HrefValue = "";
@@ -669,6 +669,10 @@ class cnews_edit {
 			$news->id->CssClass = "";
 			$news->id->ViewCustomAttributes = "";
 
+			// newstitle
+			$news->newstitle->EditCustomAttributes = "";
+			$news->newstitle->EditValue = ew_HtmlEncode($news->newstitle->CurrentValue);
+
 			// catid
 			$news->catid->EditCustomAttributes = "";
 			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `newscat`";
@@ -679,10 +683,6 @@ class cnews_edit {
 			if ($rswrk) $rswrk->Close();
 			array_unshift($arwrk, array("", "请选择"));
 			$news->catid->EditValue = $arwrk;
-
-			// newstitle
-			$news->newstitle->EditCustomAttributes = "";
-			$news->newstitle->EditValue = ew_HtmlEncode($news->newstitle->CurrentValue);
 
 			// newsdesc
 			$news->newsdesc->EditCustomAttributes = "";
@@ -706,11 +706,11 @@ class cnews_edit {
 
 			$news->id->HrefValue = "";
 
-			// catid
-			$news->catid->HrefValue = "";
-
 			// newstitle
 			$news->newstitle->HrefValue = "";
+
+			// catid
+			$news->catid->HrefValue = "";
 
 			// newsdesc
 			$news->newsdesc->HrefValue = "";
@@ -744,13 +744,13 @@ class cnews_edit {
 		// Check if validation required
 		if (!EW_SERVER_VALIDATE)
 			return ($gsFormError == "");
-		if ($news->catid->FormValue == "") {
-			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "必填项 - 新闻类型";
-		}
 		if ($news->newstitle->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 新闻标题";
+		}
+		if ($news->catid->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 新闻类型";
 		}
 		if ($news->newsdesc->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
@@ -802,14 +802,14 @@ class cnews_edit {
 			$rsnew = array();
 
 			// Field id
-			// Field catid
-
-			$news->catid->SetDbValueDef($news->catid->CurrentValue, 0);
-			$rsnew['catid'] =& $news->catid->DbValue;
-
 			// Field newstitle
+
 			$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, "");
 			$rsnew['newstitle'] =& $news->newstitle->DbValue;
+
+			// Field catid
+			$news->catid->SetDbValueDef($news->catid->CurrentValue, 0);
+			$rsnew['catid'] =& $news->catid->DbValue;
 
 			// Field newsdesc
 			$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, "");

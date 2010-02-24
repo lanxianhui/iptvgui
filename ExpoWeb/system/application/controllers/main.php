@@ -2,20 +2,25 @@
 
 class Main extends Controller {
 	var $methodName;
-	var $pagesize = 3;
+	var $pagesize = 10;
 	
 	function Main()
 	{
 		parent::Controller();	
 	}
 	
-	function index($rid=7,$catid=15)
+	function index($rid=7,$catid=1)
 	{
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
 		$data["notice"] = $this->getNotice();
+		$data["indexpartner"] = $this->getIndexPartners();
+		$data["indexlink"] = $this->getIndexFriend();
+		$data["indexexpert"] = $this->getIndexExpert();
+		$data["newslist"] = $this->getIndexNews($catid);
+		$data["servicecat"] = $this->getServiceCatByID(12);
 		$this->executeFrame($data,7);
 		$this->showIndexView($data,"index");
 	}
@@ -166,11 +171,16 @@ class Main extends Controller {
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["newscat"] = $this->getNewsCat();
 		$data["selectcat"] = $catid;
-		$this->pagiNewsNation($rid,$catid,"service",$this->pagesize);
+		if($catid != 3){
+			$this->pagiNewsNation($rid,$catid,"news",$this->pagesize);
+			$data["newslist"]=$this->getNewsByCat($catid,$offset);
+			$data["newspiclist"]=$this->getPicNewsByCat(3,0);
+		}else{
+			$this->pagiNewsNation($rid,$catid,"news",4);
+			$data["newslist"]=$this->getPicNewsByCat(4,$offset);
+		}
 		$data["offset"] = $offset;
 		$data["content"]=$this->getNewsCatByID($catid);
-		$data["newslist"]=$this->getNewsByCat($catid,$offset);
-		$data["newspiclist"]=$this->getNewsByCat(3,0);
 		$this->executeFrame($data,1);
 		$this->showView($data,"news");
 	}
@@ -190,9 +200,37 @@ class Main extends Controller {
 	}
 	
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
+	function getIndexFriend(){
+	     $result =  $this->db->get("friendlink",5,0);
+	     return $result->result_array();
+	}
+	
+	function getIndexExpert(){
+		$result =  $this->db->get("expert",8,0);
+	     return $result->result_array();
+	}
+	
+	function getIndexNews($catid){
+		 $this->db->order_by("pubtime desc");
+	     $result =  $this->db->get_where("news",array("catid"=>$catid),6,0);
+	     return $result->result_array();
+	}
+	
+	function getIndexPartners(){
+		//$this->db->order_by("porder");
+		$result = $this->db->get("partner",5,0);
+		return $result->result_array();
+	}
+	
 	function getNewsByCat($catid,$offset){
 	     $this->db->order_by("pubtime desc");
 	     $result =  $this->db->get_where("news",array("catid"=>$catid),$this->pagesize,$offset);
+	     return $result->result_array();
+	}
+	
+	function getPicNewsByCat($size,$offset){
+		$this->db->order_by("pubtime desc");
+	     $result =  $this->db->get_where("news",array("catid"=>3),$size,$offset);
 	     return $result->result_array();
 	}
      function getNewsCat(){
@@ -322,7 +360,7 @@ function pagiNewsNation($rootid,$catid, $table, $perpage, $base_url = null, $uri
 		} else {
 			$this->load->view ( $viewName, $data );
 		}
-		$this->load->view ( "footer", $data );
+		$this->load->view ( "ifooter", $data );
 	}
 }
 ?>

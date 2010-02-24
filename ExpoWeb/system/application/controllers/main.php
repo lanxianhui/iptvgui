@@ -85,7 +85,7 @@ class Main extends Controller {
 		$this->showView($data,"recommend");
 	}
 	//沟通推荐子页面
-function recommendinfo($rid,$catid,$serviceid){
+	function recommendinfo($rid,$catid,$serviceid){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;

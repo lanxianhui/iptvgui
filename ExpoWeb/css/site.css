@@ -162,6 +162,7 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 			#mcontent dl dt .right{ float:right; color:#5f5f5f; margin-right:10px;}
 			#mcontent dl dt .active{ color:#e77110; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_03.jpg); }
 			#mcontent dl dt .deactive{ color:#30990F; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_05.jpg);}
+			#mcontent dl dt .deactive:hover{color:#e77110; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_03.jpg); }
 #impnews .top{ border:none; border-bottom:dotted 1px #7f7f7f; width:242px; height:175px; height:205px\9;+height:175px; text-align:center;}
 	#impnews .top img{ width:130px; height:124px; margin-left:48px; margin-top:20px;}
 	#impnews .top .bottomlink{ width:103px; margin-left:60px; font-weight:700;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; line-height:2.1em;}

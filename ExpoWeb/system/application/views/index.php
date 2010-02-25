@@ -100,11 +100,13 @@
 <dl>
 <dt><a href="index.php/main/knowledgecity/4/6">知名专家</a></dt>
 <dd>
+<marquee>
 <?php foreach($indexexpert as $eitem):?>
 <a href="index.php/main/expertinfo/4/<?php echo $selectcat ?>/<?php echo $eitem["id"] ?>/0" target="_blank">
 <img src="upload/<?php echo $eitem["userpic"] ?>"/>
 </a>
 <?php endforeach;?>
+</marquee>
 </dd>
 </dl>
 </div>

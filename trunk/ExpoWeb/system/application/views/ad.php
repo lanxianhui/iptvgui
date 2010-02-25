@@ -1,6 +1,8 @@
+<?php foreach($root as $entry): $adid = $entry["id"];?>
+<?php endforeach;?>
 <div id="ad">
 <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="961" height="232">
-  <param name="movie" value="swf/ad.swf">
+  <param name="movie" value="swf/ad<?php echo $adid ?>.swf">
   <param name="quality" value="high">
   <param name="wmode" value="opaque">
   <param name="swfversion" value="8.0.35.0">
@@ -8,7 +10,7 @@
   <param name="expressinstall" value="swf/expressInstall.swf">
   <!-- Next object tag is for non-IE browsers. So hide it from IE using IECC. -->
   <!--[if !IE]>-->
-  <object type="application/x-shockwave-flash" data="swf/ad.swf" width="961" height="232">
+  <object type="application/x-shockwave-flash" data="swf/ad<?php echo $adid ?>.swf" width="961" height="232">
     <!--<![endif]-->
     <param name="quality" value="high">
     <param name="wmode" value="opaque">

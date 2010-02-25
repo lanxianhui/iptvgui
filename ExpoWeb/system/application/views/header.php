@@ -5,10 +5,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>SHANGHAI CHINA EXPO主页</title>
 <link href="css/site.css" type="text/css" rel="stylesheet"/>
+<script src="js/jquery.js" type="text/javascript"></script>
 <script src="js/swfobject.js" type="text/javascript"></script>
 <script src="js/common.js" type="text/javascript"></script>
 </head>
 <body>
+<input id="rooturl" value="<?php echo base_url() ?>" type="hidden"/>
 <!--站点头部-->
 <div id="header">
 <a href="index.php"><img src="images/logo_03.jpg"/></a>

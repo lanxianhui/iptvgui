@@ -4,6 +4,9 @@
 <a href="index.php/main/index">首页</a>
 <span>&nbsp;&gt;&nbsp;</span>
 <a href="index.php/main/news/<?php echo $rootid ?>/"><?php echo $entry["rootname"] ?></a>
+<div id="searchbox" style="padding-top:0px;">
+<input type="text" id="keyword"/><a href="#" onclick="searchList();return false;"><img src="images/search_13.jpg"/></a>
+</div>
 </div>
 <?php endforeach;?>
 <div id="content">

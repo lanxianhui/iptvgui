@@ -151,8 +151,8 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 
 #rcontent{ height:451px; width:245px; float:right;}
 	#rcontent div{ border:solid 1px #BFBFBF;}
-	#rcontent #search{ height:31px; border-bottom:none;}
-	#rcontent #impnews{ height:314px;}
+	#rcontent #search{ height:28px; border-bottom:0px;}
+	#rcontent #impnews{ height:314px; height:347px\9; +height:314px; border-top:none;}
 	#rcontent #call{ height:90px; margin-top:13px;}
 
 #mcontent{ height:451px; width: 392px; float:left; margin-left:10px;}
@@ -162,6 +162,9 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 			#mcontent dl dt .right{ float:right; color:#5f5f5f; margin-right:10px;}
 			#mcontent dl dt .active{ color:#e77110; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_03.jpg); }
 			#mcontent dl dt .deactive{ color:#30990F; font-weight:700; width:80px; height:26px; float:left; background:url(../images/active_05.jpg);}
+#impnews .top{ border:none; border-bottom:dotted 1px #7f7f7f; width:242px; height:175px; height:205px\9;+height:175px; text-align:center;}
+	#impnews .top img{ width:130px; height:124px; margin-left:48px; margin-top:20px;}
+	#impnews .top .bottomlink{ width:103px; margin-left:60px; font-weight:700;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; line-height:2.1em;}
 
 #back{ border:solid 1px #C9C9C9; width:390px; float:left; height:234px; margin-top:14px;}
 	#back dl dt{ border-bottom:none; background-image:url(../images/iback_10.jpg); background-repeat:repeat-x; height:28px;}
@@ -171,5 +174,8 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #backcontent{ width:370px; height:200px; padding:15px; float:left;overflow:hidden; line-height:1.9em; color:#7F7F7F;}
 
 .friendlink{color:#7F7F7F; margin-left:10px; margin-right:10px; line-height:1.8em; float:left;}
+#searchbox{ padding:6px; padding-bottom:0px; padding-top:3px; float:right;height:28px;  }
+#searchbox input{ float:left; border:solid 1px #367091; width:185px; height:19px;}
+#searchbox a{ float:left;}
 	
 	

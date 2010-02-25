@@ -3,13 +3,7 @@
 <span>所在位置：</span>
 <a href="index.php/main/index">首页</a>
 <span>&nbsp;&gt;&nbsp;</span>
-<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>"><?php echo $entry["rootname"] ?></a>
-<span>&nbsp;&gt;&nbsp;</span>
-<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>">
-<?php foreach($content as $catitem):?>
-<?php echo $catitem["catname"] ?>
-<?php endforeach;?>
-</a>
+<a href="index.php/main/search/<?php echo $keyword ?>/">搜索结果</a>
 <div id="searchbox" style="padding-top:0px;">
 <input type="text" id="keyword"/><a href="#" onclick="searchList();return false;"><img src="images/search_13.jpg"/></a>
 </div>
@@ -18,7 +12,7 @@
 <div id="content">
 <div class="lcontent">
 <dl>
-<dt><a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>"><img src="images/0<?php echo $rootid ?>.jpg"/></a></dt>
+<dt><a href="index.php/main/news/<?php echo $rootid ?>/"><img src="images/0<?php echo $rootid ?>.jpg"/></a></dt>
 
 <dd>
 <ul>
@@ -39,27 +33,32 @@
 <?php foreach($content as $catitem):?>
 <dl>
 	<dt><img src="images/ctitle_03.jpg"/>
-	<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>">
-	<?php echo $catitem["catname"] ?>
+	<a href="index.php/main/search/<?php echo $keyword ?>/<?php echo $offset ?>">
+	搜索结果
 	</a>
 	</dt>
 	<dd>
-	<?php foreach ($newsinfo as $pitem):?>
-	<div class="infocontent" id="serviceinfo">
-	<h4><?php echo $pitem["newstitle"] ?></h4>
-	<h5>发布时间：<?php $date =  (explode(" ", $pitem["pubtime"])); ?>
+	<div id="newspic">
+	<?php foreach ($resultlist as $sritem):?>
+	<div class="line">
+		<img src="upload/<?php echo $sritem["newsimg"] ?>"/>
+		<div>
+		<h4><a target="_blank" href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sritem["id"] ?>"><?php echo $sritem["newstitle"] ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<?php $date =  (explode(" ", $sritem["pubtime"])); ?>
 		<?php $result =  (explode("-", $date[0])); ?>
-		<?php echo $result[0]."-".$result[1]."-".$result[2] ?></h5>
-	<img src="upload/<?php echo $pitem["newsimg"] ?>"/>
-	<div><?php echo $pitem["newsdesc"] ?></div>
-	</div>
-	<div style="float:left;width:100%;">
-	<a style="color:blue;" href="index.php/main/news/1/<?php echo $pitem["catid"]?>/<?php echo $offset ?>">&lt;&lt;返回</a>
+		<?php echo "[".$result[0]."-".$result[1]."]" ?>
+		</h4>
+		<div class="info"><?php echo $sritem["newsdesc"]?></div>
+		<a target="_blank" href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $sritem["id"] ?>">+点击查看更多</a>
+		</div>
 	</div>
 	<?php endforeach;?>
+	</div>
+	<div class="page"  style="width:420px;float:left;"><?php echo $this->pagination->create_links();?></div>
 	</dd>
 </dl>
 <?php endforeach;?>
 </div>
 </div>
+
 

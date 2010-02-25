@@ -2,11 +2,41 @@
 
 class Main extends Controller {
 	var $methodName;
-	var $pagesize = 10;
+	var $pagesize = 15;
 	
 	function Main()
 	{
 		parent::Controller();	
+	}
+	
+	function search($keyword,$offset=0){
+		$data = array();
+		$data["keyword"] = $keyword;
+		$data["catmenu"] = $this->getServiceCat(1);
+		$data["newscat"] = $this->getNewsCat();
+		$data["selectcat"] = 0;
+		$data["content"] = $this->getServiceCatByID(1);
+		$data["offset"] = $offset;
+		// 搜索过程
+		$keywordvalue = str_replace("_","%",$keyword);
+		$keywordvalue = urldecode($keywordvalue);
+		
+		$this->pagiSearchNation($keyword,$keywordvalue,"news",4);
+		$newsinfo = $this->searchInfo($keywordvalue,$offset);
+		$newsresult = array();
+		foreach($newsinfo as $pitem){
+			$temppitem = array(
+			"id"=>$pitem["id"],
+			"newstitle"=>str_replace($keywordvalue,"<strong style='color:red;font-size:1.5em;'>$keywordvalue</strong>",$pitem["newstitle"]),
+			"newsdesc"=>str_replace($keywordvalue,"<strong style='color:red;'>$keywordvalue</strong>",$pitem["newsdesc"]),
+			"pubtime"=>$pitem["pubtime"],
+			"newsimg"=>$pitem["newsimg"]);
+			array_push($newsresult,$temppitem);
+		}
+		$data["resultlist"] = $newsresult;
+		//$data["content"]=$this->getNewsCatByID($catid);
+		$this->executeFrame($data,1);
+		$this->showView($data,"searchresult");
 	}
 	
 	function index($rid=7,$catid=1)
@@ -21,6 +51,7 @@ class Main extends Controller {
 		$data["indexexpert"] = $this->getIndexExpert();
 		$data["newslist"] = $this->getIndexNews($catid);
 		$data["servicecat"] = $this->getServiceCatByID(12);
+		$data["topone"] = $this->getIndexTopNews();
 		$this->executeFrame($data,7);
 		$this->showIndexView($data,"index");
 	}
@@ -51,7 +82,7 @@ class Main extends Controller {
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
 		$data["partner"] = $this->getAllPartners();
-		$data["servicelist"] = $this->getServiceByCat($catid);
+		$data["servicelist"] = $this->getServiceByCat($catid,0);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"catinfo");
 	}
@@ -233,6 +264,12 @@ class Main extends Controller {
 	     return $result->result_array();
 	}
 	
+	function getIndexTopNews(){
+		$this->db->order_by("pubtime","desc");
+		$result = $this->db->get("news",1,0);
+		return $result->result_array();
+	}
+	
 	function getIndexExpert(){
 		$result =  $this->db->get("expert",8,0);
 	     return $result->result_array();
@@ -244,9 +281,17 @@ class Main extends Controller {
 	}
 	
 	function getIndexNews($catid){
-		 $this->db->order_by("pubtime desc");
+		 $this->db->order_by("pubtime","desc");
 	     $result =  $this->db->get_where("news",array("catid"=>$catid),6,0);
 	     return $result->result_array();
+	}
+	
+	function searchInfo($keyword,$offset){
+		$this->db->order_by("pubtime","desc");
+		$this->db->like("newstitle","$keyword",'both');
+		$this->db->limit(4,$offset);
+		$result = $this->db->get("news");
+		return $result->result_array();
 	}
 	
 	function getIndexPartners(){
@@ -261,7 +306,7 @@ class Main extends Controller {
 	}
 	
 	function getNewsByCat($catid,$offset){
-	     $this->db->order_by("pubtime desc");
+	     $this->db->order_by("pubtime","desc");
 	     $result =  $this->db->get_where("news",array("catid"=>$catid),$this->pagesize,$offset);
 	     return $result->result_array();
 	}
@@ -300,7 +345,7 @@ class Main extends Controller {
 	}
 	
 	function getServiceByCat($catid,$offset){
-		$this->db->order_by("pubtime desc");
+		$this->db->order_by("pubtime","desc");
 		$result = $this->db->get_where("service",array("catid"=>$catid),$this->pagesize,$offset);
 		return $result->result_array();
 	}
@@ -368,6 +413,25 @@ class Main extends Controller {
 		}
 		if (! $total) {
 			$rownumber = $this->db->query ( "select * from expert");
+			$config ['total_rows'] = $rownumber->num_rows;
+		} else {
+			$config ['total_rows'] = $total;
+		}
+		$config ['uri_segment'] = $uri_segment;
+		$config ['per_page'] = $perpage;
+		$this->pagination->initialize ( $config );
+	}
+	
+	function pagiSearchNation($keywordvalue,$keyword, $table, $perpage, $base_url = null, $uri_segment = 4, $total = null) {
+		$this->load->library ( 'pagination' );
+		if (! $base_url) {
+			$config ['base_url'] = base_url () . 'index.php/main/search/' . $keywordvalue . "/" . $this->methodName;
+		} else {
+			$config ['base_url'] = $base_url;
+		}
+		if (! $total) {
+			$keywordvalue = urldecode($keyword);
+			$rownumber = $this->db->query ( "select * from news where newstitle like '%$keywordvalue%'");
 			$config ['total_rows'] = $rownumber->num_rows;
 		} else {
 			$config ['total_rows'] = $total;

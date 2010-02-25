@@ -77,8 +77,20 @@
 </div>
 </div>
 <div id="rcontent">
-<div id="search"></div>
-<div id="impnews"></div>
+<div id="searchbox">
+<input type="text" id="keyword"/><a href="#" onclick="searchList();return false;"><img src="images/search_13.jpg"/></a>
+</div>
+<div id="impnews">
+<?php foreach($topone as $titem):?>
+<div class="top">
+<a href="index.php/main/newsinfo/1/<?php echo $titem["catid"] ?>/<?php echo $titem["id"] ?>/0" target="_blank"><img src="upload/<?php echo $titem["newsimg"] ?>"/></a>
+<a href="index.php/main/newsinfo/1/<?php echo $titem["catid"] ?>/<?php echo $titem["id"] ?>/0" target="_blank" class="bottomlink" title="<?php echo $titem["newstitle"]?>"><?php echo $titem["newstitle"]?></a>
+</div>
+<div style="width:211px; height:107px; padding:15px; float:left;overflow:hidden; line-height:1.9em; color:#7F7F7F; border:none;">
+<?php echo $titem["newsdesc"] ?>
+</div>
+<?php endforeach;?>
+</div>
 <div id="call">
 <img src="images/home_03.jpg"/>
 </div>

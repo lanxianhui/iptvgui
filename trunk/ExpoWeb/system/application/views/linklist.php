@@ -6,6 +6,9 @@
 <a href="index.php/main/linklist/<?php echo $rootid ?>/<?php echo $selectcat ?>">
 相关链接
 </a>
+<div id="searchbox" style="padding-top:0px;">
+<input type="text" id="keyword"/><a href="#" onclick="searchList();return false;"><img src="images/search_13.jpg"/></a>
+</div>
 </div>
 <?php endforeach;?>
 <div id="content">

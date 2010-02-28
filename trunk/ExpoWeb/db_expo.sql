@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50130
 File Encoding         : 65001
 
-Date: 2010-02-25 09:43:13
+Date: 2010-02-28 13:26:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -219,7 +219,7 @@ CREATE TABLE `servicecat` (
   `catdesc` text,
   `catorder` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of servicecat
@@ -243,6 +243,7 @@ INSERT INTO `servicecat` VALUES ('16', '版权申明', '7', '<h3>关于VeryCD</h
 INSERT INTO `servicecat` VALUES ('17', '网络服务', '7', '<h3>关于VeryCD</h3>\r\n<p>　　VeryCD的理想是&ldquo;分享互联网&rdquo;，我们的使命是通过开放的技术构建全球最庞大、最便捷、最人性化的资源分享网络。</p>\r\n<p>　　为了实现这一使命，VeryCD 自 2003年9月起，开始将开放源码的 <a href=\"http://www.emule.org.cn/\"><font color=\"#c00000\">eMule</font></a> 引入中国，通过我们的不懈努力，VeryCD 版的 eMule 已累计下载超过 3000 万次，每天数以万计的网友通过 VeryCD 分享着包括电影、音乐、游戏、软件在内的各类资源。</p>\r\n<h3>关于我们</h3>\r\n<p>　　我们是中国互联网的年轻一代，我们有不断追求卓越的执著，也有不被利益所惑的倔强。</p>\r\n<p>　　我们愿意为分享互联网的理想而挥洒我们的热血，奉献我们的青春。</p>\r\n<h3>VeryCD发展理念</h3>\r\n<dl class=\"contact\"><dt>专注</dt><dd>我们不做门户，不做媒体，不跟风，不模仿。VeryCD只专注于&ldquo;分享互联网&rdquo;，专注于建立一种有意义的资源分享模式，虽然先前没有任何成功案例，但我们愿意尝试，敢于创新</dd><dt>以网友为核心</dt><dd>VeryCD现在引以为傲的，是所有内容都由网友提供和管理，并且比任何传统网站的编辑都做得好。我们的技术团队将为VC构建强壮的体格，网友的参与和互动则会成为VC的灵魂</dd><dt>简洁友好的界面</dt><dd>&ldquo;Google斯巴达式的网站，以精简的&ldquo;菜单&rdquo;上线，不收费，不鼓励你流连忘返，不用广告打扰你、不卖产品。设计的主旨是尽快让你查到信息链接，尽快离开。&rdquo; Google就是我们学习的对象</dd><dt>永远不迎合媚俗</dt><dd>人气是必要的，访问量是重要的，但媚俗是不需要的。VeryCD不需要靠芙蓉姐姐、靠激情小电影、靠性感MM来吸引眼球。引导用户分享健康的内容是我们的责任</dd><dt>不受商业化腐蚀</dt><dd>VeryCD是网友的VeryCD，他的目的是为网友服务，而不是成为谁的赚钱机器。VeryCD不会拒绝商业化的合作，但是一切都将以是否能给网友带来真正的价值为前提</dd></dl>\r\n<h3>数字统计</h3>\r\n<dl><dd>VeryCD网站页面总数：100万+</dd><dd>发布资源数：\r\n<s<x>cript type=\"text/ja<x>vascript\">document.write(recordCount_all);</script>\r\n项+</dd><dd>发布资源总容量：\r\n<s<x>cript type=\"text/ja<x>vascript\">document.write(recordCount_all*451);</script>\r\nMB +</dd></dl>', '3');
 INSERT INTO `servicecat` VALUES ('18', '联系我们', '7', '<h3>关于VeryCD</h3>\r\n<p>　　VeryCD的理想是&ldquo;分享互联网&rdquo;，我们的使命是通过开放的技术构建全球最庞大、最便捷、最人性化的资源分享网络。</p>\r\n<p>　　为了实现这一使命，VeryCD 自 2003年9月起，开始将开放源码的 <a href=\"http://www.emule.org.cn/\"><font color=\"#c00000\">eMule</font></a> 引入中国，通过我们的不懈努力，VeryCD 版的 eMule 已累计下载超过 3000 万次，每天数以万计的网友通过 VeryCD 分享着包括电影、音乐、游戏、软件在内的各类资源。</p>\r\n<h3>关于我们</h3>\r\n<p>　　我们是中国互联网的年轻一代，我们有不断追求卓越的执著，也有不被利益所惑的倔强。</p>\r\n<p>　　我们愿意为分享互联网的理想而挥洒我们的热血，奉献我们的青春。</p>\r\n<h3>VeryCD发展理念</h3>\r\n<dl class=\"contact\"><dt>专注</dt><dd>我们不做门户，不做媒体，不跟风，不模仿。VeryCD只专注于&ldquo;分享互联网&rdquo;，专注于建立一种有意义的资源分享模式，虽然先前没有任何成功案例，但我们愿意尝试，敢于创新</dd><dt>以网友为核心</dt><dd>VeryCD现在引以为傲的，是所有内容都由网友提供和管理，并且比任何传统网站的编辑都做得好。我们的技术团队将为VC构建强壮的体格，网友的参与和互动则会成为VC的灵魂</dd><dt>简洁友好的界面</dt><dd>&ldquo;Google斯巴达式的网站，以精简的&ldquo;菜单&rdquo;上线，不收费，不鼓励你流连忘返，不用广告打扰你、不卖产品。设计的主旨是尽快让你查到信息链接，尽快离开。&rdquo; Google就是我们学习的对象</dd><dt>永远不迎合媚俗</dt><dd>人气是必要的，访问量是重要的，但媚俗是不需要的。VeryCD不需要靠芙蓉姐姐、靠激情小电影、靠性感MM来吸引眼球。引导用户分享健康的内容是我们的责任</dd><dt>不受商业化腐蚀</dt><dd>VeryCD是网友的VeryCD，他的目的是为网友服务，而不是成为谁的赚钱机器。VeryCD不会拒绝商业化的合作，但是一切都将以是否能给网友带来真正的价值为前提</dd></dl>\r\n<h3>数字统计</h3>\r\n<dl><dd>VeryCD网站页面总数：100万+</dd><dd>发布资源数：\r\n<s<x>cript type=\"text/ja<x>vascript\">document.write(recordCount_all);</script>\r\n项+</dd><dd>发布资源总容量：\r\n<s<x>cript type=\"text/ja<x>vascript\">document.write(recordCount_all*451);</script>\r\nMB +</dd></dl>', '4');
 INSERT INTO `servicecat` VALUES ('19', '网站公告', '0', '<p>按时地方撒撒旦发射的发生的发撒旦法的说法</p>', '1');
+INSERT INTO `servicecat` VALUES ('20', '报名流程', '-1', '<p>报名流程按时打发撒旦发射的发生的发生的</p>', '8');
 
 -- ----------------------------
 -- Table structure for `serviceroot`
@@ -265,3 +266,25 @@ INSERT INTO `serviceroot` VALUES ('4', '智慧城市', '4');
 INSERT INTO `serviceroot` VALUES ('5', '沟通推荐', '5');
 INSERT INTO `serviceroot` VALUES ('6', '合作交流', '6');
 INSERT INTO `serviceroot` VALUES ('7', '站点内容', '-1');
+
+-- ----------------------------
+-- Table structure for `sign`
+-- ----------------------------
+DROP TABLE IF EXISTS `sign`;
+CREATE TABLE `sign` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(200) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `mobile` varchar(200) NOT NULL,
+  `phone` varchar(200) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `company` varchar(200) NOT NULL,
+  `contact` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sign
+-- ----------------------------
+INSERT INTO `sign` VALUES ('2', '虞浪', 'silentbalanceyh@126.com', '15922611447', '15900957500', '重庆市大坪石油路', 'Destiny团队', '我的详细地址：按时打发撒旦发射的发生的发生的');
+INSERT INTO `sign` VALUES ('3', '你好', 'silentyh@126.com', '15922644asdf', '455456', 'asdfasdfasdf', '撒旦发射的发生', '啊撒旦发射点发射点发射点');

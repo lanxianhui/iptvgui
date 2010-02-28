@@ -178,5 +178,11 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #searchbox{ padding:6px; padding-bottom:0px; padding-top:3px; float:right;height:28px;  }
 #searchbox input{ float:left; border:solid 1px #367091; width:185px; height:19px;}
 #searchbox a{ float:left;}
+
+#signform{ float:left; margin:30px;}
+#signform label{ font-weight:700; height:30px; float:left; display:block; width:100%;}
+#signform table tr td{ height:28px; }
+#signform table tr td input[type=text]{ border: none; border-bottom:solid 1px #666;}
+#signform table tr td textarea{ border:solid 1px #666; overflow:hidden;}
 	
 	

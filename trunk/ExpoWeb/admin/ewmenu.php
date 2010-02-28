@@ -138,6 +138,9 @@ if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(6, "合作伙伴", "partnerlist.php", -1);
 }
 if (IsLoggedIn()) {
+	$RootMenu->AddMenuItem(10, "报名列表", "signlist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(9, "服务根类", "servicerootlist.php", -1);
 }
 if (IsLoggedIn()) {

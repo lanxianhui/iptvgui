@@ -73,8 +73,8 @@
 	<?php }?>
 	
 	<div id="sign">
-	<a href="#"><img src="images/button_03.gif"/></a>
-	<a href="#"><img src="images/button_06.jpg"/></a>
+	<a href="index.php/main/sign/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $offset ?>"><img src="images/button_03.gif"/></a>
+	<a href="index.php/main/signflow/-1/20"><img src="images/button_06.jpg"/></a>
 	</div>
 	<div class="page"  style="width:480px;float:left;"><?php echo $this->pagination->create_links();?></div>
 	</dd>

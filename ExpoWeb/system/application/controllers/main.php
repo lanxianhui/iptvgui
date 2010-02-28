@@ -9,6 +9,38 @@ class Main extends Controller {
 		parent::Controller();	
 	}
 	
+	function submitSign(){
+		$sql = "INSERT INTO sign (username,email,mobile,phone,address,company,contact) VALUES".
+		" ('".$_POST["username"]."',".
+		"'".$_POST["email"]."',".
+		"'".$_POST["mobile"]."',".
+		"'".$_POST["phone"]."',".
+		"'".$_POST["address"]."',".
+		"'".$_POST["company"]."',".
+		"'".$_POST["contact"]."')";
+		$this->db->query($sql);
+		echo "Success";
+	}
+	
+	function sign($rid,$catid=0,$offset){
+		$data = array();
+		$data["catmenu"]=$this->getServiceCat($rid);
+		$data["selectcat"]=$catid;
+		$data["content"]=$this->getServiceCatByID($catid);
+		$data["offset"] = $offset;
+		/*if($catid == 6){
+			$this->pagiExpertNation("knowledgecity",$rid,"service",4);
+			$data["expert"] = $this->getAllexpert($offset);
+			$data["offset"] = $offset;
+		}else{
+			$this->pagiServiceNation("knowledgecity",$rid,$catid,"service",$this->pagesize);
+			$data["servicelist"]=$this->getServiceByCat($catid,$offset);
+			$data["offset"] = $offset;
+		}*/
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"signinfo");
+	}
+	
 	function search($keyword,$offset=0){
 		$data = array();
 		$data["keyword"] = $keyword;
@@ -73,6 +105,17 @@ class Main extends Controller {
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"servicelist");
+	}
+	
+	function signflow($rid = 0,$catid=20){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$data["partner"] = $this->getAllPartners();
+		//$data["servicelist"] = $this->getServiceByCat($catid,0);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"signflow");
 	}
 
 	// 站点内容

@@ -1,3 +1,6 @@
+<?php if(count($root) ==0){?>
+<?php $adid = 1;?>
+<?php }?>
 <?php foreach($root as $entry): $adid = $entry["id"];?>
 <?php endforeach;?>
 <div id="ad">

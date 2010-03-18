@@ -22,7 +22,7 @@ define("EW_DEFAULT_DATE_FORMAT", "yyyy/mm/dd", TRUE); // Default date format
 define("EW_DEFAULT_DATE_FORMAT_ID", "5", TRUE); // Default date format
 define("EW_DATE_SEPARATOR", "/", TRUE); // Date separator
 define("EW_PROJECT_NAME", "elegant", TRUE); // Project Name
-define("EW_RANDOM_KEY", 'XuYOOlWuL2GHG6sD', TRUE); // Random key for encryption
+define("EW_RANDOM_KEY", 'itfel0VvshRHJOuf', TRUE); // Random key for encryption
 
 /**
  * Encoding for Ajax

@@ -59,6 +59,10 @@ var ew_DHTMLEditors = [];
 
 //-->
 </script>
+<link rel="stylesheet" type="text/css" media="all" href="calendar/calendar-win2k-1.css" title="win2k-1">
+<script type="text/javascript" src="calendar/calendar.js"></script>
+<script type="text/javascript" src="calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="calendar/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!--
 

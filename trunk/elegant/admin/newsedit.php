@@ -124,6 +124,10 @@ function ew_FocusDHTMLEditor(name) {
 
 //-->
 </script>
+<link rel="stylesheet" type="text/css" media="all" href="calendar/calendar-win2k-1.css" title="win2k-1">
+<script type="text/javascript" src="calendar/calendar.js"></script>
+<script type="text/javascript" src="calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="calendar/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -208,12 +212,20 @@ ew_DHTMLEditors.push(new ew_DHTMLEditor("x_newsdesc", function() {
 		<td class="ewTableHeader">发布时间<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $news->pubtime->CellAttributes() ?>><span id="el_pubtime">
 <input type="text" name="x_pubtime" id="x_pubtime" value="<?php echo $news->pubtime->EditValue ?>"<?php echo $news->pubtime->EditAttributes() ?>>
+&nbsp;<img src="images/calendar.png" id="cal_x_pubtime" name="cal_x_pubtime" alt="选择日期" style="cursor:pointer;cursor:hand;">
+<script type="text/javascript">
+Calendar.setup({
+	inputField : "x_pubtime", // ID of the input field
+	ifFormat : "%Y/%m/%d", // the date format
+	button : "cal_x_pubtime" // ID of the button
+});
+</script>
 </span><?php echo $news->pubtime->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 <?php if ($news->newsimg->Visible) { // newsimg ?>
 	<tr<?php echo $news->newsimg->RowAttributes ?>>
-		<td class="ewTableHeader">新闻图片</td>
+		<td class="ewTableHeader">新闻图片<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $news->newsimg->CellAttributes() ?>><span id="el_newsimg">
 <div id="old_x_newsimg">
 <?php if ($news->newsimg->HrefValue <> "") { ?>
@@ -767,19 +779,19 @@ class cnews_edit {
 			// Field id
 			// Field newstitle
 
-			$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, NULL);
+			$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, "");
 			$rsnew['newstitle'] =& $news->newstitle->DbValue;
 
 			// Field catid
-			$news->catid->SetDbValueDef($news->catid->CurrentValue, NULL);
+			$news->catid->SetDbValueDef($news->catid->CurrentValue, 0);
 			$rsnew['catid'] =& $news->catid->DbValue;
 
 			// Field newsdesc
-			$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, NULL);
+			$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, "");
 			$rsnew['newsdesc'] =& $news->newsdesc->DbValue;
 
 			// Field pubtime
-			$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), NULL);
+			$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), ew_CurrentDate());
 			$rsnew['pubtime'] =& $news->pubtime->DbValue;
 
 			// Field newsimg

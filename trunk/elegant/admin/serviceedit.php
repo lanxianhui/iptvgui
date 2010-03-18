@@ -887,23 +887,23 @@ class cservice_edit {
 			// Field id
 			// Field servicename
 
-			$service->servicename->SetDbValueDef($service->servicename->CurrentValue, NULL);
+			$service->servicename->SetDbValueDef($service->servicename->CurrentValue, "");
 			$rsnew['servicename'] =& $service->servicename->DbValue;
 
 			// Field pubtime
-			$service->pubtime->SetDbValueDef(ew_UnFormatDateTime($service->pubtime->CurrentValue, 5), NULL);
+			$service->pubtime->SetDbValueDef(ew_UnFormatDateTime($service->pubtime->CurrentValue, 5), ew_CurrentDate());
 			$rsnew['pubtime'] =& $service->pubtime->DbValue;
 
 			// Field servicedesc
-			$service->servicedesc->SetDbValueDef($service->servicedesc->CurrentValue, NULL);
+			$service->servicedesc->SetDbValueDef($service->servicedesc->CurrentValue, "");
 			$rsnew['servicedesc'] =& $service->servicedesc->DbValue;
 
 			// Field rootid
-			$service->rootid->SetDbValueDef($service->rootid->CurrentValue, NULL);
+			$service->rootid->SetDbValueDef($service->rootid->CurrentValue, 0);
 			$rsnew['rootid'] =& $service->rootid->DbValue;
 
 			// Field catid
-			$service->catid->SetDbValueDef($service->catid->CurrentValue, NULL);
+			$service->catid->SetDbValueDef($service->catid->CurrentValue, 0);
 			$rsnew['catid'] =& $service->catid->DbValue;
 
 			// Field servicepic

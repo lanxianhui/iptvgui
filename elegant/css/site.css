@@ -20,19 +20,35 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #nav{ width:730px; float:right; border-top:solid 3px #AAA;}
 #nav li{ width:100px; float:left; height:36px; }
 #nav li a{ float:left; color:#7e7e7e; line-height:3em; width:100%; text-align:center;}
-
+/* index content */
 #icontent{ float:left; width:100%;}
 #content_left{ float:left;}
 #iflash{ float:left; width:918px;}
 #content_right{ float:left; width:150px;}
+/* ad css */
+#ad{ float:left; width:916px; border-left:solid 2px #fff; border-right:solid 2px #fff;}
+#ad_outer{ width:100%; float:left;}
+#ad_left{ float:left; width:150px; height:240px; background-color:#252525;}
+#ad_right{ float:left; width:170px; height:240px; background-color:#B5d353;}
+/* friend link css */
 #friend{ padding-left:150px; padding-right:170px;}
 #friend ul{ width:920px; padding-top:18px; padding-bottom:10px;}
 #friend label{ color:535353; }
 #friend ul li{ float:left; margin-right:10px; }
 #friend ul li a{ color:#98c143; line-height:1.6em;}
-
+/* index footer */
 #footer{ width:920px; float:left; padding-left:150px; padding-right:170px; border-top:solid 1px #e4e4e4;}
 #copyright{ float:left; color:#727272;padding-top:15px;}
 #footer ul{ float:right; }
 #footer ul li{ float:left; color:#727272; height:34px; padding-top:15px;}
 #footer ul li a{ color:#727272; line-height:1.4em;}
+
+#footer_outer{ width:1240px; float:left; border-top:solid 1px #e4e4e4; background-color:#f1f1f1;}
+#infofooter{ width:920px; float:left; background-color:#fff; margin-left:150px;}
+#copyright{ float:left; color:#727272;padding-top:15px; padding-left:20px;}
+#infofooter ul{ float:right; padding-right:20px; }
+#infofooter ul li{ float:left; color:#727272; height:34px; padding-top:15px;}
+#infofooter ul li a{ color:#727272; line-height:1.4em;}
+
+#content{ width:920px; float:left;padding-left:150px; padding-right:170px; background-color:#f1f1f1;}
+#info{ float:left; background-color:#fff; min-height:500px; width:920px;}

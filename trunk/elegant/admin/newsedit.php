@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "newsinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -79,6 +80,9 @@ news_edit.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+news_edit.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 news_edit.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -124,10 +128,6 @@ function ew_FocusDHTMLEditor(name) {
 
 //-->
 </script>
-<link rel="stylesheet" type="text/css" media="all" href="calendar/calendar-win2k-1.css" title="win2k-1">
-<script type="text/javascript" src="calendar/calendar.js"></script>
-<script type="text/javascript" src="calendar/lang/calendar-en.js"></script>
-<script type="text/javascript" src="calendar/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -212,14 +212,6 @@ ew_DHTMLEditors.push(new ew_DHTMLEditor("x_newsdesc", function() {
 		<td class="ewTableHeader">发布时间<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $news->pubtime->CellAttributes() ?>><span id="el_pubtime">
 <input type="text" name="x_pubtime" id="x_pubtime" value="<?php echo $news->pubtime->EditValue ?>"<?php echo $news->pubtime->EditAttributes() ?>>
-&nbsp;<img src="images/calendar.png" id="cal_x_pubtime" name="cal_x_pubtime" alt="选择日期" style="cursor:pointer;cursor:hand;">
-<script type="text/javascript">
-Calendar.setup({
-	inputField : "x_pubtime", // ID of the input field
-	ifFormat : "%Y/%m/%d", // the date format
-	button : "cal_x_pubtime" // ID of the button
-});
-</script>
 </span><?php echo $news->pubtime->CustomMsg ?></td>
 	</tr>
 <?php } ?>
@@ -352,6 +344,9 @@ class cnews_edit {
 		// Initialize table object
 		$GLOBALS["news"] = new cnews();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'edit', TRUE);
@@ -369,6 +364,13 @@ class cnews_edit {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $news;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -444,6 +446,8 @@ class cnews_edit {
 				if ($this->EditRow()) { // Update record based on key
 					$this->setMessage("更新成功"); // Update success
 					$sReturnUrl = $news->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "newsview.php")
+						$sReturnUrl = $news->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Return to caller
 				} else {
 					$this->RestoreFormValues(); // Restore form values if update failed
@@ -779,19 +783,19 @@ class cnews_edit {
 			// Field id
 			// Field newstitle
 
-			$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, NULL);
+			$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, "");
 			$rsnew['newstitle'] =& $news->newstitle->DbValue;
 
 			// Field catid
-			$news->catid->SetDbValueDef($news->catid->CurrentValue, NULL);
+			$news->catid->SetDbValueDef($news->catid->CurrentValue, 0);
 			$rsnew['catid'] =& $news->catid->DbValue;
 
 			// Field newsdesc
-			$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, NULL);
+			$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, "");
 			$rsnew['newsdesc'] =& $news->newsdesc->DbValue;
 
 			// Field pubtime
-			$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), NULL);
+			$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), ew_CurrentDate());
 			$rsnew['pubtime'] =& $news->pubtime->DbValue;
 
 			// Field newsimg

@@ -225,6 +225,9 @@ class cadmin {
 		$names = "";
 		$values = "";
 		foreach ($rs as $name => $value) {
+			if (EW_MD5_PASSWORD && $name == 'usepass') {
+				$value = (EW_CASE_SENSITIVE_PASSWORD) ? md5($value) : md5(strtolower($value));
+			}
 			$names .= $this->fields[$name]->FldExpression . ",";
 			$values .= (is_null($value) ? "NULL" : ew_QuotedValue($value, $this->fields[$name]->FldDataType)) . ",";
 		}
@@ -237,6 +240,9 @@ class cadmin {
 	function UpdateSQL(&$rs) {
 		$SQL = "UPDATE `admin` SET ";
 		foreach ($rs as $name => $value) {
+			if (EW_MD5_PASSWORD && $name == 'usepass') {
+				$value = (EW_CASE_SENSITIVE_PASSWORD) ? md5($value) : md5(strtolower($value));
+			}
 			$SQL .= $this->fields[$name]->FldExpression . "=" .
 					(is_null($value) ? "NULL" : ew_QuotedValue($value, $this->fields[$name]->FldDataType)) . ",";
 		}

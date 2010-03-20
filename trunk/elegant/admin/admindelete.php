@@ -44,6 +44,9 @@ admin_delete.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+admin_delete.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 admin_delete.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -232,6 +235,13 @@ class cadmin_delete {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $admin;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -319,7 +329,7 @@ class cadmin_delete {
 		if (@$_POST["a_delete"] <> "") {
 			$admin->CurrentAction = $_POST["a_delete"];
 		} else {
-			$admin->CurrentAction = "I"; // Display record
+			$admin->CurrentAction = "D"; // Delete record directly
 		}
 		switch ($admin->CurrentAction) {
 			case "D": // Delete

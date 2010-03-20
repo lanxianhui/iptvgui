@@ -30,21 +30,21 @@ html {
 body {
 	background-color: inherit; /* background color */
 	color: inherit; /* text color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 	margin: 0; /* top right bottom left */
 	height: 100%;
 }
 
 .phpmaker {
 	color: inherit; /* text color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */	
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */	
 }
 
 input, textarea, select {	
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 } 
 
 a:active {
@@ -76,19 +76,19 @@ ul.ewMenuBarVertical ul,li {
 
 /* template layout */
 .ewLayout {
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 	width: 100%;
 	height: 100%;
 }
 
 .ewHeaderRow {
-	background-color: #FF0000; /* background color */	
+	background-color: #000000; /* background color */	
 }
 
 .ewContentTable {
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */	
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */	
 	width: 100%;
 	height: 100%;	
 }
@@ -107,14 +107,14 @@ ul.ewMenuBarVertical ul,li {
 }
 
 .ewFooterRow {
-	background-color: #FF0000; /* background color */
+	background-color: #000000; /* background color */
 	color: #FFFFFF; /* footer font color */	
 	padding: 4px;
 }
 
 .ewFooterText {
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */	
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */	
 }
 
 .ewForm {
@@ -128,7 +128,7 @@ ul.ewMenuBarVertical ul,li {
 
 .ewGridContent {
 	padding: 0;	
-	border: 1px solid #8A0A37; /* grid border */			
+	border: 1px solid #ACA899; /* grid border */			
 }
 
 /* grid pager panel */
@@ -136,16 +136,16 @@ ul.ewMenuBarVertical ul,li {
 	padding: 3px;	
 	border-left: 0;
 	border-right: 0;	
-	background-color: #EFEFEF; /* grid header color */
-	color: #8A0A37;	 /* grid header font color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */			
+	background-color: #E7E7FF; /* grid header color */
+	color: inherit;	 /* grid header font color */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */			
 }
 
 .ewGridUpperPanel {
 	border-top: 0px;
 	border-bottom: 1px solid;
-	border-color: #8A0A37; 
+	border-color: #C0C0C0; 
 }
 
 .ewGridMiddlePanel {
@@ -155,13 +155,13 @@ ul.ewMenuBarVertical ul,li {
 .ewGridLowerPanel {
 	border-top: 1px solid;
 	border-bottom: 0px; 
-	border-color: #D5D5D5; 
+	border-color: #C0C0C0; 
 }
 
 .ewGridUpperPanel td, .ewGridLowerPanel td {
-	color: #8A0A37;	 /* grid header font color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */			
+	color: inherit;	 /* grid header font color */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */			
 }
 
 .ewPager td {
@@ -188,8 +188,8 @@ ul.ewMenuBarVertical ul,li {
 	border-collapse: collapse;
 	empty-cells: show;
 	width: 100%;
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */			
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */			
 }
 
 .ewTableSeparate {	
@@ -202,14 +202,14 @@ ul.ewMenuBarVertical ul,li {
 	border-top: 0px;
 	border-left: 0px;
 	border-right: 1px solid; /* border width, vertical grid line */
-	border-color: #D5D5D5;  /* border color */
+	border-color: #C0C0C0;  /* border color */
 }
 
 .ewTableAddOpt {
 	border: 0;
 	border-spacing: 0;
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */			
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */			
 }
 
 .ewTableAddOpt td {
@@ -218,12 +218,12 @@ ul.ewMenuBarVertical ul,li {
 }
 	
 .ewTable .ewTableHeader, .ewTable .ewTableHeader td {
-	background-color: #B1174D;	/* header bgcolor */
+	background-color: #3E3276;	/* header bgcolor */
 	color: #FFFFFF; /* header font color */
 	border-bottom: 1px solid; /* header border width */
 	border-right: 1px solid; /* header border width */
-	border-color: #8A0A37; /* header border color */	
-	background-image: url(images/red.png); /* header bg image */
+	border-color: #C0C0C0; /* header border color */	
+	background-image: url(images/purple.png); /* header bg image */
 	background-repeat: repeat-x;		
 	vertical-align: top; 	
 }
@@ -239,8 +239,8 @@ ul.ewMenuBarVertical ul,li {
 
 .ewTableHeaderBtn {
 	width: 100%;
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */				
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */				
 }
 
 .ewTableHeader .ewTableHeaderBtn td {
@@ -252,13 +252,13 @@ ul.ewMenuBarVertical ul,li {
 
 /* main table row color */
 .ewTableRow {
-	background-color: #FFFFFF;  /* alt row color 1 */
+	background-color: #E7E7FF;  /* alt row color 1 */
 	color: inherit;
 }
 
 /* main table alternate row color */
 .ewTableAltRow {
-	background-color: #F8EDEF; /* alt row color 2 */
+	background-color: #F7F7F7; /* alt row color 2 */
 	color: inherit;	
 }
 
@@ -269,25 +269,25 @@ ul.ewMenuBarVertical ul,li {
 
 /* main table edit mode row color */
 .ewTableEditRow {
-	background-color: #FFE4E1; /* edit mode color */
+	background-color: #9FAFDF; /* edit mode color */
 	color: inherit;
 }
 
 /* main table highlight color */
 .ewTableHighlightRow {
-	background-color: #FFB6C1; /* highlight color */
+	background-color: #CCCCFF; /* highlight color */
 	color: inherit;
 }
 
 /* main table select color */
 .ewTableSelectRow {
-	background-color: #747474; /* select color */
+	background-color: #6A5ACD; /* select color */
 	color: #FFFFFF;
 }
 
 /* main table footer */
 .ewTableFooter {
-	background-color: #F5F5F5; /* footer color */
+	background-color: #E6E6FA; /* footer color */
 	color: inherit;
 }
 
@@ -303,8 +303,8 @@ ul.ewMenuBarVertical ul,li {
 }
 
 .ewBasicSearch {
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 	border: 0px;
 	border-collapse: collapse;
 }
@@ -315,15 +315,15 @@ ul.ewMenuBarVertical ul,li {
 }
 
 .ewSearchOpr {
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 	color: maroon;
 }
 
 .ewItemTable td {
 	color: inherit; /* text color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 	border: 0px;
 	padding: 0px;
 	vertical-align: top; 
@@ -372,15 +372,15 @@ ul.ewMenuBarVertical ul,li {
 /* message */
 .ewMessage {
 	color: red; /* message color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */	
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */	
 }
 
 /* required field indicator */
 .ewRequired {
 	color: red; /* message color */
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */	
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */	
 }
 
 /* highlight */
@@ -396,8 +396,8 @@ ul.ewMenuBarVertical ul,li {
 
 /* YUI TabView */
 .yui-skin-sam .yui-navset .yui-nav  {
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */	
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */	
 }
 
 .yui-skin-sam .yui-navset .yui-content {
@@ -413,12 +413,12 @@ ul.ewMenuBarVertical ul,li {
 
 /* YUI Button */
 .yui-skin-sam .yui-button button, .yui-skin-sam .yui-button a {   
-  font-size: xx-small; /* font size */
+  font-size: 12px; /* font size */
 }
 
 /* YUI Panel */
 .yui-skin-sam .yui-panel .hd {    
-	font-size: xx-small; /* font size */
+	font-size: 12px; /* font size */
 	line-height: 2.5;     
 }
 
@@ -433,8 +433,8 @@ ul.ewMenuBarVertical ul,li {
 }
 
 .yui-skin-sam .yui-ac-content ul{
-	font-family: Verdana; /* font name */
-	font-size: xx-small; /* font size */
+	font-family: Tahoma; /* font name */
+	font-size: 12px; /* font size */
 	color: #000000; /* text color */ 
 }
 

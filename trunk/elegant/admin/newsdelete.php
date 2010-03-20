@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "newsinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -44,6 +45,9 @@ news_delete.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+news_delete.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 news_delete.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -218,6 +222,9 @@ class cnews_delete {
 		// Initialize table object
 		$GLOBALS["news"] = new cnews();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'delete', TRUE);
@@ -235,6 +242,13 @@ class cnews_delete {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $news;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -322,7 +336,7 @@ class cnews_delete {
 		if (@$_POST["a_delete"] <> "") {
 			$news->CurrentAction = $_POST["a_delete"];
 		} else {
-			$news->CurrentAction = "I"; // Display record
+			$news->CurrentAction = "D"; // Delete record directly
 		}
 		switch ($news->CurrentAction) {
 			case "D": // Delete

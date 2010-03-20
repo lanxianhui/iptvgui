@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "newsinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -87,6 +88,9 @@ class cnews_newsimg_blobview {
 		// Initialize table object
 		$GLOBALS["news"] = new cnews();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'blobview', TRUE);
@@ -104,6 +108,13 @@ class cnews_newsimg_blobview {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $news;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Page load event, used in current page
 		$this->Page_Load();

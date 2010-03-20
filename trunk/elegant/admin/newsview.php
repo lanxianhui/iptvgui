@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "newsinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -45,6 +46,9 @@ news_view.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+news_view.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 news_view.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -67,14 +71,71 @@ news_view.ValidateRequired = false; // no JavaScript validation
 <br><br>
 <?php if ($news->Export == "") { ?>
 <a href="newslist.php">回到列表</a>&nbsp;
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $news->AddUrl() ?>">添加</a>&nbsp;
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $news->EditUrl() ?>">编辑</a>&nbsp;
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $news->CopyUrl() ?>">复制</a>&nbsp;
-<a href="<?php echo $news->DeleteUrl() ?>">删除</a>&nbsp;
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<a onclick="return ew_Confirm('你真的要删除吗?');" href="<?php echo $news->DeleteUrl() ?>">删除</a>&nbsp;
+<?php } ?>
 <?php } ?>
 </span></p>
 <?php $news_view->ShowMessage() ?>
 <p>
+<?php if ($news->Export == "") { ?>
+<form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
+<table border="0" cellspacing="0" cellpadding="0" class="ewPager">
+	<tr>
+		<td nowrap>
+<?php if (!isset($news_view->Pager)) $news_view->Pager = new cPrevNextPager($news_view->lStartRec, $news_view->lDisplayRecs, $news_view->lTotalRecs) ?>
+<?php if ($news_view->Pager->RecordCount > 0) { ?>
+	<table border="0" cellspacing="0" cellpadding="0"><tr><td><span class="phpmaker">页&nbsp;</span></td>
+<!--first page button-->
+	<?php if ($news_view->Pager->FirstButton->Enabled) { ?>
+	<td><a href="<?php echo $news_view->PageUrl() ?>start=<?php echo $news_view->Pager->FirstButton->Start ?>"><img src="images/first.gif" alt="第一页" width="16" height="16" border="0"></a></td>
+	<?php } else { ?>
+	<td><img src="images/firstdisab.gif" alt="第一页" width="16" height="16" border="0"></td>
+	<?php } ?>
+<!--previous page button-->
+	<?php if ($news_view->Pager->PrevButton->Enabled) { ?>
+	<td><a href="<?php echo $news_view->PageUrl() ?>start=<?php echo $news_view->Pager->PrevButton->Start ?>"><img src="images/prev.gif" alt="上一页" width="16" height="16" border="0"></a></td>
+	<?php } else { ?>
+	<td><img src="images/prevdisab.gif" alt="上一页" width="16" height="16" border="0"></td>
+	<?php } ?>
+<!--current page number-->
+	<td><input type="text" name="<?php echo EW_TABLE_PAGE_NO ?>" id="<?php echo EW_TABLE_PAGE_NO ?>" value="<?php echo $news_view->Pager->CurrentPage ?>" size="4"></td>
+<!--next page button-->
+	<?php if ($news_view->Pager->NextButton->Enabled) { ?>
+	<td><a href="<?php echo $news_view->PageUrl() ?>start=<?php echo $news_view->Pager->NextButton->Start ?>"><img src="images/next.gif" alt="下一页" width="16" height="16" border="0"></a></td>	
+	<?php } else { ?>
+	<td><img src="images/nextdisab.gif" alt="下一页" width="16" height="16" border="0"></td>
+	<?php } ?>
+<!--last page button-->
+	<?php if ($news_view->Pager->LastButton->Enabled) { ?>
+	<td><a href="<?php echo $news_view->PageUrl() ?>start=<?php echo $news_view->Pager->LastButton->Start ?>"><img src="images/last.gif" alt="最后页" width="16" height="16" border="0"></a></td>	
+	<?php } else { ?>
+	<td><img src="images/lastdisab.gif" alt="最后页" width="16" height="16" border="0"></td>
+	<?php } ?>
+	<td><span class="phpmaker">&nbsp;总共 <?php echo $news_view->Pager->PageCount ?></span></td>
+	</tr></table>
+<?php } else { ?>
+	<?php if ($news_view->sSrchWhere == "0=101") { ?>
+	<span class="phpmaker">请输入搜索关键字</span>
+	<?php } else { ?>
+	<span class="phpmaker">没有数据</span>
+	<?php } ?>
+<?php } ?>
+		</td>
+	</tr>
+</table>
+</form>
+<br>
+<?php } ?>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
 <div class="ewGridMiddlePanel">
 <table cellspacing="0" class="ewTable">
@@ -224,6 +285,9 @@ class cnews_view {
 		// Initialize table object
 		$GLOBALS["news"] = new cnews();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'view', TRUE);
@@ -241,6 +305,13 @@ class cnews_view {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $news;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -285,22 +356,57 @@ class cnews_view {
 	//
 	function Page_Main() {
 		global $news;
+
+		// Paging variables
+		$this->lDisplayRecs = 1;
+		$this->lRecRange = 10;
+
+		// Load current record
+		$bLoadCurrentRecord = FALSE;
 		$sReturnUrl = "";
 		$bMatchRecord = FALSE;
 		if ($this->IsPageRequest()) { // Validate request
 			if (@$_GET["id"] <> "") {
 				$news->id->setQueryStringValue($_GET["id"]);
 			} else {
-				$sReturnUrl = "newslist.php"; // Return to list
+				$bLoadCurrentRecord = TRUE;
 			}
 
 			// Get action
 			$news->CurrentAction = "I"; // Display form
 			switch ($news->CurrentAction) {
 				case "I": // Get a record to display
-					if (!$this->LoadRow()) { // Load record based on key
+					$this->lStartRec = 1; // Initialize start position
+					$rs = $this->LoadRecordset(); // Load records
+					$this->lTotalRecs = $rs->RecordCount(); // Get record count
+					if ($this->lTotalRecs <= 0) { // No record found
+						$this->setMessage("没有数据"); // Set no record message
+						$this->Page_Terminate("newslist.php"); // Return to list page
+					} elseif ($bLoadCurrentRecord) { // Load current record position
+						$this->SetUpStartRec(); // Set up start record position
+
+						// Point to current record
+						if (intval($this->lStartRec) <= intval($this->lTotalRecs)) {
+							$bMatchRecord = TRUE;
+							$rs->Move($this->lStartRec-1);
+						}
+					} else { // Match key values
+						while (!$rs->EOF) {
+							if (strval($news->id->CurrentValue) == strval($rs->fields('id'))) {
+								$news->setStartRecordNumber($this->lStartRec); // Save record position
+								$bMatchRecord = TRUE;
+								break;
+							} else {
+								$this->lStartRec++;
+								$rs->MoveNext();
+							}
+						}
+					}
+					if (!$bMatchRecord) {
 						$this->setMessage("没有数据"); // Set no record message
 						$sReturnUrl = "newslist.php"; // No matching record, return to list
+					} else {
+						$this->LoadRowValues($rs); // Load row values
 					}
 			}
 		} else {
@@ -349,6 +455,27 @@ class cnews_view {
 			$this->lStartRec = intval(($this->lStartRec-1)/$this->lDisplayRecs)*$this->lDisplayRecs+1; // Point to page boundary
 			$news->setStartRecordNumber($this->lStartRec);
 		}
+	}
+
+	// Load recordset
+	function LoadRecordset($offset = -1, $rowcnt = -1) {
+		global $conn, $news;
+
+		// Call Recordset Selecting event
+		$news->Recordset_Selecting($news->CurrentFilter);
+
+		// Load list page SQL
+		$sSql = $news->SelectSQL();
+		if ($offset > -1 && $rowcnt > -1) $sSql .= " LIMIT $offset, $rowcnt";
+
+		// Load recordset
+		$conn->raiseErrorFn = 'ew_ErrorFn';	
+		$rs = $conn->Execute($sSql);
+		$conn->raiseErrorFn = '';
+
+		// Call Recordset Selected event
+		$news->Recordset_Selected($rs);
+		return $rs;
 	}
 
 	// Load row based on key values

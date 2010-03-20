@@ -2,11 +2,16 @@
 <html>
 <head>
 	<title></title>
+<?php if (@$gsExport == "") { ?>
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.6.0/build/container/assets/skins/sam/container.css">
+<?php } ?>
+<?php if (@$gsExport == "" || @$gsExport == "print") { ?>
 <link rel="stylesheet" type="text/css" href="elegant.css">
+<?php } ?>
 <meta name="generator" content="PHPMaker v6.0.0.1">
 </head>
 <body class="yui-skin-sam">
+<?php if (@$gsExport == "") { ?>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/utilities/utilities.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/container/container-min.js"></script>
 <script type="text/javascript">
@@ -53,3 +58,4 @@ var EW_BUTTON_CANCEL_TEXT = "    È¡Ïû    ";
 	    <td class="ewContentColumn">
 			<!-- right column (begin) -->
 				<p class="phpmaker"><b></b></p>
+	<?php } ?>

@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "consultinginfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -45,6 +46,9 @@ consulting_list.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+consulting_list.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 consulting_list.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -85,7 +89,13 @@ var ew_DHTMLEditors = [];
 		$rs = $consulting_list->LoadRecordset($consulting_list->lStartRec-1, $consulting_list->lDisplayRecs);
 ?>
 <p><span class="phpmaker" style="white-space: nowrap;">表: Consulting
+<?php if ($consulting->Export == "" && $consulting->CurrentAction == "") { ?>
+&nbsp;&nbsp;<a href="<?php echo $consulting_list->PageUrl() ?>export=html">导出到 HTML</a>
+&nbsp;&nbsp;<a href="<?php echo $consulting_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $consulting_list->PageUrl() ?>export=csv">导出到 CSV</a>
+<?php } ?>
 </span></p>
+<?php if ($Security->IsLoggedIn()) { ?>
 <?php if ($consulting->Export == "" && $consulting->CurrentAction == "") { ?>
 <a href="javascript:ew_ToggleSearchPanel(consulting_list);" style="text-decoration: none;"><img id="consulting_list_SearchImage" src="images/collapse.gif" alt="" width="9" height="9" border="0"></a><span class="phpmaker">&nbsp;搜索</span><br>
 <div id="consulting_list_SearchPanel">
@@ -106,172 +116,12 @@ var ew_DHTMLEditors = [];
 </form>
 </div>
 <?php } ?>
+<?php } ?>
 <?php $consulting_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<form name="fconsultinglist" id="fconsultinglist" class="ewForm" action="" method="post">
-<?php if ($consulting_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$consulting_list->lOptionCnt = 0;
-	$consulting_list->lOptionCnt++; // view
-	$consulting_list->lOptionCnt++; // edit
-	$consulting_list->lOptionCnt++; // copy
-	$consulting_list->lOptionCnt++; // Delete
-	$consulting_list->lOptionCnt += count($consulting_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $consulting->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($consulting->id->Visible) { // id ?>
-	<?php if ($consulting->SortUrl($consulting->id) == "") { ?>
-		<td>咨询ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>咨询ID</td><td style="width: 10px;"><?php if ($consulting->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($consulting->title->Visible) { // title ?>
-	<?php if ($consulting->SortUrl($consulting->title) == "") { ?>
-		<td>称呼</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->title) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>称呼&nbsp;(*)</td><td style="width: 10px;"><?php if ($consulting->title->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->title->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($consulting->company->Visible) { // company ?>
-	<?php if ($consulting->SortUrl($consulting->company) == "") { ?>
-		<td>公司</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->company) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>公司&nbsp;(*)</td><td style="width: 10px;"><?php if ($consulting->company->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->company->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($consulting->phone->Visible) { // phone ?>
-	<?php if ($consulting->SortUrl($consulting->phone) == "") { ?>
-		<td>电话</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->phone) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>电话&nbsp;(*)</td><td style="width: 10px;"><?php if ($consulting->phone->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->phone->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
 <?php if ($consulting->Export == "") { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php
-
-// Custom list options
-foreach ($consulting_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-</thead>
-<?php
-if ($consulting->ExportAll && $consulting->Export <> "") {
-	$consulting_list->lStopRec = $consulting_list->lTotalRecs;
-} else {
-	$consulting_list->lStopRec = $consulting_list->lStartRec + $consulting_list->lDisplayRecs - 1; // Set the last record to display
-}
-$consulting_list->lRecCount = $consulting_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$consulting->SelectLimit && $consulting_list->lStartRec > 1)
-		$rs->Move($consulting_list->lStartRec - 1);
-}
-$consulting_list->lRowCnt = 0;
-while (($consulting->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$consulting_list->lRecCount < $consulting_list->lStopRec) {
-	$consulting_list->lRecCount++;
-	if (intval($consulting_list->lRecCount) >= intval($consulting_list->lStartRec)) {
-		$consulting_list->lRowCnt++;
-
-	// Init row class and style
-	$consulting->CssClass = "";
-	$consulting->CssStyle = "";
-	$consulting->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($consulting->CurrentAction == "gridadd") {
-		$consulting_list->LoadDefaultValues(); // Load default values
-	} else {
-		$consulting_list->LoadRowValues($rs); // Load row values
-	}
-	$consulting->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$consulting_list->RenderRow();
-?>
-	<tr<?php echo $consulting->RowAttributes() ?>>
-	<?php if ($consulting->id->Visible) { // id ?>
-		<td<?php echo $consulting->id->CellAttributes() ?>>
-<div<?php echo $consulting->id->ViewAttributes() ?>><?php echo $consulting->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($consulting->title->Visible) { // title ?>
-		<td<?php echo $consulting->title->CellAttributes() ?>>
-<div<?php echo $consulting->title->ViewAttributes() ?>><?php echo $consulting->title->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($consulting->company->Visible) { // company ?>
-		<td<?php echo $consulting->company->CellAttributes() ?>>
-<div<?php echo $consulting->company->ViewAttributes() ?>><?php echo $consulting->company->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($consulting->phone->Visible) { // phone ?>
-		<td<?php echo $consulting->phone->CellAttributes() ?>>
-<div<?php echo $consulting->phone->ViewAttributes() ?>><?php echo $consulting->phone->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-<?php if ($consulting->Export == "") { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $consulting->ViewUrl() ?>">查看</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $consulting->EditUrl() ?>">编辑</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $consulting->CopyUrl() ?>">复制</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $consulting->DeleteUrl() ?>">删除</a>
-</span></td>
-<?php
-
-// Custom list options
-foreach ($consulting_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-<?php
-	}
-	if ($consulting->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
-<?php if ($consulting->Export == "") { ?>
-<div class="ewGridLowerPanel">
+<div class="ewGridUpperPanel">
 <?php if ($consulting->CurrentAction <> "gridadd" && $consulting->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -324,13 +174,203 @@ if ($rs)
 </table>
 </form>
 <?php } ?>
-<?php //if ($consulting_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $consulting->AddUrl() ?>">添加</a>&nbsp;&nbsp;
+<?php } ?>
+<?php if ($consulting_list->lTotalRecs > 0) { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<a href="" onclick="if (!ew_KeySelected(document.fconsultinglist)) alert('请至少选择一条记录'); else if (ew_Confirm('<?php echo $consulting_list->sDeleteConfirmMsg ?>')) {document.fconsultinglist.action='consultingdelete.php';document.fconsultinglist.encoding='application/x-www-form-urlencoded';document.fconsultinglist.submit();};return false;">删除选中</a>&nbsp;&nbsp;
+<?php } ?>
+<?php } ?>
 </span>
-<?php //} ?>
 </div>
 <?php } ?>
+<div class="ewGridMiddlePanel">
+<form name="fconsultinglist" id="fconsultinglist" class="ewForm" action="" method="post">
+<?php if ($consulting_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$consulting_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$consulting_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$consulting_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$consulting_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$consulting_list->lOptionCnt++; // Multi-select
+}
+	$consulting_list->lOptionCnt += count($consulting_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $consulting->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($consulting->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="consulting_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($consulting_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+<?php if ($consulting->id->Visible) { // id ?>
+	<?php if ($consulting->SortUrl($consulting->id) == "") { ?>
+		<td>咨询ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>咨询ID</td><td style="width: 10px;"><?php if ($consulting->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($consulting->title->Visible) { // title ?>
+	<?php if ($consulting->SortUrl($consulting->title) == "") { ?>
+		<td>称呼</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->title) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>称呼&nbsp;(*)</td><td style="width: 10px;"><?php if ($consulting->title->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->title->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($consulting->company->Visible) { // company ?>
+	<?php if ($consulting->SortUrl($consulting->company) == "") { ?>
+		<td>公司</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->company) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>公司&nbsp;(*)</td><td style="width: 10px;"><?php if ($consulting->company->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->company->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($consulting->phone->Visible) { // phone ?>
+	<?php if ($consulting->SortUrl($consulting->phone) == "") { ?>
+		<td>电话</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $consulting->SortUrl($consulting->phone) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>电话&nbsp;(*)</td><td style="width: 10px;"><?php if ($consulting->phone->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($consulting->phone->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+	</tr>
+</thead>
+<?php
+if ($consulting->ExportAll && $consulting->Export <> "") {
+	$consulting_list->lStopRec = $consulting_list->lTotalRecs;
+} else {
+	$consulting_list->lStopRec = $consulting_list->lStartRec + $consulting_list->lDisplayRecs - 1; // Set the last record to display
+}
+$consulting_list->lRecCount = $consulting_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$consulting->SelectLimit && $consulting_list->lStartRec > 1)
+		$rs->Move($consulting_list->lStartRec - 1);
+}
+$consulting_list->lRowCnt = 0;
+while (($consulting->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$consulting_list->lRecCount < $consulting_list->lStopRec) {
+	$consulting_list->lRecCount++;
+	if (intval($consulting_list->lRecCount) >= intval($consulting_list->lStartRec)) {
+		$consulting_list->lRowCnt++;
+
+	// Init row class and style
+	$consulting->CssClass = "";
+	$consulting->CssStyle = "";
+	$consulting->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($consulting->CurrentAction == "gridadd") {
+		$consulting_list->LoadDefaultValues(); // Load default values
+	} else {
+		$consulting_list->LoadRowValues($rs); // Load row values
+	}
+	$consulting->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$consulting_list->RenderRow();
+?>
+	<tr<?php echo $consulting->RowAttributes() ?>>
+<?php if ($consulting->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $consulting->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $consulting->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $consulting->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($consulting->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($consulting_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	<?php if ($consulting->id->Visible) { // id ?>
+		<td<?php echo $consulting->id->CellAttributes() ?>>
+<div<?php echo $consulting->id->ViewAttributes() ?>><?php echo $consulting->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($consulting->title->Visible) { // title ?>
+		<td<?php echo $consulting->title->CellAttributes() ?>>
+<div<?php echo $consulting->title->ViewAttributes() ?>><?php echo $consulting->title->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($consulting->company->Visible) { // company ?>
+		<td<?php echo $consulting->company->CellAttributes() ?>>
+<div<?php echo $consulting->company->ViewAttributes() ?>><?php echo $consulting->company->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($consulting->phone->Visible) { // phone ?>
+		<td<?php echo $consulting->phone->CellAttributes() ?>>
+<div<?php echo $consulting->phone->ViewAttributes() ?>><?php echo $consulting->phone->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	</tr>
+<?php
+	}
+	if ($consulting->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
 </td></tr></table>
 <?php if ($consulting->Export == "" && $consulting->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -428,6 +468,9 @@ class cconsulting_list {
 		// Initialize table object
 		$GLOBALS["consulting"] = new cconsulting();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'list', TRUE);
@@ -448,9 +491,28 @@ class cconsulting_list {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $consulting;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 	$consulting->Export = @$_GET["export"]; // Get export parameter
 	$gsExport = $consulting->Export; // Get export parameter, used in header
 	$gsExportFile = $consulting->TableVar; // Get export file, used in header
+	if ($consulting->Export == "print" || $consulting->Export == "html") {
+
+		// Printer friendly or Export to HTML, no action required
+	}
+	if ($consulting->Export == "excel") {
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	}
+	if ($consulting->Export == "csv") {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.csv');
+	}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -517,6 +579,7 @@ class cconsulting_list {
 		$sSrchBasic = ""; // Basic search filter
 		$sFilter = "";
 		$this->sSrchWhere = ""; // Search WHERE clause
+		$this->sDeleteConfirmMsg = "你真的要删除这些记录吗?"; // Delete confirm message
 
 		// Master/Detail
 		$this->sDbMasterFilter = ""; // Master filter
@@ -574,6 +637,13 @@ class cconsulting_list {
 		// Set up filter in Session
 		$consulting->setSessionWhere($sFilter);
 		$consulting->CurrentFilter = "";
+
+		// Export data only
+		if (in_array($consulting->Export, array("html","word","excel","xml","csv"))) {
+			$this->ExportData();
+			$this->Page_Terminate(); // Terminate response
+			exit();
+		}
 	}
 
 	// Return Basic Search sql
@@ -864,6 +934,98 @@ class cconsulting_list {
 
 		// Call Row Rendered event
 		$consulting->Row_Rendered();
+	}
+
+	// Export data in XML or CSV format
+	function ExportData() {
+		global $consulting;
+		$sCsvStr = "";
+
+		// Default export style
+		$sExportStyle = "h";
+
+		// Load recordset
+		$rs = $this->LoadRecordset();
+		$this->lTotalRecs = $rs->RecordCount();
+		$this->lStartRec = 1;
+
+		// Export all
+		if ($consulting->ExportAll) {
+			$this->lStopRec = $this->lTotalRecs;
+		} else { // Export 1 page only
+			$this->SetUpStartRec(); // Set up start record position
+
+			// Set the last record to display
+			if ($this->lDisplayRecs < 0) {
+				$this->lStopRec = $this->lTotalRecs;
+			} else {
+				$this->lStopRec = $this->lStartRec + $this->lDisplayRecs - 1;
+			}
+		}
+		if ($consulting->Export == "xml") {
+			$XmlDoc = new cXMLDocument();
+		} else {
+			echo ew_ExportHeader($consulting->Export);
+
+			// Horizontal format, write header
+			if ($sExportStyle <> "v" || $consulting->Export == "csv") {
+				$sExportStr = "";
+				ew_ExportAddValue($sExportStr, 'id', $consulting->Export);
+				ew_ExportAddValue($sExportStr, 'title', $consulting->Export);
+				ew_ExportAddValue($sExportStr, 'company', $consulting->Export);
+				ew_ExportAddValue($sExportStr, 'phone', $consulting->Export);
+				echo ew_ExportLine($sExportStr, $consulting->Export);
+			}
+		}
+
+		// Move to first record
+		$this->lRecCnt = $this->lStartRec - 1;
+		if (!$rs->EOF) {
+			$rs->MoveFirst();
+			$rs->Move($this->lStartRec - 1);
+		}
+		while (!$rs->EOF && $this->lRecCnt < $this->lStopRec) {
+			$this->lRecCnt++;
+			if (intval($this->lRecCnt) >= intval($this->lStartRec)) {
+				$this->LoadRowValues($rs);
+
+				// Render row for display
+				$consulting->RowType = EW_ROWTYPE_VIEW; // Render view
+				$this->RenderRow();
+				if ($consulting->Export == "xml") {
+					$XmlDoc->BeginRow();
+					$XmlDoc->AddField('id', $consulting->id->CurrentValue);
+					$XmlDoc->AddField('title', $consulting->title->CurrentValue);
+					$XmlDoc->AddField('company', $consulting->company->CurrentValue);
+					$XmlDoc->AddField('phone', $consulting->phone->CurrentValue);
+					$XmlDoc->EndRow();
+				} else {
+					if ($sExportStyle == "v" && $consulting->Export <> "csv") { // Vertical format
+						echo ew_ExportField('id', $consulting->id->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						echo ew_ExportField('title', $consulting->title->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						echo ew_ExportField('company', $consulting->company->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						echo ew_ExportField('phone', $consulting->phone->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+					}	else { // Horizontal format
+						$sExportStr = "";
+						ew_ExportAddValue($sExportStr, $consulting->id->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						ew_ExportAddValue($sExportStr, $consulting->title->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						ew_ExportAddValue($sExportStr, $consulting->company->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						ew_ExportAddValue($sExportStr, $consulting->phone->ExportValue($consulting->Export, $consulting->ExportOriginalValue), $consulting->Export);
+						echo ew_ExportLine($sExportStr, $consulting->Export);
+					}
+				}
+			}
+			$rs->MoveNext();
+		}
+
+		// Close recordset
+		$rs->Close();
+		if ($consulting->Export == "xml") {
+			header("Content-Type: text/xml");
+			echo $XmlDoc->XML();
+		} else {
+			echo ew_ExportFooter($consulting->Export);
+		}
 	}
 
 	// Page Load event

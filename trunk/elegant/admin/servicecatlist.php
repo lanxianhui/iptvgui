@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "servicecatinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -45,6 +46,9 @@ servicecat_list.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+servicecat_list.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 servicecat_list.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -85,7 +89,13 @@ var ew_DHTMLEditors = [];
 		$rs = $servicecat_list->LoadRecordset($servicecat_list->lStartRec-1, $servicecat_list->lDisplayRecs);
 ?>
 <p><span class="phpmaker" style="white-space: nowrap;">表: Servicecat
+<?php if ($servicecat->Export == "" && $servicecat->CurrentAction == "") { ?>
+&nbsp;&nbsp;<a href="<?php echo $servicecat_list->PageUrl() ?>export=html">导出到 HTML</a>
+&nbsp;&nbsp;<a href="<?php echo $servicecat_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $servicecat_list->PageUrl() ?>export=csv">导出到 CSV</a>
+<?php } ?>
 </span></p>
+<?php if ($Security->IsLoggedIn()) { ?>
 <?php if ($servicecat->Export == "" && $servicecat->CurrentAction == "") { ?>
 <a href="javascript:ew_ToggleSearchPanel(servicecat_list);" style="text-decoration: none;"><img id="servicecat_list_SearchImage" src="images/collapse.gif" alt="" width="9" height="9" border="0"></a><span class="phpmaker">&nbsp;搜索</span><br>
 <div id="servicecat_list_SearchPanel">
@@ -106,172 +116,12 @@ var ew_DHTMLEditors = [];
 </form>
 </div>
 <?php } ?>
+<?php } ?>
 <?php $servicecat_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<form name="fservicecatlist" id="fservicecatlist" class="ewForm" action="" method="post">
-<?php if ($servicecat_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$servicecat_list->lOptionCnt = 0;
-	$servicecat_list->lOptionCnt++; // view
-	$servicecat_list->lOptionCnt++; // edit
-	$servicecat_list->lOptionCnt++; // copy
-	$servicecat_list->lOptionCnt++; // Delete
-	$servicecat_list->lOptionCnt += count($servicecat_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $servicecat->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($servicecat->id->Visible) { // id ?>
-	<?php if ($servicecat->SortUrl($servicecat->id) == "") { ?>
-		<td>类型ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型ID</td><td style="width: 10px;"><?php if ($servicecat->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($servicecat->catname->Visible) { // catname ?>
-	<?php if ($servicecat->SortUrl($servicecat->catname) == "") { ?>
-		<td>类型名字</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->catname) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型名字&nbsp;(*)</td><td style="width: 10px;"><?php if ($servicecat->catname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->catname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($servicecat->rootid->Visible) { // rootid ?>
-	<?php if ($servicecat->SortUrl($servicecat->rootid) == "") { ?>
-		<td>所属根类型</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->rootid) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>所属根类型</td><td style="width: 10px;"><?php if ($servicecat->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($servicecat->catorder->Visible) { // catorder ?>
-	<?php if ($servicecat->SortUrl($servicecat->catorder) == "") { ?>
-		<td>类型排序</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->catorder) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型排序</td><td style="width: 10px;"><?php if ($servicecat->catorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->catorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
 <?php if ($servicecat->Export == "") { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php
-
-// Custom list options
-foreach ($servicecat_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-</thead>
-<?php
-if ($servicecat->ExportAll && $servicecat->Export <> "") {
-	$servicecat_list->lStopRec = $servicecat_list->lTotalRecs;
-} else {
-	$servicecat_list->lStopRec = $servicecat_list->lStartRec + $servicecat_list->lDisplayRecs - 1; // Set the last record to display
-}
-$servicecat_list->lRecCount = $servicecat_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$servicecat->SelectLimit && $servicecat_list->lStartRec > 1)
-		$rs->Move($servicecat_list->lStartRec - 1);
-}
-$servicecat_list->lRowCnt = 0;
-while (($servicecat->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$servicecat_list->lRecCount < $servicecat_list->lStopRec) {
-	$servicecat_list->lRecCount++;
-	if (intval($servicecat_list->lRecCount) >= intval($servicecat_list->lStartRec)) {
-		$servicecat_list->lRowCnt++;
-
-	// Init row class and style
-	$servicecat->CssClass = "";
-	$servicecat->CssStyle = "";
-	$servicecat->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($servicecat->CurrentAction == "gridadd") {
-		$servicecat_list->LoadDefaultValues(); // Load default values
-	} else {
-		$servicecat_list->LoadRowValues($rs); // Load row values
-	}
-	$servicecat->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$servicecat_list->RenderRow();
-?>
-	<tr<?php echo $servicecat->RowAttributes() ?>>
-	<?php if ($servicecat->id->Visible) { // id ?>
-		<td<?php echo $servicecat->id->CellAttributes() ?>>
-<div<?php echo $servicecat->id->ViewAttributes() ?>><?php echo $servicecat->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($servicecat->catname->Visible) { // catname ?>
-		<td<?php echo $servicecat->catname->CellAttributes() ?>>
-<div<?php echo $servicecat->catname->ViewAttributes() ?>><?php echo $servicecat->catname->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($servicecat->rootid->Visible) { // rootid ?>
-		<td<?php echo $servicecat->rootid->CellAttributes() ?>>
-<div<?php echo $servicecat->rootid->ViewAttributes() ?>><?php echo $servicecat->rootid->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($servicecat->catorder->Visible) { // catorder ?>
-		<td<?php echo $servicecat->catorder->CellAttributes() ?>>
-<div<?php echo $servicecat->catorder->ViewAttributes() ?>><?php echo $servicecat->catorder->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-<?php if ($servicecat->Export == "") { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $servicecat->ViewUrl() ?>">查看</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $servicecat->EditUrl() ?>">编辑</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $servicecat->CopyUrl() ?>">复制</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $servicecat->DeleteUrl() ?>">删除</a>
-</span></td>
-<?php
-
-// Custom list options
-foreach ($servicecat_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-<?php
-	}
-	if ($servicecat->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
-<?php if ($servicecat->Export == "") { ?>
-<div class="ewGridLowerPanel">
+<div class="ewGridUpperPanel">
 <?php if ($servicecat->CurrentAction <> "gridadd" && $servicecat->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -324,13 +174,203 @@ if ($rs)
 </table>
 </form>
 <?php } ?>
-<?php //if ($servicecat_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $servicecat->AddUrl() ?>">添加</a>&nbsp;&nbsp;
+<?php } ?>
+<?php if ($servicecat_list->lTotalRecs > 0) { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<a href="" onclick="if (!ew_KeySelected(document.fservicecatlist)) alert('请至少选择一条记录'); else if (ew_Confirm('<?php echo $servicecat_list->sDeleteConfirmMsg ?>')) {document.fservicecatlist.action='servicecatdelete.php';document.fservicecatlist.encoding='application/x-www-form-urlencoded';document.fservicecatlist.submit();};return false;">删除选中</a>&nbsp;&nbsp;
+<?php } ?>
+<?php } ?>
 </span>
-<?php //} ?>
 </div>
 <?php } ?>
+<div class="ewGridMiddlePanel">
+<form name="fservicecatlist" id="fservicecatlist" class="ewForm" action="" method="post">
+<?php if ($servicecat_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$servicecat_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$servicecat_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$servicecat_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$servicecat_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$servicecat_list->lOptionCnt++; // Multi-select
+}
+	$servicecat_list->lOptionCnt += count($servicecat_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $servicecat->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($servicecat->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="servicecat_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($servicecat_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+<?php if ($servicecat->id->Visible) { // id ?>
+	<?php if ($servicecat->SortUrl($servicecat->id) == "") { ?>
+		<td>类型ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型ID</td><td style="width: 10px;"><?php if ($servicecat->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($servicecat->catname->Visible) { // catname ?>
+	<?php if ($servicecat->SortUrl($servicecat->catname) == "") { ?>
+		<td>类型名字</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->catname) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型名字&nbsp;(*)</td><td style="width: 10px;"><?php if ($servicecat->catname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->catname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($servicecat->rootid->Visible) { // rootid ?>
+	<?php if ($servicecat->SortUrl($servicecat->rootid) == "") { ?>
+		<td>所属根类型</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->rootid) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>所属根类型</td><td style="width: 10px;"><?php if ($servicecat->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($servicecat->catorder->Visible) { // catorder ?>
+	<?php if ($servicecat->SortUrl($servicecat->catorder) == "") { ?>
+		<td>类型排序</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $servicecat->SortUrl($servicecat->catorder) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型排序</td><td style="width: 10px;"><?php if ($servicecat->catorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($servicecat->catorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+	</tr>
+</thead>
+<?php
+if ($servicecat->ExportAll && $servicecat->Export <> "") {
+	$servicecat_list->lStopRec = $servicecat_list->lTotalRecs;
+} else {
+	$servicecat_list->lStopRec = $servicecat_list->lStartRec + $servicecat_list->lDisplayRecs - 1; // Set the last record to display
+}
+$servicecat_list->lRecCount = $servicecat_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$servicecat->SelectLimit && $servicecat_list->lStartRec > 1)
+		$rs->Move($servicecat_list->lStartRec - 1);
+}
+$servicecat_list->lRowCnt = 0;
+while (($servicecat->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$servicecat_list->lRecCount < $servicecat_list->lStopRec) {
+	$servicecat_list->lRecCount++;
+	if (intval($servicecat_list->lRecCount) >= intval($servicecat_list->lStartRec)) {
+		$servicecat_list->lRowCnt++;
+
+	// Init row class and style
+	$servicecat->CssClass = "";
+	$servicecat->CssStyle = "";
+	$servicecat->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($servicecat->CurrentAction == "gridadd") {
+		$servicecat_list->LoadDefaultValues(); // Load default values
+	} else {
+		$servicecat_list->LoadRowValues($rs); // Load row values
+	}
+	$servicecat->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$servicecat_list->RenderRow();
+?>
+	<tr<?php echo $servicecat->RowAttributes() ?>>
+<?php if ($servicecat->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $servicecat->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $servicecat->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $servicecat->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($servicecat->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($servicecat_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	<?php if ($servicecat->id->Visible) { // id ?>
+		<td<?php echo $servicecat->id->CellAttributes() ?>>
+<div<?php echo $servicecat->id->ViewAttributes() ?>><?php echo $servicecat->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($servicecat->catname->Visible) { // catname ?>
+		<td<?php echo $servicecat->catname->CellAttributes() ?>>
+<div<?php echo $servicecat->catname->ViewAttributes() ?>><?php echo $servicecat->catname->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($servicecat->rootid->Visible) { // rootid ?>
+		<td<?php echo $servicecat->rootid->CellAttributes() ?>>
+<div<?php echo $servicecat->rootid->ViewAttributes() ?>><?php echo $servicecat->rootid->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($servicecat->catorder->Visible) { // catorder ?>
+		<td<?php echo $servicecat->catorder->CellAttributes() ?>>
+<div<?php echo $servicecat->catorder->ViewAttributes() ?>><?php echo $servicecat->catorder->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	</tr>
+<?php
+	}
+	if ($servicecat->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
 </td></tr></table>
 <?php if ($servicecat->Export == "" && $servicecat->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -428,6 +468,9 @@ class cservicecat_list {
 		// Initialize table object
 		$GLOBALS["servicecat"] = new cservicecat();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'list', TRUE);
@@ -448,9 +491,28 @@ class cservicecat_list {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $servicecat;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 	$servicecat->Export = @$_GET["export"]; // Get export parameter
 	$gsExport = $servicecat->Export; // Get export parameter, used in header
 	$gsExportFile = $servicecat->TableVar; // Get export file, used in header
+	if ($servicecat->Export == "print" || $servicecat->Export == "html") {
+
+		// Printer friendly or Export to HTML, no action required
+	}
+	if ($servicecat->Export == "excel") {
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	}
+	if ($servicecat->Export == "csv") {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.csv');
+	}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -517,6 +579,7 @@ class cservicecat_list {
 		$sSrchBasic = ""; // Basic search filter
 		$sFilter = "";
 		$this->sSrchWhere = ""; // Search WHERE clause
+		$this->sDeleteConfirmMsg = "你真的要删除这些记录吗?"; // Delete confirm message
 
 		// Master/Detail
 		$this->sDbMasterFilter = ""; // Master filter
@@ -574,6 +637,13 @@ class cservicecat_list {
 		// Set up filter in Session
 		$servicecat->setSessionWhere($sFilter);
 		$servicecat->CurrentFilter = "";
+
+		// Export data only
+		if (in_array($servicecat->Export, array("html","word","excel","xml","csv"))) {
+			$this->ExportData();
+			$this->Page_Terminate(); // Terminate response
+			exit();
+		}
 	}
 
 	// Return Basic Search sql
@@ -862,6 +932,98 @@ class cservicecat_list {
 
 		// Call Row Rendered event
 		$servicecat->Row_Rendered();
+	}
+
+	// Export data in XML or CSV format
+	function ExportData() {
+		global $servicecat;
+		$sCsvStr = "";
+
+		// Default export style
+		$sExportStyle = "h";
+
+		// Load recordset
+		$rs = $this->LoadRecordset();
+		$this->lTotalRecs = $rs->RecordCount();
+		$this->lStartRec = 1;
+
+		// Export all
+		if ($servicecat->ExportAll) {
+			$this->lStopRec = $this->lTotalRecs;
+		} else { // Export 1 page only
+			$this->SetUpStartRec(); // Set up start record position
+
+			// Set the last record to display
+			if ($this->lDisplayRecs < 0) {
+				$this->lStopRec = $this->lTotalRecs;
+			} else {
+				$this->lStopRec = $this->lStartRec + $this->lDisplayRecs - 1;
+			}
+		}
+		if ($servicecat->Export == "xml") {
+			$XmlDoc = new cXMLDocument();
+		} else {
+			echo ew_ExportHeader($servicecat->Export);
+
+			// Horizontal format, write header
+			if ($sExportStyle <> "v" || $servicecat->Export == "csv") {
+				$sExportStr = "";
+				ew_ExportAddValue($sExportStr, 'id', $servicecat->Export);
+				ew_ExportAddValue($sExportStr, 'catname', $servicecat->Export);
+				ew_ExportAddValue($sExportStr, 'rootid', $servicecat->Export);
+				ew_ExportAddValue($sExportStr, 'catorder', $servicecat->Export);
+				echo ew_ExportLine($sExportStr, $servicecat->Export);
+			}
+		}
+
+		// Move to first record
+		$this->lRecCnt = $this->lStartRec - 1;
+		if (!$rs->EOF) {
+			$rs->MoveFirst();
+			$rs->Move($this->lStartRec - 1);
+		}
+		while (!$rs->EOF && $this->lRecCnt < $this->lStopRec) {
+			$this->lRecCnt++;
+			if (intval($this->lRecCnt) >= intval($this->lStartRec)) {
+				$this->LoadRowValues($rs);
+
+				// Render row for display
+				$servicecat->RowType = EW_ROWTYPE_VIEW; // Render view
+				$this->RenderRow();
+				if ($servicecat->Export == "xml") {
+					$XmlDoc->BeginRow();
+					$XmlDoc->AddField('id', $servicecat->id->CurrentValue);
+					$XmlDoc->AddField('catname', $servicecat->catname->CurrentValue);
+					$XmlDoc->AddField('rootid', $servicecat->rootid->CurrentValue);
+					$XmlDoc->AddField('catorder', $servicecat->catorder->CurrentValue);
+					$XmlDoc->EndRow();
+				} else {
+					if ($sExportStyle == "v" && $servicecat->Export <> "csv") { // Vertical format
+						echo ew_ExportField('id', $servicecat->id->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						echo ew_ExportField('catname', $servicecat->catname->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						echo ew_ExportField('rootid', $servicecat->rootid->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						echo ew_ExportField('catorder', $servicecat->catorder->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+					}	else { // Horizontal format
+						$sExportStr = "";
+						ew_ExportAddValue($sExportStr, $servicecat->id->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						ew_ExportAddValue($sExportStr, $servicecat->catname->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						ew_ExportAddValue($sExportStr, $servicecat->rootid->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						ew_ExportAddValue($sExportStr, $servicecat->catorder->ExportValue($servicecat->Export, $servicecat->ExportOriginalValue), $servicecat->Export);
+						echo ew_ExportLine($sExportStr, $servicecat->Export);
+					}
+				}
+			}
+			$rs->MoveNext();
+		}
+
+		// Close recordset
+		$rs->Close();
+		if ($servicecat->Export == "xml") {
+			header("Content-Type: text/xml");
+			echo $XmlDoc->XML();
+		} else {
+			echo ew_ExportFooter($servicecat->Export);
+		}
 	}
 
 	// Page Load event

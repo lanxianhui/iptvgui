@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "casescatinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -45,6 +46,9 @@ casescat_list.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+casescat_list.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 casescat_list.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -85,7 +89,13 @@ var ew_DHTMLEditors = [];
 		$rs = $casescat_list->LoadRecordset($casescat_list->lStartRec-1, $casescat_list->lDisplayRecs);
 ?>
 <p><span class="phpmaker" style="white-space: nowrap;">表: Casescat
+<?php if ($casescat->Export == "" && $casescat->CurrentAction == "") { ?>
+&nbsp;&nbsp;<a href="<?php echo $casescat_list->PageUrl() ?>export=html">导出到 HTML</a>
+&nbsp;&nbsp;<a href="<?php echo $casescat_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $casescat_list->PageUrl() ?>export=csv">导出到 CSV</a>
+<?php } ?>
 </span></p>
+<?php if ($Security->IsLoggedIn()) { ?>
 <?php if ($casescat->Export == "" && $casescat->CurrentAction == "") { ?>
 <a href="javascript:ew_ToggleSearchPanel(casescat_list);" style="text-decoration: none;"><img id="casescat_list_SearchImage" src="images/collapse.gif" alt="" width="9" height="9" border="0"></a><span class="phpmaker">&nbsp;搜索</span><br>
 <div id="casescat_list_SearchPanel">
@@ -106,158 +116,12 @@ var ew_DHTMLEditors = [];
 </form>
 </div>
 <?php } ?>
+<?php } ?>
 <?php $casescat_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<form name="fcasescatlist" id="fcasescatlist" class="ewForm" action="" method="post">
-<?php if ($casescat_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$casescat_list->lOptionCnt = 0;
-	$casescat_list->lOptionCnt++; // view
-	$casescat_list->lOptionCnt++; // edit
-	$casescat_list->lOptionCnt++; // copy
-	$casescat_list->lOptionCnt++; // Delete
-	$casescat_list->lOptionCnt += count($casescat_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $casescat->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($casescat->id->Visible) { // id ?>
-	<?php if ($casescat->SortUrl($casescat->id) == "") { ?>
-		<td>类型ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $casescat->SortUrl($casescat->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型ID</td><td style="width: 10px;"><?php if ($casescat->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($casescat->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($casescat->catname->Visible) { // catname ?>
-	<?php if ($casescat->SortUrl($casescat->catname) == "") { ?>
-		<td>类型名称</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $casescat->SortUrl($casescat->catname) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型名称&nbsp;(*)</td><td style="width: 10px;"><?php if ($casescat->catname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($casescat->catname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($casescat->catorder->Visible) { // catorder ?>
-	<?php if ($casescat->SortUrl($casescat->catorder) == "") { ?>
-		<td>类型排序</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $casescat->SortUrl($casescat->catorder) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型排序</td><td style="width: 10px;"><?php if ($casescat->catorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($casescat->catorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
 <?php if ($casescat->Export == "") { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php
-
-// Custom list options
-foreach ($casescat_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-</thead>
-<?php
-if ($casescat->ExportAll && $casescat->Export <> "") {
-	$casescat_list->lStopRec = $casescat_list->lTotalRecs;
-} else {
-	$casescat_list->lStopRec = $casescat_list->lStartRec + $casescat_list->lDisplayRecs - 1; // Set the last record to display
-}
-$casescat_list->lRecCount = $casescat_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$casescat->SelectLimit && $casescat_list->lStartRec > 1)
-		$rs->Move($casescat_list->lStartRec - 1);
-}
-$casescat_list->lRowCnt = 0;
-while (($casescat->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$casescat_list->lRecCount < $casescat_list->lStopRec) {
-	$casescat_list->lRecCount++;
-	if (intval($casescat_list->lRecCount) >= intval($casescat_list->lStartRec)) {
-		$casescat_list->lRowCnt++;
-
-	// Init row class and style
-	$casescat->CssClass = "";
-	$casescat->CssStyle = "";
-	$casescat->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($casescat->CurrentAction == "gridadd") {
-		$casescat_list->LoadDefaultValues(); // Load default values
-	} else {
-		$casescat_list->LoadRowValues($rs); // Load row values
-	}
-	$casescat->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$casescat_list->RenderRow();
-?>
-	<tr<?php echo $casescat->RowAttributes() ?>>
-	<?php if ($casescat->id->Visible) { // id ?>
-		<td<?php echo $casescat->id->CellAttributes() ?>>
-<div<?php echo $casescat->id->ViewAttributes() ?>><?php echo $casescat->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($casescat->catname->Visible) { // catname ?>
-		<td<?php echo $casescat->catname->CellAttributes() ?>>
-<div<?php echo $casescat->catname->ViewAttributes() ?>><?php echo $casescat->catname->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($casescat->catorder->Visible) { // catorder ?>
-		<td<?php echo $casescat->catorder->CellAttributes() ?>>
-<div<?php echo $casescat->catorder->ViewAttributes() ?>><?php echo $casescat->catorder->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-<?php if ($casescat->Export == "") { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $casescat->ViewUrl() ?>">查看</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $casescat->EditUrl() ?>">编辑</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $casescat->CopyUrl() ?>">复制</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $casescat->DeleteUrl() ?>">删除</a>
-</span></td>
-<?php
-
-// Custom list options
-foreach ($casescat_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-<?php
-	}
-	if ($casescat->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
-<?php if ($casescat->Export == "") { ?>
-<div class="ewGridLowerPanel">
+<div class="ewGridUpperPanel">
 <?php if ($casescat->CurrentAction <> "gridadd" && $casescat->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -310,13 +174,189 @@ if ($rs)
 </table>
 </form>
 <?php } ?>
-<?php //if ($casescat_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $casescat->AddUrl() ?>">添加</a>&nbsp;&nbsp;
+<?php } ?>
+<?php if ($casescat_list->lTotalRecs > 0) { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<a href="" onclick="if (!ew_KeySelected(document.fcasescatlist)) alert('请至少选择一条记录'); else if (ew_Confirm('<?php echo $casescat_list->sDeleteConfirmMsg ?>')) {document.fcasescatlist.action='casescatdelete.php';document.fcasescatlist.encoding='application/x-www-form-urlencoded';document.fcasescatlist.submit();};return false;">删除选中</a>&nbsp;&nbsp;
+<?php } ?>
+<?php } ?>
 </span>
-<?php //} ?>
 </div>
 <?php } ?>
+<div class="ewGridMiddlePanel">
+<form name="fcasescatlist" id="fcasescatlist" class="ewForm" action="" method="post">
+<?php if ($casescat_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$casescat_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$casescat_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$casescat_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$casescat_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$casescat_list->lOptionCnt++; // Multi-select
+}
+	$casescat_list->lOptionCnt += count($casescat_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $casescat->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($casescat->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="casescat_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($casescat_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+<?php if ($casescat->id->Visible) { // id ?>
+	<?php if ($casescat->SortUrl($casescat->id) == "") { ?>
+		<td>类型ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $casescat->SortUrl($casescat->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型ID</td><td style="width: 10px;"><?php if ($casescat->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($casescat->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($casescat->catname->Visible) { // catname ?>
+	<?php if ($casescat->SortUrl($casescat->catname) == "") { ?>
+		<td>类型名称</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $casescat->SortUrl($casescat->catname) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型名称&nbsp;(*)</td><td style="width: 10px;"><?php if ($casescat->catname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($casescat->catname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($casescat->catorder->Visible) { // catorder ?>
+	<?php if ($casescat->SortUrl($casescat->catorder) == "") { ?>
+		<td>类型排序</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $casescat->SortUrl($casescat->catorder) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型排序</td><td style="width: 10px;"><?php if ($casescat->catorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($casescat->catorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+	</tr>
+</thead>
+<?php
+if ($casescat->ExportAll && $casescat->Export <> "") {
+	$casescat_list->lStopRec = $casescat_list->lTotalRecs;
+} else {
+	$casescat_list->lStopRec = $casescat_list->lStartRec + $casescat_list->lDisplayRecs - 1; // Set the last record to display
+}
+$casescat_list->lRecCount = $casescat_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$casescat->SelectLimit && $casescat_list->lStartRec > 1)
+		$rs->Move($casescat_list->lStartRec - 1);
+}
+$casescat_list->lRowCnt = 0;
+while (($casescat->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$casescat_list->lRecCount < $casescat_list->lStopRec) {
+	$casescat_list->lRecCount++;
+	if (intval($casescat_list->lRecCount) >= intval($casescat_list->lStartRec)) {
+		$casescat_list->lRowCnt++;
+
+	// Init row class and style
+	$casescat->CssClass = "";
+	$casescat->CssStyle = "";
+	$casescat->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($casescat->CurrentAction == "gridadd") {
+		$casescat_list->LoadDefaultValues(); // Load default values
+	} else {
+		$casescat_list->LoadRowValues($rs); // Load row values
+	}
+	$casescat->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$casescat_list->RenderRow();
+?>
+	<tr<?php echo $casescat->RowAttributes() ?>>
+<?php if ($casescat->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $casescat->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $casescat->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $casescat->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($casescat->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($casescat_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	<?php if ($casescat->id->Visible) { // id ?>
+		<td<?php echo $casescat->id->CellAttributes() ?>>
+<div<?php echo $casescat->id->ViewAttributes() ?>><?php echo $casescat->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($casescat->catname->Visible) { // catname ?>
+		<td<?php echo $casescat->catname->CellAttributes() ?>>
+<div<?php echo $casescat->catname->ViewAttributes() ?>><?php echo $casescat->catname->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($casescat->catorder->Visible) { // catorder ?>
+		<td<?php echo $casescat->catorder->CellAttributes() ?>>
+<div<?php echo $casescat->catorder->ViewAttributes() ?>><?php echo $casescat->catorder->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	</tr>
+<?php
+	}
+	if ($casescat->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
 </td></tr></table>
 <?php if ($casescat->Export == "" && $casescat->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -414,6 +454,9 @@ class ccasescat_list {
 		// Initialize table object
 		$GLOBALS["casescat"] = new ccasescat();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'list', TRUE);
@@ -434,9 +477,28 @@ class ccasescat_list {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $casescat;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 	$casescat->Export = @$_GET["export"]; // Get export parameter
 	$gsExport = $casescat->Export; // Get export parameter, used in header
 	$gsExportFile = $casescat->TableVar; // Get export file, used in header
+	if ($casescat->Export == "print" || $casescat->Export == "html") {
+
+		// Printer friendly or Export to HTML, no action required
+	}
+	if ($casescat->Export == "excel") {
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	}
+	if ($casescat->Export == "csv") {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.csv');
+	}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -503,6 +565,7 @@ class ccasescat_list {
 		$sSrchBasic = ""; // Basic search filter
 		$sFilter = "";
 		$this->sSrchWhere = ""; // Search WHERE clause
+		$this->sDeleteConfirmMsg = "你真的要删除这些记录吗?"; // Delete confirm message
 
 		// Master/Detail
 		$this->sDbMasterFilter = ""; // Master filter
@@ -560,6 +623,13 @@ class ccasescat_list {
 		// Set up filter in Session
 		$casescat->setSessionWhere($sFilter);
 		$casescat->CurrentFilter = "";
+
+		// Export data only
+		if (in_array($casescat->Export, array("html","word","excel","xml","csv"))) {
+			$this->ExportData();
+			$this->Page_Terminate(); // Terminate response
+			exit();
+		}
 	}
 
 	// Return Basic Search sql
@@ -830,6 +900,94 @@ class ccasescat_list {
 
 		// Call Row Rendered event
 		$casescat->Row_Rendered();
+	}
+
+	// Export data in XML or CSV format
+	function ExportData() {
+		global $casescat;
+		$sCsvStr = "";
+
+		// Default export style
+		$sExportStyle = "h";
+
+		// Load recordset
+		$rs = $this->LoadRecordset();
+		$this->lTotalRecs = $rs->RecordCount();
+		$this->lStartRec = 1;
+
+		// Export all
+		if ($casescat->ExportAll) {
+			$this->lStopRec = $this->lTotalRecs;
+		} else { // Export 1 page only
+			$this->SetUpStartRec(); // Set up start record position
+
+			// Set the last record to display
+			if ($this->lDisplayRecs < 0) {
+				$this->lStopRec = $this->lTotalRecs;
+			} else {
+				$this->lStopRec = $this->lStartRec + $this->lDisplayRecs - 1;
+			}
+		}
+		if ($casescat->Export == "xml") {
+			$XmlDoc = new cXMLDocument();
+		} else {
+			echo ew_ExportHeader($casescat->Export);
+
+			// Horizontal format, write header
+			if ($sExportStyle <> "v" || $casescat->Export == "csv") {
+				$sExportStr = "";
+				ew_ExportAddValue($sExportStr, 'id', $casescat->Export);
+				ew_ExportAddValue($sExportStr, 'catname', $casescat->Export);
+				ew_ExportAddValue($sExportStr, 'catorder', $casescat->Export);
+				echo ew_ExportLine($sExportStr, $casescat->Export);
+			}
+		}
+
+		// Move to first record
+		$this->lRecCnt = $this->lStartRec - 1;
+		if (!$rs->EOF) {
+			$rs->MoveFirst();
+			$rs->Move($this->lStartRec - 1);
+		}
+		while (!$rs->EOF && $this->lRecCnt < $this->lStopRec) {
+			$this->lRecCnt++;
+			if (intval($this->lRecCnt) >= intval($this->lStartRec)) {
+				$this->LoadRowValues($rs);
+
+				// Render row for display
+				$casescat->RowType = EW_ROWTYPE_VIEW; // Render view
+				$this->RenderRow();
+				if ($casescat->Export == "xml") {
+					$XmlDoc->BeginRow();
+					$XmlDoc->AddField('id', $casescat->id->CurrentValue);
+					$XmlDoc->AddField('catname', $casescat->catname->CurrentValue);
+					$XmlDoc->AddField('catorder', $casescat->catorder->CurrentValue);
+					$XmlDoc->EndRow();
+				} else {
+					if ($sExportStyle == "v" && $casescat->Export <> "csv") { // Vertical format
+						echo ew_ExportField('id', $casescat->id->ExportValue($casescat->Export, $casescat->ExportOriginalValue), $casescat->Export);
+						echo ew_ExportField('catname', $casescat->catname->ExportValue($casescat->Export, $casescat->ExportOriginalValue), $casescat->Export);
+						echo ew_ExportField('catorder', $casescat->catorder->ExportValue($casescat->Export, $casescat->ExportOriginalValue), $casescat->Export);
+					}	else { // Horizontal format
+						$sExportStr = "";
+						ew_ExportAddValue($sExportStr, $casescat->id->ExportValue($casescat->Export, $casescat->ExportOriginalValue), $casescat->Export);
+						ew_ExportAddValue($sExportStr, $casescat->catname->ExportValue($casescat->Export, $casescat->ExportOriginalValue), $casescat->Export);
+						ew_ExportAddValue($sExportStr, $casescat->catorder->ExportValue($casescat->Export, $casescat->ExportOriginalValue), $casescat->Export);
+						echo ew_ExportLine($sExportStr, $casescat->Export);
+					}
+				}
+			}
+			$rs->MoveNext();
+		}
+
+		// Close recordset
+		$rs->Close();
+		if ($casescat->Export == "xml") {
+			header("Content-Type: text/xml");
+			echo $XmlDoc->XML();
+		} else {
+			echo ew_ExportFooter($casescat->Export);
+		}
 	}
 
 	// Page Load event

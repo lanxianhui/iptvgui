@@ -119,16 +119,41 @@ function MenuItem_Adding(&$Item) {
 // Generate all menu items
 $RootMenu = new cMenu("RootMenu");
 $RootMenu->IsRoot = TRUE;
-	$RootMenu->AddMenuItem(10, "Serviceroot", "servicerootlist.php", -1);
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(1, "账号管理", "adminlist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(2, "案例管理", "caseslist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(3, "案例类型", "casescatlist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(4, "咨询", "consultinglist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(5, "友情链接", "friendlinklist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(6, "新闻管理", "newslist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(7, "新闻类型", "newscatlist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(8, "服务管理", "servicelist.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(9, "服务类型", "servicecatlist.php", -1);
+}
+if (IsLoggedIn()) {
+	$RootMenu->AddMenuItem(10, "服务根类", "servicerootlist.php", -1);
+}
+if (IsLoggedIn()) {
+	$RootMenu->AddMenuItem(0xFFFFFFFF, "退出登录", "logout.php", -1);
+} elseif (substr(@$_SERVER["URL"], -1 * strlen("login.php")) <> "login.php") {
+	$RootMenu->AddMenuItem(0xFFFFFFFF, "登录", "login.php", -1);
+}
 $RootMenu->Render();
 ?>
 </div>

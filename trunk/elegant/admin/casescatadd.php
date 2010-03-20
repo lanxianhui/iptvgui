@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "casescatinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -70,6 +71,9 @@ casescat_add.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+casescat_add.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 casescat_add.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -210,6 +214,9 @@ class ccasescat_add {
 		// Initialize table object
 		$GLOBALS["casescat"] = new ccasescat();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'add', TRUE);
@@ -227,6 +234,13 @@ class ccasescat_add {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $casescat;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -312,6 +326,8 @@ class ccasescat_add {
 		    if ($this->AddRow()) { // Add successful
 		      $this->setMessage("Ìí¼Ó³É¹¦"); // Set up success message
 					$sReturnUrl = $casescat->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "casescatview.php")
+						$sReturnUrl = $casescat->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Clean up and return
 		    } else {
 		      $this->RestoreFormValues(); // Add failed, restore form values

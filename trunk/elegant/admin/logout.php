@@ -5,7 +5,6 @@ ob_start(); // Turn on output buffering
 <?php include "ewcfg6.php" ?>
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
-<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -17,27 +16,27 @@ header("Pragma: no-cache"); // HTTP/1.0
 <?php
 
 // Define page object
-$default = new cdefault();
-$Page =& $default;
+$logout = new clogout();
+$Page =& $logout;
 
 // Page init processing
-$default->Page_Init();
+$logout->Page_Init();
 
 // Page main processing
-$default->Page_Main();
+$logout->Page_Main();
 ?>
 <?php
 
 //
 // Page Class
 //
-class cdefault {
+class clogout {
 
 	// Page ID
-	var $PageID = 'default';
+	var $PageID = 'logout';
 
 	// Page Object Name
-	var $PageObjName = 'default';
+	var $PageObjName = 'logout';
 
 	// Page Name
 	function PageName() {
@@ -81,15 +80,12 @@ class cdefault {
 	//  - init objects
 	//  - open connection
 	//
-	function cdefault() {
+	function clogout() {
 		global $conn;
-
-		// Initialize user table object
-		$GLOBALS["admin"] = new cadmin;
 
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
-			define("EW_PAGE_ID", 'default', TRUE);
+			define("EW_PAGE_ID", 'logout', TRUE);
 
 		// Open connection to the database
 		$conn = ew_Connect();
@@ -135,45 +131,40 @@ class cdefault {
 		exit();
 	}
 
+	//
 	// Page main processing
+	//
 	function Page_Main() {
 		global $Security;
-		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
-		if ($Security->IsLoggedIn()) {
-		$this->Page_Terminate("adminlist.php"); // Exit and go to default page
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("caseslist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("casescatlist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("consultinglist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("friendlinklist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("newslist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("newscatlist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("servicelist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("servicecatlist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			$this->Page_Terminate("servicerootlist.php");
-		}
-		if ($Security->IsLoggedIn()) {
-			echo "你没有权限访问当前页面";
-			echo "<br><a href=\"logout.php\">重新登录</a>";
+		$bValidate = TRUE;
+		$sUsername = $Security->CurrentUserName();
+
+		// Call User LoggingOut event
+		$bValidate = $this->User_LoggingOut($sUsername);
+		if (!$bValidate) {
+			$sLastUrl = $Security->LastUrl();
+			if ($sLastUrl == "")
+				$sLastUrl = "index.php";
+			$this->Page_Terminate($sLastUrl); // Go to last accessed url
 		} else {
-			$this->Page_Terminate("login.php"); // Exit and go to login page
+			if (@$_COOKIE[EW_PROJECT_NAME]['AutoLogin'] == "") // Not autologin
+				setCookie(EW_PROJECT_NAME . '[UserName]', ""); // clear user name cookie
+			setCookie(EW_PROJECT_NAME . '[Password]', ""); // clear password cookie
+			setCookie(EW_PROJECT_NAME . '[LastUrl]', ""); // clear last url
+
+			// Call User LoggedOut event
+			$this->User_LoggedOut($sUsername);
+
+			// Unset all of the session variables
+			$_SESSION = array();
+
+			// Delete the session cookie and kill the session
+			if (isset($_COOKIE[session_name()]))
+				setcookie(session_name(), '', time()-42000, '/');
+
+			// Finally, destroy the session
+			@session_destroy();
+			$this->Page_Terminate("login.php"); // Go to login page
 		}
 	}
 
@@ -187,6 +178,21 @@ class cdefault {
 	function Page_Unload() {
 
 		//echo "Page Unload";
+	}
+
+	// User Logging Out event
+	function User_LoggingOut($usr) {
+
+		// Enter your code here
+		// To cancel, set return value to FALSE;
+
+		return TRUE;
+	}
+
+	// User Logged Out event
+	function User_LoggedOut($usr) {
+
+		//echo "User Logged Out";
 	}
 }
 ?>

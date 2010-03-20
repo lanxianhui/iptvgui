@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "servicerootinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -44,6 +45,9 @@ serviceroot_delete.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+serviceroot_delete.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 serviceroot_delete.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -71,7 +75,7 @@ if ($serviceroot_deletelTotalRecs <= 0) { // No record found, exit
 	$serviceroot_delete->Page_Terminate("servicerootlist.php"); // Return to list
 }
 ?>
-<p><span class="phpmaker">删除 表: Serviceroot<br><br>
+<p><span class="phpmaker">删除 表: Srviceroot<br><br>
 <a href="<?php echo $serviceroot->getReturnUrl() ?>">返回</a></span></p>
 <?php $serviceroot_delete->ShowMessage() ?>
 <form action="<?php echo ew_CurrentPage() ?>" method="post">
@@ -87,9 +91,9 @@ if ($serviceroot_deletelTotalRecs <= 0) { // No record found, exit
 <?php echo $serviceroot->TableCustomInnerHtml ?>
 	<thead>
 	<tr class="ewTableHeader">
-		<td valign="top">Id</td>
-		<td valign="top">Rootname</td>
-		<td valign="top">Rootorder</td>
+		<td valign="top">根ID</td>
+		<td valign="top">根类型名</td>
+		<td valign="top">根类型排序</td>
 	</tr>
 	</thead>
 	<tbody>
@@ -215,6 +219,9 @@ class cserviceroot_delete {
 		// Initialize table object
 		$GLOBALS["serviceroot"] = new cserviceroot();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'delete', TRUE);
@@ -232,6 +239,13 @@ class cserviceroot_delete {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $serviceroot;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -319,7 +333,7 @@ class cserviceroot_delete {
 		if (@$_POST["a_delete"] <> "") {
 			$serviceroot->CurrentAction = $_POST["a_delete"];
 		} else {
-			$serviceroot->CurrentAction = "I"; // Display record
+			$serviceroot->CurrentAction = "D"; // Delete record directly
 		}
 		switch ($serviceroot->CurrentAction) {
 			case "D": // Delete

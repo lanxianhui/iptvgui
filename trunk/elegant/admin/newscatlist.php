@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "newscatinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -45,6 +46,9 @@ newscat_list.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+newscat_list.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 newscat_list.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -85,7 +89,13 @@ var ew_DHTMLEditors = [];
 		$rs = $newscat_list->LoadRecordset($newscat_list->lStartRec-1, $newscat_list->lDisplayRecs);
 ?>
 <p><span class="phpmaker" style="white-space: nowrap;">表: Newscat
+<?php if ($newscat->Export == "" && $newscat->CurrentAction == "") { ?>
+&nbsp;&nbsp;<a href="<?php echo $newscat_list->PageUrl() ?>export=html">导出到 HTML</a>
+&nbsp;&nbsp;<a href="<?php echo $newscat_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $newscat_list->PageUrl() ?>export=csv">导出到 CSV</a>
+<?php } ?>
 </span></p>
+<?php if ($Security->IsLoggedIn()) { ?>
 <?php if ($newscat->Export == "" && $newscat->CurrentAction == "") { ?>
 <a href="javascript:ew_ToggleSearchPanel(newscat_list);" style="text-decoration: none;"><img id="newscat_list_SearchImage" src="images/collapse.gif" alt="" width="9" height="9" border="0"></a><span class="phpmaker">&nbsp;搜索</span><br>
 <div id="newscat_list_SearchPanel">
@@ -106,158 +116,12 @@ var ew_DHTMLEditors = [];
 </form>
 </div>
 <?php } ?>
+<?php } ?>
 <?php $newscat_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<form name="fnewscatlist" id="fnewscatlist" class="ewForm" action="" method="post">
-<?php if ($newscat_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$newscat_list->lOptionCnt = 0;
-	$newscat_list->lOptionCnt++; // view
-	$newscat_list->lOptionCnt++; // edit
-	$newscat_list->lOptionCnt++; // copy
-	$newscat_list->lOptionCnt++; // Delete
-	$newscat_list->lOptionCnt += count($newscat_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $newscat->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($newscat->id->Visible) { // id ?>
-	<?php if ($newscat->SortUrl($newscat->id) == "") { ?>
-		<td>类型ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $newscat->SortUrl($newscat->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型ID</td><td style="width: 10px;"><?php if ($newscat->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($newscat->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($newscat->catname->Visible) { // catname ?>
-	<?php if ($newscat->SortUrl($newscat->catname) == "") { ?>
-		<td>类型名称</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $newscat->SortUrl($newscat->catname) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型名称&nbsp;(*)</td><td style="width: 10px;"><?php if ($newscat->catname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($newscat->catname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($newscat->catorder->Visible) { // catorder ?>
-	<?php if ($newscat->SortUrl($newscat->catorder) == "") { ?>
-		<td>类型排序</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $newscat->SortUrl($newscat->catorder) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型排序</td><td style="width: 10px;"><?php if ($newscat->catorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($newscat->catorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
 <?php if ($newscat->Export == "") { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php
-
-// Custom list options
-foreach ($newscat_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-</thead>
-<?php
-if ($newscat->ExportAll && $newscat->Export <> "") {
-	$newscat_list->lStopRec = $newscat_list->lTotalRecs;
-} else {
-	$newscat_list->lStopRec = $newscat_list->lStartRec + $newscat_list->lDisplayRecs - 1; // Set the last record to display
-}
-$newscat_list->lRecCount = $newscat_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$newscat->SelectLimit && $newscat_list->lStartRec > 1)
-		$rs->Move($newscat_list->lStartRec - 1);
-}
-$newscat_list->lRowCnt = 0;
-while (($newscat->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$newscat_list->lRecCount < $newscat_list->lStopRec) {
-	$newscat_list->lRecCount++;
-	if (intval($newscat_list->lRecCount) >= intval($newscat_list->lStartRec)) {
-		$newscat_list->lRowCnt++;
-
-	// Init row class and style
-	$newscat->CssClass = "";
-	$newscat->CssStyle = "";
-	$newscat->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($newscat->CurrentAction == "gridadd") {
-		$newscat_list->LoadDefaultValues(); // Load default values
-	} else {
-		$newscat_list->LoadRowValues($rs); // Load row values
-	}
-	$newscat->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$newscat_list->RenderRow();
-?>
-	<tr<?php echo $newscat->RowAttributes() ?>>
-	<?php if ($newscat->id->Visible) { // id ?>
-		<td<?php echo $newscat->id->CellAttributes() ?>>
-<div<?php echo $newscat->id->ViewAttributes() ?>><?php echo $newscat->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($newscat->catname->Visible) { // catname ?>
-		<td<?php echo $newscat->catname->CellAttributes() ?>>
-<div<?php echo $newscat->catname->ViewAttributes() ?>><?php echo $newscat->catname->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($newscat->catorder->Visible) { // catorder ?>
-		<td<?php echo $newscat->catorder->CellAttributes() ?>>
-<div<?php echo $newscat->catorder->ViewAttributes() ?>><?php echo $newscat->catorder->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-<?php if ($newscat->Export == "") { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $newscat->ViewUrl() ?>">查看</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $newscat->EditUrl() ?>">编辑</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $newscat->CopyUrl() ?>">复制</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $newscat->DeleteUrl() ?>">删除</a>
-</span></td>
-<?php
-
-// Custom list options
-foreach ($newscat_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-<?php
-	}
-	if ($newscat->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
-<?php if ($newscat->Export == "") { ?>
-<div class="ewGridLowerPanel">
+<div class="ewGridUpperPanel">
 <?php if ($newscat->CurrentAction <> "gridadd" && $newscat->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -310,13 +174,189 @@ if ($rs)
 </table>
 </form>
 <?php } ?>
-<?php //if ($newscat_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $newscat->AddUrl() ?>">添加</a>&nbsp;&nbsp;
+<?php } ?>
+<?php if ($newscat_list->lTotalRecs > 0) { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<a href="" onclick="if (!ew_KeySelected(document.fnewscatlist)) alert('请至少选择一条记录'); else if (ew_Confirm('<?php echo $newscat_list->sDeleteConfirmMsg ?>')) {document.fnewscatlist.action='newscatdelete.php';document.fnewscatlist.encoding='application/x-www-form-urlencoded';document.fnewscatlist.submit();};return false;">删除选中</a>&nbsp;&nbsp;
+<?php } ?>
+<?php } ?>
 </span>
-<?php //} ?>
 </div>
 <?php } ?>
+<div class="ewGridMiddlePanel">
+<form name="fnewscatlist" id="fnewscatlist" class="ewForm" action="" method="post">
+<?php if ($newscat_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$newscat_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$newscat_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$newscat_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$newscat_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$newscat_list->lOptionCnt++; // Multi-select
+}
+	$newscat_list->lOptionCnt += count($newscat_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $newscat->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($newscat->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="newscat_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($newscat_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+<?php if ($newscat->id->Visible) { // id ?>
+	<?php if ($newscat->SortUrl($newscat->id) == "") { ?>
+		<td>类型ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $newscat->SortUrl($newscat->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型ID</td><td style="width: 10px;"><?php if ($newscat->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($newscat->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($newscat->catname->Visible) { // catname ?>
+	<?php if ($newscat->SortUrl($newscat->catname) == "") { ?>
+		<td>类型名称</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $newscat->SortUrl($newscat->catname) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型名称&nbsp;(*)</td><td style="width: 10px;"><?php if ($newscat->catname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($newscat->catname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($newscat->catorder->Visible) { // catorder ?>
+	<?php if ($newscat->SortUrl($newscat->catorder) == "") { ?>
+		<td>类型排序</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $newscat->SortUrl($newscat->catorder) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>类型排序</td><td style="width: 10px;"><?php if ($newscat->catorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($newscat->catorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+	</tr>
+</thead>
+<?php
+if ($newscat->ExportAll && $newscat->Export <> "") {
+	$newscat_list->lStopRec = $newscat_list->lTotalRecs;
+} else {
+	$newscat_list->lStopRec = $newscat_list->lStartRec + $newscat_list->lDisplayRecs - 1; // Set the last record to display
+}
+$newscat_list->lRecCount = $newscat_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$newscat->SelectLimit && $newscat_list->lStartRec > 1)
+		$rs->Move($newscat_list->lStartRec - 1);
+}
+$newscat_list->lRowCnt = 0;
+while (($newscat->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$newscat_list->lRecCount < $newscat_list->lStopRec) {
+	$newscat_list->lRecCount++;
+	if (intval($newscat_list->lRecCount) >= intval($newscat_list->lStartRec)) {
+		$newscat_list->lRowCnt++;
+
+	// Init row class and style
+	$newscat->CssClass = "";
+	$newscat->CssStyle = "";
+	$newscat->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($newscat->CurrentAction == "gridadd") {
+		$newscat_list->LoadDefaultValues(); // Load default values
+	} else {
+		$newscat_list->LoadRowValues($rs); // Load row values
+	}
+	$newscat->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$newscat_list->RenderRow();
+?>
+	<tr<?php echo $newscat->RowAttributes() ?>>
+<?php if ($newscat->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $newscat->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $newscat->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $newscat->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($newscat->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($newscat_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	<?php if ($newscat->id->Visible) { // id ?>
+		<td<?php echo $newscat->id->CellAttributes() ?>>
+<div<?php echo $newscat->id->ViewAttributes() ?>><?php echo $newscat->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($newscat->catname->Visible) { // catname ?>
+		<td<?php echo $newscat->catname->CellAttributes() ?>>
+<div<?php echo $newscat->catname->ViewAttributes() ?>><?php echo $newscat->catname->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($newscat->catorder->Visible) { // catorder ?>
+		<td<?php echo $newscat->catorder->CellAttributes() ?>>
+<div<?php echo $newscat->catorder->ViewAttributes() ?>><?php echo $newscat->catorder->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	</tr>
+<?php
+	}
+	if ($newscat->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
 </td></tr></table>
 <?php if ($newscat->Export == "" && $newscat->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -414,6 +454,9 @@ class cnewscat_list {
 		// Initialize table object
 		$GLOBALS["newscat"] = new cnewscat();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'list', TRUE);
@@ -434,9 +477,28 @@ class cnewscat_list {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $newscat;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 	$newscat->Export = @$_GET["export"]; // Get export parameter
 	$gsExport = $newscat->Export; // Get export parameter, used in header
 	$gsExportFile = $newscat->TableVar; // Get export file, used in header
+	if ($newscat->Export == "print" || $newscat->Export == "html") {
+
+		// Printer friendly or Export to HTML, no action required
+	}
+	if ($newscat->Export == "excel") {
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	}
+	if ($newscat->Export == "csv") {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.csv');
+	}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -503,6 +565,7 @@ class cnewscat_list {
 		$sSrchBasic = ""; // Basic search filter
 		$sFilter = "";
 		$this->sSrchWhere = ""; // Search WHERE clause
+		$this->sDeleteConfirmMsg = "你真的要删除这些记录吗?"; // Delete confirm message
 
 		// Master/Detail
 		$this->sDbMasterFilter = ""; // Master filter
@@ -560,6 +623,13 @@ class cnewscat_list {
 		// Set up filter in Session
 		$newscat->setSessionWhere($sFilter);
 		$newscat->CurrentFilter = "";
+
+		// Export data only
+		if (in_array($newscat->Export, array("html","word","excel","xml","csv"))) {
+			$this->ExportData();
+			$this->Page_Terminate(); // Terminate response
+			exit();
+		}
 	}
 
 	// Return Basic Search sql
@@ -830,6 +900,94 @@ class cnewscat_list {
 
 		// Call Row Rendered event
 		$newscat->Row_Rendered();
+	}
+
+	// Export data in XML or CSV format
+	function ExportData() {
+		global $newscat;
+		$sCsvStr = "";
+
+		// Default export style
+		$sExportStyle = "h";
+
+		// Load recordset
+		$rs = $this->LoadRecordset();
+		$this->lTotalRecs = $rs->RecordCount();
+		$this->lStartRec = 1;
+
+		// Export all
+		if ($newscat->ExportAll) {
+			$this->lStopRec = $this->lTotalRecs;
+		} else { // Export 1 page only
+			$this->SetUpStartRec(); // Set up start record position
+
+			// Set the last record to display
+			if ($this->lDisplayRecs < 0) {
+				$this->lStopRec = $this->lTotalRecs;
+			} else {
+				$this->lStopRec = $this->lStartRec + $this->lDisplayRecs - 1;
+			}
+		}
+		if ($newscat->Export == "xml") {
+			$XmlDoc = new cXMLDocument();
+		} else {
+			echo ew_ExportHeader($newscat->Export);
+
+			// Horizontal format, write header
+			if ($sExportStyle <> "v" || $newscat->Export == "csv") {
+				$sExportStr = "";
+				ew_ExportAddValue($sExportStr, 'id', $newscat->Export);
+				ew_ExportAddValue($sExportStr, 'catname', $newscat->Export);
+				ew_ExportAddValue($sExportStr, 'catorder', $newscat->Export);
+				echo ew_ExportLine($sExportStr, $newscat->Export);
+			}
+		}
+
+		// Move to first record
+		$this->lRecCnt = $this->lStartRec - 1;
+		if (!$rs->EOF) {
+			$rs->MoveFirst();
+			$rs->Move($this->lStartRec - 1);
+		}
+		while (!$rs->EOF && $this->lRecCnt < $this->lStopRec) {
+			$this->lRecCnt++;
+			if (intval($this->lRecCnt) >= intval($this->lStartRec)) {
+				$this->LoadRowValues($rs);
+
+				// Render row for display
+				$newscat->RowType = EW_ROWTYPE_VIEW; // Render view
+				$this->RenderRow();
+				if ($newscat->Export == "xml") {
+					$XmlDoc->BeginRow();
+					$XmlDoc->AddField('id', $newscat->id->CurrentValue);
+					$XmlDoc->AddField('catname', $newscat->catname->CurrentValue);
+					$XmlDoc->AddField('catorder', $newscat->catorder->CurrentValue);
+					$XmlDoc->EndRow();
+				} else {
+					if ($sExportStyle == "v" && $newscat->Export <> "csv") { // Vertical format
+						echo ew_ExportField('id', $newscat->id->ExportValue($newscat->Export, $newscat->ExportOriginalValue), $newscat->Export);
+						echo ew_ExportField('catname', $newscat->catname->ExportValue($newscat->Export, $newscat->ExportOriginalValue), $newscat->Export);
+						echo ew_ExportField('catorder', $newscat->catorder->ExportValue($newscat->Export, $newscat->ExportOriginalValue), $newscat->Export);
+					}	else { // Horizontal format
+						$sExportStr = "";
+						ew_ExportAddValue($sExportStr, $newscat->id->ExportValue($newscat->Export, $newscat->ExportOriginalValue), $newscat->Export);
+						ew_ExportAddValue($sExportStr, $newscat->catname->ExportValue($newscat->Export, $newscat->ExportOriginalValue), $newscat->Export);
+						ew_ExportAddValue($sExportStr, $newscat->catorder->ExportValue($newscat->Export, $newscat->ExportOriginalValue), $newscat->Export);
+						echo ew_ExportLine($sExportStr, $newscat->Export);
+					}
+				}
+			}
+			$rs->MoveNext();
+		}
+
+		// Close recordset
+		$rs->Close();
+		if ($newscat->Export == "xml") {
+			header("Content-Type: text/xml");
+			echo $XmlDoc->XML();
+		} else {
+			echo ew_ExportFooter($newscat->Export);
+		}
 	}
 
 	// Page Load event

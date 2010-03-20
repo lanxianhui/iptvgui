@@ -27,7 +27,7 @@
 <li><a href="#">项目咨询</a></li>
 <li><a href="#">加入我们</a></li>
 <li><a href="#">联系我们</a></li>
-<li style="width:60px;"><a href="#" style="text-align:right;">English</a></li>
+<li style="width:60px;"><a href="index.php/main/test/1" style="text-align:right;">English</a></li>
 </ul>
 </div>
 </div>

@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* common-reset css */
+body{ margin:0 auto; padding:0; width:961px;font-family:Tahoma, Geneva, sans-serif; font-size:12px; }
+img{ border:0; padding:0; margin:0;}
+h1,h2,h3,h4,h5,h6,div{border:0; margin:0; padding:0; }
+
+ul,dl,dd,dt{ padding:0; margin:0; list-style:none; border:0;}
+li{ list-style:none; padding:0; margin:0; border:none;}
+a{ font-size:12px; text-decoration:none; display:block; float:left;}
+a:hover{ text-decoration:underline;}
+p{ margin:0; padding:0; border:none;}
+span{float:left; line-height:1.8em;}
+hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
+/* header css */
+#header{ background:url(../images/header.jpg) no-repeat; width:100%; float:left; height:117px;}
+	#h_u_link{ width:175px; float:right; margin-top:40px;}
+		#h_u_link li{ float:left;}
+			#h_u_link li a{ text-decoration:none; color:black;
+			/* css hack to IE6,7,8,FF */padding-top:0px;padding-top:2px\9;+padding-top:2px;_padding-top:0px;}
+#nav{ float:left; width:100%; height:37px;}
+	
+/* footer css */
+#footer{ float:left; width:100%;  }
+	#footer ul{ float:right; text-align:left; line-height:2.8em; display:block;color:#7F7F7F;}
+		#footer ul li{ float:left; }
+			#footer ul li a{ float:left; text-decoration:none;letter-spacing:1.3mm;line-height:2.8em;color:#7F7F7F;;
+			/* css hack to IE6,7,8,FF */padding-top:0px;padding-top:2px\9;+padding-top:2px;_padding-top:0px;}
+#copyright{  color:#7F7F7F; text-align:left; float:left; line-height:2.8em;}
+
+/* bottom css 友情链接*/
+#bottom{ color:#7F7F7F; text-align:left; float:left; width:940px;height:40px;}
+   #bottom div .title{ color:block; font-weight:700;}
+		#friend{float:left; width:100%; }	
+		#bottom div ul{ float:right;}
+		#bottom div ul li{ float:right; }
+		#bottom div a{ color:#7F7F7F; line-height:1.8em; float:left;}
+
+/* ad css */
+#ad{ float:left; width:100%; margin-top:5px; }
+#adnav{ float:left; width:100%; height:25px; border-bottom:dotted 1px #7F7F7F; padding-top:5px;
+		/* css hack to IE6 */_padding-top:3px; _height:27px;}
+	#adnav span{ float:left;color:#7F7F7F;}
+	#adnav a{ color:#7F7F7F; line-height:2em;}
+
+
+
+	
+	

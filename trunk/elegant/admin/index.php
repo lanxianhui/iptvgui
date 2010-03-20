@@ -95,7 +95,7 @@ class cdefault {
 	//  Page_Init
 	//
 	function Page_Init() {
-		global $gsExport, $gsExportFile, $srviceroot;
+		global $gsExport, $gsExportFile, $serviceroot;
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();

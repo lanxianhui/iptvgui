@@ -217,7 +217,7 @@ Calendar.setup({
 <?php } ?>
 <?php if ($news->newsimg->Visible) { // newsimg ?>
 	<tr<?php echo $news->newsimg->RowAttributes ?>>
-		<td class="ewTableHeader">新闻图片<span class='ewmsg'>&nbsp;*</span></td>
+		<td class="ewTableHeader">新闻图片</td>
 		<td<?php echo $news->newsimg->CellAttributes() ?>><span id="el_newsimg">
 <input type="file" name="x_newsimg" id="x_newsimg"<?php echo $news->newsimg->EditAttributes() ?>>
 </div>
@@ -715,19 +715,19 @@ class cnews_add {
 		$rsnew = array();
 
 		// Field newstitle
-		$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, "");
+		$news->newstitle->SetDbValueDef($news->newstitle->CurrentValue, NULL);
 		$rsnew['newstitle'] =& $news->newstitle->DbValue;
 
 		// Field catid
-		$news->catid->SetDbValueDef($news->catid->CurrentValue, 0);
+		$news->catid->SetDbValueDef($news->catid->CurrentValue, NULL);
 		$rsnew['catid'] =& $news->catid->DbValue;
 
 		// Field newsdesc
-		$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, "");
+		$news->newsdesc->SetDbValueDef($news->newsdesc->CurrentValue, NULL);
 		$rsnew['newsdesc'] =& $news->newsdesc->DbValue;
 
 		// Field pubtime
-		$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), ew_CurrentDate());
+		$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), NULL);
 		$rsnew['pubtime'] =& $news->pubtime->DbValue;
 
 		// Field newsimg

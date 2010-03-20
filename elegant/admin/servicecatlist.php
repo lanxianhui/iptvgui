@@ -836,18 +836,7 @@ class cservicecat_list {
 			$servicecat->catname->ViewCustomAttributes = "";
 
 			// rootid
-			if (strval($servicecat->rootid->CurrentValue) <> "") {
-				$sSqlWrk = "SELECT `rootname` FROM `srviceroot` WHERE `id` = " . ew_AdjustSql($servicecat->rootid->CurrentValue) . "";
-				$rswrk = $conn->Execute($sSqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
-					$servicecat->rootid->ViewValue = $rswrk->fields('rootname');
-					$rswrk->Close();
-				} else {
-					$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
-				}
-			} else {
-				$servicecat->rootid->ViewValue = NULL;
-			}
+			$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
 			$servicecat->rootid->CssStyle = "";
 			$servicecat->rootid->CssClass = "";
 			$servicecat->rootid->ViewCustomAttributes = "";

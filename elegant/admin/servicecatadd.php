@@ -53,6 +53,9 @@ servicecat_add.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_rootid"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 所属根类型");
+		elm = fobj.elements["x" + infix + "_rootid"];
+		if (elm && !ew_CheckInteger(elm.value))
+			return ew_OnError(this, elm, "错误的 Integer - 所属根类型");
 		elm = fobj.elements["x" + infix + "_catdesc"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 类型描述");
@@ -152,24 +155,7 @@ function ew_FocusDHTMLEditor(name) {
 	<tr<?php echo $servicecat->rootid->RowAttributes ?>>
 		<td class="ewTableHeader">所属根类型<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $servicecat->rootid->CellAttributes() ?>><span id="el_rootid">
-<select id="x_rootid" name="x_rootid"<?php echo $servicecat->rootid->EditAttributes() ?>>
-<?php
-if (is_array($servicecat->rootid->EditValue)) {
-	$arwrk = $servicecat->rootid->EditValue;
-	$rowswrk = count($arwrk);
-	$emptywrk = TRUE;
-	for ($rowcntwrk = 0; $rowcntwrk < $rowswrk; $rowcntwrk++) {
-		$selwrk = (strval($servicecat->rootid->CurrentValue) == strval($arwrk[$rowcntwrk][0])) ? " selected=\"selected\"" : "";
-		if ($selwrk <> "") $emptywrk = FALSE;
-?>
-<option value="<?php echo ew_HtmlEncode($arwrk[$rowcntwrk][0]) ?>"<?php echo $selwrk ?>>
-<?php echo $arwrk[$rowcntwrk][1] ?>
-</option>
-<?php
-	}
-}
-?>
-</select>
+<input type="text" name="x_rootid" id="x_rootid" size="30" value="<?php echo $servicecat->rootid->EditValue ?>"<?php echo $servicecat->rootid->EditAttributes() ?>>
 </span><?php echo $servicecat->rootid->CustomMsg ?></td>
 	</tr>
 <?php } ?>
@@ -524,18 +510,7 @@ class cservicecat_add {
 			$servicecat->catname->ViewCustomAttributes = "";
 
 			// rootid
-			if (strval($servicecat->rootid->CurrentValue) <> "") {
-				$sSqlWrk = "SELECT `rootname` FROM `srviceroot` WHERE `id` = " . ew_AdjustSql($servicecat->rootid->CurrentValue) . "";
-				$rswrk = $conn->Execute($sSqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
-					$servicecat->rootid->ViewValue = $rswrk->fields('rootname');
-					$rswrk->Close();
-				} else {
-					$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
-				}
-			} else {
-				$servicecat->rootid->ViewValue = NULL;
-			}
+			$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
 			$servicecat->rootid->CssStyle = "";
 			$servicecat->rootid->CssClass = "";
 			$servicecat->rootid->ViewCustomAttributes = "";
@@ -571,14 +546,7 @@ class cservicecat_add {
 
 			// rootid
 			$servicecat->rootid->EditCustomAttributes = "";
-			$sSqlWrk = "SELECT `id`, `rootname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `srviceroot`";
-			$sWhereWrk = "";
-			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
-			$rswrk = $conn->Execute($sSqlWrk);
-			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
-			if ($rswrk) $rswrk->Close();
-			array_unshift($arwrk, array("", "请选择"));
-			$servicecat->rootid->EditValue = $arwrk;
+			$servicecat->rootid->EditValue = ew_HtmlEncode($servicecat->rootid->CurrentValue);
 
 			// catdesc
 			$servicecat->catdesc->EditCustomAttributes = "";
@@ -610,6 +578,10 @@ class cservicecat_add {
 		if ($servicecat->rootid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 所属根类型";
+		}
+		if (!ew_CheckInteger($servicecat->rootid->FormValue)) {
+			if ($gsFormError <> "") $gsFormError .= "<br>";
+			$gsFormError .= "错误的 Integer - 所属根类型";
 		}
 		if ($servicecat->catdesc->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";

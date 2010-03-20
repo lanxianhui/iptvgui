@@ -62,6 +62,9 @@ service_add.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_rootid"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 根类型");
+		elm = fobj.elements["x" + infix + "_rootid"];
+		if (elm && !ew_CheckInteger(elm.value))
+			return ew_OnError(this, elm, "错误的 Integer - 根类型");
 		elm = fobj.elements["x" + infix + "_catid"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 服务类型");
@@ -202,24 +205,7 @@ ew_DHTMLEditors.push(new ew_DHTMLEditor("x_servicedesc", function() {
 	<tr<?php echo $service->rootid->RowAttributes ?>>
 		<td class="ewTableHeader">根类型<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $service->rootid->CellAttributes() ?>><span id="el_rootid">
-<select id="x_rootid" name="x_rootid" onchange="ew_UpdateOpt('x_catid','x_rootid',service_add.ar_x_catid);"<?php echo $service->rootid->EditAttributes() ?>>
-<?php
-if (is_array($service->rootid->EditValue)) {
-	$arwrk = $service->rootid->EditValue;
-	$rowswrk = count($arwrk);
-	$emptywrk = TRUE;
-	for ($rowcntwrk = 0; $rowcntwrk < $rowswrk; $rowcntwrk++) {
-		$selwrk = (strval($service->rootid->CurrentValue) == strval($arwrk[$rowcntwrk][0])) ? " selected=\"selected\"" : "";
-		if ($selwrk <> "") $emptywrk = FALSE;
-?>
-<option value="<?php echo ew_HtmlEncode($arwrk[$rowcntwrk][0]) ?>"<?php echo $selwrk ?>>
-<?php echo $arwrk[$rowcntwrk][1] ?>
-</option>
-<?php
-	}
-}
-?>
-</select>
+<input type="text" name="x_rootid" id="x_rootid" size="30" value="<?php echo $service->rootid->EditValue ?>"<?php echo $service->rootid->EditAttributes() ?>>
 </span><?php echo $service->rootid->CustomMsg ?></td>
 	</tr>
 <?php } ?>
@@ -245,26 +231,6 @@ if (is_array($service->catid->EditValue)) {
 }
 ?>
 </select>
-<?php
-$jswrk = "";
-if (is_array($service->catid->EditValue)) {
-	$arwrk = $service->catid->EditValue;
-	$arwrkcnt = count($arwrk);
-	for ($rowcntwrk = 1; $rowcntwrk < $arwrkcnt; $rowcntwrk++) {
-		if ($jswrk <> "") $jswrk .= ",";
-		$jswrk .= "['" . ew_JsEncode($arwrk[$rowcntwrk][0]) . "',"; // Value
-		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][1]) . "',"; // Display field 1
-		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][2]) . "',"; // Display field 2
-		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][3]) . "']"; // Filter field
-	}
-}
-?>
-<script type="text/javascript">
-<!--
-service_add.ar_x_catid = [<?php echo $jswrk ?>];
-
-//-->
-</script>
 </span><?php echo $service->catid->CustomMsg ?></td>
 	</tr>
 <?php } ?>
@@ -283,12 +249,6 @@ service_add.ar_x_catid = [<?php echo $jswrk ?>];
 <p>
 <input type="button" name="btnAction" id="btnAction" value="    添加    " onclick="ew_SubmitForm(service_add, this.form);">
 </form>
-<script language="JavaScript">
-<!--
-ew_UpdateOpts([['x_catid','x_rootid',service_add.ar_x_catid]]);
-
-//-->
-</script>
 <script type="text/javascript">
 <!--
 ew_CreateEditor();  // Create DHTML editor(s)
@@ -643,18 +603,7 @@ class cservice_add {
 			$service->servicedesc->ViewCustomAttributes = "";
 
 			// rootid
-			if (strval($service->rootid->CurrentValue) <> "") {
-				$sSqlWrk = "SELECT `rootname` FROM `srviceroot` WHERE `id` = " . ew_AdjustSql($service->rootid->CurrentValue) . "";
-				$rswrk = $conn->Execute($sSqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
-					$service->rootid->ViewValue = $rswrk->fields('rootname');
-					$rswrk->Close();
-				} else {
-					$service->rootid->ViewValue = $service->rootid->CurrentValue;
-				}
-			} else {
-				$service->rootid->ViewValue = NULL;
-			}
+			$service->rootid->ViewValue = $service->rootid->CurrentValue;
 			$service->rootid->CssStyle = "";
 			$service->rootid->CssClass = "";
 			$service->rootid->ViewCustomAttributes = "";
@@ -720,24 +669,17 @@ class cservice_add {
 
 			// rootid
 			$service->rootid->EditCustomAttributes = "";
-			$sSqlWrk = "SELECT `id`, `rootname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `srviceroot`";
+			$service->rootid->EditValue = ew_HtmlEncode($service->rootid->CurrentValue);
+
+			// catid
+			$service->catid->EditCustomAttributes = "";
+			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `servicecat`";
 			$sWhereWrk = "";
 			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
 			$rswrk = $conn->Execute($sSqlWrk);
 			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
 			if ($rswrk) $rswrk->Close();
 			array_unshift($arwrk, array("", "请选择"));
-			$service->rootid->EditValue = $arwrk;
-
-			// catid
-			$service->catid->EditCustomAttributes = "";
-			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, `rootid` FROM `servicecat`";
-			$sWhereWrk = "";
-			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
-			$rswrk = $conn->Execute($sSqlWrk);
-			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
-			if ($rswrk) $rswrk->Close();
-			array_unshift($arwrk, array("", "请选择", ""));
 			$service->catid->EditValue = $arwrk;
 
 			// servicepic
@@ -792,6 +734,10 @@ class cservice_add {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 根类型";
 		}
+		if (!ew_CheckInteger($service->rootid->FormValue)) {
+			if ($gsFormError <> "") $gsFormError .= "<br>";
+			$gsFormError .= "错误的 Integer - 根类型";
+		}
 		if ($service->catid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 服务类型";
@@ -820,23 +766,23 @@ class cservice_add {
 		$rsnew = array();
 
 		// Field servicename
-		$service->servicename->SetDbValueDef($service->servicename->CurrentValue, "");
+		$service->servicename->SetDbValueDef($service->servicename->CurrentValue, NULL);
 		$rsnew['servicename'] =& $service->servicename->DbValue;
 
 		// Field pubtime
-		$service->pubtime->SetDbValueDef(ew_UnFormatDateTime($service->pubtime->CurrentValue, 5), ew_CurrentDate());
+		$service->pubtime->SetDbValueDef(ew_UnFormatDateTime($service->pubtime->CurrentValue, 5), NULL);
 		$rsnew['pubtime'] =& $service->pubtime->DbValue;
 
 		// Field servicedesc
-		$service->servicedesc->SetDbValueDef($service->servicedesc->CurrentValue, "");
+		$service->servicedesc->SetDbValueDef($service->servicedesc->CurrentValue, NULL);
 		$rsnew['servicedesc'] =& $service->servicedesc->DbValue;
 
 		// Field rootid
-		$service->rootid->SetDbValueDef($service->rootid->CurrentValue, 0);
+		$service->rootid->SetDbValueDef($service->rootid->CurrentValue, NULL);
 		$rsnew['rootid'] =& $service->rootid->DbValue;
 
 		// Field catid
-		$service->catid->SetDbValueDef($service->catid->CurrentValue, 0);
+		$service->catid->SetDbValueDef($service->catid->CurrentValue, NULL);
 		$rsnew['catid'] =& $service->catid->DbValue;
 
 		// Field servicepic

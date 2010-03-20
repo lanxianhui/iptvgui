@@ -155,7 +155,7 @@ function ew_FocusDHTMLEditor(name) {
 <?php } ?>
 <?php if ($cases->casepic->Visible) { // casepic ?>
 	<tr<?php echo $cases->casepic->RowAttributes ?>>
-		<td class="ewTableHeader">°¸ÀýÍ¼Æ¬<span class='ewmsg'>&nbsp;*</span></td>
+		<td class="ewTableHeader">°¸ÀýÍ¼Æ¬</td>
 		<td<?php echo $cases->casepic->CellAttributes() ?>><span id="el_casepic">
 <div id="old_x_casepic">
 <?php if ($cases->casepic->HrefValue <> "") { ?>
@@ -719,7 +719,7 @@ class ccases_edit {
 			// Field id
 			// Field casetitle
 
-			$cases->casetitle->SetDbValueDef($cases->casetitle->CurrentValue, "");
+			$cases->casetitle->SetDbValueDef($cases->casetitle->CurrentValue, NULL);
 			$rsnew['casetitle'] =& $cases->casetitle->DbValue;
 
 			// Field casepic
@@ -734,11 +734,11 @@ class ccases_edit {
 			}
 
 			// Field casedesc
-			$cases->casedesc->SetDbValueDef($cases->casedesc->CurrentValue, "");
+			$cases->casedesc->SetDbValueDef($cases->casedesc->CurrentValue, NULL);
 			$rsnew['casedesc'] =& $cases->casedesc->DbValue;
 
 			// Field catid
-			$cases->catid->SetDbValueDef($cases->catid->CurrentValue, 0);
+			$cases->catid->SetDbValueDef($cases->catid->CurrentValue, NULL);
 			$rsnew['catid'] =& $cases->catid->DbValue;
 
 			// Call Row Updating event

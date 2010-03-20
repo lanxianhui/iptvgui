@@ -17,83 +17,21 @@ class Main extends Controller {
 		$this->db->query($sql);
 		echo "Success";
 	}
-	
-	function sign($rid,$catid=0,$offset){
-		$data = array();
-		$data["catmenu"]=$this->getServiceCat($rid);
-		$data["selectcat"]=$catid;
-		$data["content"]=$this->getServiceCatByID($catid);
-		$data["offset"] = $offset;
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"signinfo");
-	}
-	
-	function search($keyword,$offset=0){
-		$data = array();
-		$data["keyword"] = $keyword;
-		$data["catmenu"] = $this->getServiceCat(1);
-		$data["newscat"] = $this->getNewsCat();
-		$data["selectcat"] = 0;
-		$data["content"] = $this->getServiceCatByID(1);
-		$data["offset"] = $offset;
-		// 搜索过程
-		$keywordvalue = str_replace("_","%",$keyword);
-		$keywordvalue = urldecode($keywordvalue);
-		
-		$this->pagiSearchNation($keyword,$keywordvalue,"news",4);
-		$newsinfo = $this->searchInfo($keywordvalue,$offset);
-		$newsresult = array();
-		foreach($newsinfo as $pitem){
-			$temppitem = array(
-			"id"=>$pitem["id"],
-			"newstitle"=>str_replace($keywordvalue,"<strong style='color:red;font-size:1.5em;'>$keywordvalue</strong>",$pitem["newstitle"]),
-			"newsdesc"=>str_replace($keywordvalue,"<strong style='color:red;'>$keywordvalue</strong>",$pitem["newsdesc"]),
-			"pubtime"=>$pitem["pubtime"],
-			"newsimg"=>$pitem["newsimg"]);
-			array_push($newsresult,$temppitem);
-		}
-		$data["resultlist"] = $newsresult;
-		//$data["content"]=$this->getNewsCatByID($catid);
-		$this->executeFrame($data,1);
-		$this->showView($data,"searchresult");
-	}
-	
-	function index($rid=7,$catid=1)
+
+    function index($rid=8,$catid=1)
 	{
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
 		$data["notice"] = $this->getNotice();
-		$data["indexpartner"] = $this->getIndexPartners();
 		$data["indexlink"] = $this->getIndexFriend();
-		$data["indexexpert"] = $this->getIndexExpert();
 		$data["newslist"] = $this->getIndexNews($catid);
 		$data["servicecat"] = $this->getServiceCatByID(12);
 		$data["topone"] = $this->getIndexTopNews();
-		$this->executeFrame($data,7);
+		$this->executeFrame($data,8);
 		$this->showIndexView($data,"index");
 	}
-	
-	function linklist($rid=7,$catid=15){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		$data["partner"] = $this->getAllPartners();
-		//$data["servicelist"] = $this->getServiceByCat($catid);
-		$data["friend"] = $this->getAllFriend();
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"linklist");
-	}
-	
-	function service($rid){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"servicelist");
-	}
-	
 	function signflow($rid = 0,$catid=20){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
@@ -106,134 +44,36 @@ class Main extends Controller {
 	}
 
 	// 站点内容
-	function catinfo($rid=7,$catid=15){
+	function catinfo($rid=9,$catid=7){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
-		$data["partner"] = $this->getAllPartners();
 		$data["servicelist"] = $this->getServiceByCat($catid,0);
 		$this->executeFrame($data,$rid);
 		$this->showView($data,"catinfo");
 	}
 
-	// 合作伙伴页面，活动掠影
-	function partner($rid,$catid = 0,$offset=0){
+	// 关于清雅 
+	function elegant($rid,$catid = 2,$offset=0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
 		$data["content"] = $this->getServiceCatByID($catid);
-		$data["partner"] = $this->getAllPartners();
-		$this->pagiServiceNation("partner",$rid,$catid,"service",$this->pagesize);
-		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"partner");
-	}
-	// 活动掠影详细页面
-	function partnerinfo($rid,$catid,$serviceid){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		//$data["partner"] = $this->getAllPartners();
-		//$data["servicelist"] = $this->getServiceByCat($catid);
-		$data["partnerinfo"] = $this->getServiceByID($serviceid);
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"partnerinfo");
-	}
-	
-	// 我看世博详细页
-	function myexpoinfo($rid,$catid,$serviceid,$offset){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		//$data["partner"] = $this->getAllPartners();
-		$data["offset"] = $offset;
-		//$data["servicelist"] = $this->getServiceByCat($catid);
-		$data["partnerinfo"] = $this->getServiceByID($serviceid);
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"myexpoinfo");
-	}
-	// 项目概况子页面
-	function scatinfo($rid,$catid = 12){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"scatinfo");
-	}
-	//我看世博
-	function myexpo($rid,$catid =2,$offset=0){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		$this->pagiServiceNation("myexpo",$rid,$catid,"service",$this->pagesize);
-		$data["offset"] = $offset;
-		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"myexpo");
-	}
-	//沟通推荐
-	function recommend($rid,$catid=5,$offset=0){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$this->pagiServiceNation("recommend",$rid,$catid,"service",$this->pagesize);
-		$data["content"] = $this->getServiceCatByID($catid);
-		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
-		$data["offset"] = $offset;
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"recommend");
-	}
-	//沟通推荐子页面
-	function recommendinfo($rid,$catid,$serviceid,$offset=0){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		//$data["partner"] = $this->getAllPartners();
-		//$data["servicelist"] = $this->getServiceByCat($catid);
-		$data["partnerinfo"] = $this->getServiceByID($serviceid);
-		$data["offset"] = $offset;
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"recommendinfo");
-	}
-	//智慧城市
-	function knowledgecity($rid,$catid=4,$offset=0){
-		$data = array();
-		$data["catmenu"]=$this->getServiceCat($rid);
-		$data["selectcat"]=$catid;
-		$data["content"]=$this->getServiceCatByID($catid);
-		if($catid == 6){
-			$this->pagiExpertNation("knowledgecity",$rid,"service",4);
+	    if($catid == 2){
+			$this->pagiExpertNation("elegant",$rid,"service",2);
 			$data["expert"] = $this->getAllexpert($offset);
 			$data["offset"] = $offset;
 		}else{
-			$this->pagiServiceNation("knowledgecity",$rid,$catid,"service",$this->pagesize);
+			$this->pagiServiceNation("elegant",$rid,$catid,"service",$this->pagesize);
 			$data["servicelist"]=$this->getServiceByCat($catid,$offset);
 			$data["offset"] = $offset;
 		}
 		$this->executeFrame($data,$rid);
-		$this->showView($data,"knowledgecity");
+		$this->showView($data,"elegant");
 	}
-	
-	function expertinfo($rid,$catid=6,$expertid,$offset=0){
-		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		//$data["partner"] = $this->getAllPartners();
-		//$data["servicelist"] = $this->getServiceByCat($catid);
-		$data["partnerinfo"] = $this->getExpertByID($expertid);
-		$data["offset"] = $offset;
-		$this->executeFrame($data,$rid);
-		$this->showView($data,"expertinfo");
-	}
-	
-	function knowledgecityinfo($rid,$catid=4,$serviceid,$offset=0){
+	// 关于清雅详细页面
+	function elegantinfo($rid,$catid,$serviceid){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["selectcat"] = $catid;
@@ -241,39 +81,29 @@ class Main extends Controller {
 		//$data["partner"] = $this->getAllPartners();
 		//$data["servicelist"] = $this->getServiceByCat($catid);
 		$data["partnerinfo"] = $this->getServiceByID($serviceid);
-		$data["offset"] = $offset;
 		$this->executeFrame($data,$rid);
-		$this->showView($data,"knowledgecityinfo");
+		$this->showView($data,"elegantinfo");
 	}
-//信息咨询
-//	function  news($rid,$catid =1){
-//		$data = array();
-//		$data["catmenu"] = $this->getNewsCat($rid);
-//		$data["selectcat"] = $catid;
-//		$data["partner"] =$this->getAllPartners();
-//		$data["newslist"] = $this->getNewsByCat($catid);
-//		$this->executeFrame($data,$rid);
-//		$this->showView($data,"news");
-//	}
+	//新闻资讯
 	function news($rid,$catid,$offset = 0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
 		$data["newscat"] = $this->getNewsCat();
 		$data["selectcat"] = $catid;
-		if($catid != 3){
+		if($catid != 4){
 			$this->pagiNewsNation($rid,$catid,"news",$this->pagesize);
 			$data["newslist"]=$this->getNewsByCat($catid,$offset);
-			$data["newspiclist"]=$this->getPicNewsByCat(3,0);
+			$data["newspiclist"]=$this->getPicNewsByCat(2,0);
 		}else{
-			$this->pagiNewsNation($rid,$catid,"news",4);
-			$data["newslist"]=$this->getPicNewsByCat(4,$offset);
+			$this->pagiNewsNation($rid,$catid,"news",11);
+			$data["newslist"]=$this->getPicNewsByCat(11,$offset);
 		}
 		$data["offset"] = $offset;
 		$data["content"]=$this->getNewsCatByID($catid);
-		$this->executeFrame($data,1);
+		$this->executeFrame($data,4);
 		$this->showView($data,"news");
 	}
-	
+	//新闻资讯详细内容
 	function newsinfo($rid,$catid,$nid,$offset=0){
 		$data = array();
 		$data["catmenu"] = $this->getServiceCat($rid);
@@ -287,52 +117,74 @@ class Main extends Controller {
 		$this->executeFrame($data,1);
 		$this->showView($data,"newsinfo");
 	}
-	
+   // 项目案例
+	function cases($rid,$catid =3,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$this->pagiServiceNation("cases",$rid,$catid,"service",$this->pagesize);
+		$data["offset"] = $offset;
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"cases");
+	}
+   // 加入我们
+	function join ($rid,$catid =6,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$this->pagiServiceNation("join",$rid,$catid,"service",$this->pagesize);
+		$data["offset"] = $offset;
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"join");
+	}
+// 联系我们
+	function contack ($rid,$catid =7,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$this->pagiServiceNation("contack",$rid,$catid,"service",$this->pagesize);
+		$data["offset"] = $offset;
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"contack");
+	}
+// 项目咨询
+	function consulting ($rid,$catid =5,$offset=0){
+		$data = array();
+		$data["catmenu"] = $this->getServiceCat($rid);
+		$data["selectcat"] = $catid;
+		$data["content"] = $this->getServiceCatByID($catid);
+		$this->pagiServiceNation("consulting",$rid,$catid,"service",$this->pagesize);
+		$data["offset"] = $offset;
+		$data["servicelist"] = $this->getServiceByCat($catid,$offset);
+		$this->executeFrame($data,$rid);
+		$this->showView($data,"consulting");
+	}
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
 	function getIndexFriend(){
-	     $result =  $this->db->get("friendlink",5,0);
+	     $result =  $this->db->get("friendlink",6,0);
 	     return $result->result_array();
-	}
-	
-	function getIndexTopNews(){
-		$this->db->order_by("pubtime","desc");
-		$result = $this->db->get("news",1,0);
-		return $result->result_array();
-	}
-	
-	function getIndexExpert(){
-		$result =  $this->db->get("expert",8,0);
-	     return $result->result_array();
-	}
-	
-	function getExpertByID($expertID){
-		$result =  $this->db->get_where("expert",array("id"=>$expertID));
-	     return $result->result_array();
-	}
-	
-	function getIndexNews($catid){
-		 $this->db->order_by("pubtime","desc");
-	     $result =  $this->db->get_where("news",array("catid"=>$catid),6,0);
-	     return $result->result_array();
-	}
-	
-	function searchInfo($keyword,$offset){
-		$this->db->order_by("pubtime","desc");
-		$this->db->like("newstitle","$keyword",'both');
-		$this->db->limit(4,$offset);
-		$result = $this->db->get("news");
-		return $result->result_array();
-	}
-	
-	function getIndexPartners(){
-		//$this->db->order_by("porder");
-		$result = $this->db->get("partner",5,0);
-		return $result->result_array();
 	}
 	
 	function getAllFriend(){
 		$result = $this->db->get("friendlink");
 		return $result->result_array();
+	}
+	
+    function getIndexTopNews(){
+		$this->db->order_by("pubtime","desc");
+		$result = $this->db->get("news",1,0);
+		return $result->result_array();
+	}
+    function getIndexNews($catid){
+		 $this->db->order_by("pubtime","desc");
+	     $result =  $this->db->get_where("news",array("catid"=>$catid),7,0);
+	     return $result->result_array();
 	}
 	
 	function getNewsByCat($catid,$offset){
@@ -360,15 +212,7 @@ class Main extends Controller {
 		$result = $this->db->get_where("newscat",array("id"=>$catid));
 		return $result->result_array();
 	}
-	function getAllPartners(){
-		//$this->db->order_by("porder");
-		$result = $this->db->get("partner");
-		return $result->result_array();
-	}
-	function getAllexpert($offset){
-		$result = $this->db->get("expert",4,$offset);
-		return $result->result_array();
-	}
+
 	function getServiceByID($serviceid){
 		$result = $this->db->get_where("service",array("id"=>$serviceid));
 		return $result->result_array();
@@ -398,7 +242,7 @@ class Main extends Controller {
 	}
 	
 	function getNotice(){
-		$result = $this->db->get_where("servicecat",array("id"=>19));
+		$result = $this->db->get_where("servicecat",array("id"=>10));
 		return $result->result_array();
 	}
 	// -------------------------------------------整个页面需要用到的方法-------------------------------------
@@ -406,12 +250,12 @@ class Main extends Controller {
 		$data["nav"] = $this->getRootNav();
 		$data["root"] = $this->getServiceRootByID($rid);
 		$data["selectroot"] = $rid;
-		$data["footer"] = $this->getServiceCat(7);
+		$data["footer"] = $this->getServiceCat(8);
 	}
 	// 头部导航栏
 	function getRootNav(){
 		$this->db->order_by("rootorder");
-		$this->db->where("id < ",7);
+		$this->db->where("id < ",8);
 		$result = $this->db->get("serviceroot");
 		return $result->result_array();
 	}

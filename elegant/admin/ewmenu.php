@@ -119,6 +119,7 @@ function MenuItem_Adding(&$Item) {
 // Generate all menu items
 $RootMenu = new cMenu("RootMenu");
 $RootMenu->IsRoot = TRUE;
+	$RootMenu->AddMenuItem(10, "Serviceroot", "servicerootlist.php", -1);
 	$RootMenu->AddMenuItem(1, "账号管理", "adminlist.php", -1);
 	$RootMenu->AddMenuItem(2, "案例管理", "caseslist.php", -1);
 	$RootMenu->AddMenuItem(3, "案例类型", "casescatlist.php", -1);
@@ -128,7 +129,6 @@ $RootMenu->IsRoot = TRUE;
 	$RootMenu->AddMenuItem(7, "新闻类型", "newscatlist.php", -1);
 	$RootMenu->AddMenuItem(8, "服务管理", "servicelist.php", -1);
 	$RootMenu->AddMenuItem(9, "服务类型", "servicecatlist.php", -1);
-	$RootMenu->AddMenuItem(10, "服务根类", "srvicerootlist.php", -1);
 $RootMenu->Render();
 ?>
 </div>

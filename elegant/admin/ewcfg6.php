@@ -22,7 +22,7 @@ define("EW_DEFAULT_DATE_FORMAT", "yyyy/mm/dd", TRUE); // Default date format
 define("EW_DEFAULT_DATE_FORMAT_ID", "5", TRUE); // Default date format
 define("EW_DATE_SEPARATOR", "/", TRUE); // Date separator
 define("EW_PROJECT_NAME", "elegant", TRUE); // Project Name
-define("EW_RANDOM_KEY", 'itfel0VvshRHJOuf', TRUE); // Random key for encryption
+define("EW_RANDOM_KEY", 'Z94sdxXri5eyHKws', TRUE); // Random key for encryption
 
 /**
  * Encoding for Ajax
@@ -43,8 +43,8 @@ define("EW_ENCODING", "ISO-8859-1", TRUE); // Encoding for Ajax
  * Otherwise, existing users will not be able to login. MD5 hash is
  * irreversible, password will be reset during password recovery.
  */
-define("EW_MD5_PASSWORD", FALSE, TRUE); // Use MD5 password
-define("EW_CASE_SENSITIVE_PASSWORD", FALSE, TRUE); // Case-sensitive password
+define("EW_MD5_PASSWORD", TRUE, TRUE); // Use MD5 password
+define("EW_CASE_SENSITIVE_PASSWORD", TRUE, TRUE); // Case-sensitive password
 
 // Session names
 define("EW_SESSION_STATUS", EW_PROJECT_NAME . "_status", TRUE); // Login Status
@@ -106,11 +106,11 @@ define("EW_DB_QUOTE_END", "`", TRUE);
  * Note: Read http://dev.mysql.com/doc/refman/5.0/en/charset-connection.html
  * before using this setting.
  */
-define("EW_MYSQL_CHARSET", "", TRUE);
+define("EW_MYSQL_CHARSET", "gbk", TRUE);
 
 // Security
-define("EW_ADMIN_USER_NAME", "", TRUE); // Administrator user name
-define("EW_ADMIN_PASSWORD", "", TRUE); // Administrator password
+define("EW_ADMIN_USER_NAME", "admin", TRUE); // Administrator user name
+define("EW_ADMIN_PASSWORD", "admin", TRUE); // Administrator password
 
 // User level constants
 define("EW_USER_LEVEL_COMPAT", TRUE, TRUE); // Use old User Level values. Comment out to use new User Level values (separate values for View/Search)

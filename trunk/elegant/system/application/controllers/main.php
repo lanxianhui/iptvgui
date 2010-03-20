@@ -21,14 +21,14 @@ class Main extends Controller {
     function index($rid=8,$catid=1)
 	{
 		$data = array();
-		$data["catmenu"] = $this->getServiceCat($rid);
-		$data["selectcat"] = $catid;
-		$data["content"] = $this->getServiceCatByID($catid);
-		$data["notice"] = $this->getNotice();
+		//$data["catmenu"] = $this->getServiceCat($rid);
+		//$data["selectcat"] = $catid;
+		//$data["content"] = $this->getServiceCatByID($catid);
+		//$data["notice"] = $this->getNotice();
 		$data["indexlink"] = $this->getIndexFriend();
-		$data["newslist"] = $this->getIndexNews($catid);
-		$data["servicecat"] = $this->getServiceCatByID(12);
-		$data["topone"] = $this->getIndexTopNews();
+		//$data["newslist"] = $this->getIndexNews($catid);
+		//$data["servicecat"] = $this->getServiceCatByID(12);
+		//$data["topone"] = $this->getIndexTopNews();
 		$this->executeFrame($data,8);
 		$this->showIndexView($data,"index");
 	}

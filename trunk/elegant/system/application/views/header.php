@@ -12,57 +12,26 @@
 <body>
 <input id="rooturl" value="<?php echo base_url() ?>" type="hidden"/>
 <!--站点头部-->
+<div id="page">
+<div id="header_left"></div>
 <div id="header">
 <a href="index.php"><img src="images/logo_01.jpg"/></a>
-<a href="index.php"><img src="images/logo_02.jpg"/></a>
-</div>
 
-<!--站点导航栏-->
+<img class="phone" src="images/logo_02.jpg"/>
 <div id="nav">
 <ul>
-<?php foreach ($nav as $navitem):?>
-<?php if($navitem["id"] == 1){?>
-<li><a href="index.php/main/index" <?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>>
-<?php echo $navitem["rootname"] ?>
-</a></li>
-
-<?php }else if($navitem["id"] == 2){?>
-<li><a href="index.php/main/elegant/<?php echo $navitem["id"] ?>/1"<?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>><?php echo $navitem["rootname"] ?></a></li>
-
-<?php }else if($navitem["id"] == 6){?>
-<li><a href="index.php/main/join/<?php echo $navitem["id"] ?>/6"<?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>><?php echo $navitem["rootname"] ?></a></li>
-<?php }else if($navitem["id"] == 7){?>
-<li><a href="index.php/main/contact/<?php echo $navitem["id"] ?>/10"<?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>><?php echo $navitem["rootname"] ?></a></li>
-<?php }else if($navitem["id"] == 3){?>
-<li><a href="index.php/main/cases/<?php echo $navitem["id"] ?>/14"<?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>><?php echo $navitem["rootname"] ?></a></li>
-
-<?php }else if($navitem["id"] == 5){?>
-<li><a href="index.php/main/consulting/<?php echo $navitem["id"] ?>/13"<?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>><?php echo $navitem["rootname"] ?></a></li>
-
-<?php }else if($navitem["id"] == 4){?>
-<li><a href="index.php/main/news/<?php echo $navitem["id"] ?>/11"<?php if($selectroot == $navitem["id"]){?>
-style="font-weight:900;"
-<?php }?>><?php echo $navitem["rootname"] ?></a></li>
-
-<?php }else{?>
-<li><a href="index.php/main/service/<?php echo $navitem["id"] ?>"><?php echo $navitem["rootname"] ?></a></li>
-<?php if($navitem["id"] != 7){?>
-
-<?php }?>
-<?php }?>
-<?php endforeach;?>
+<li style="width:60px;"><a href="#" style="text-align:left;">首页</a></li>
+<li><a href="#">关于清雅</a></li>
+<li><a href="#">项目案例</a></li>
+<li><a href="#">新闻资讯</a></li>
+<li><a href="#">项目咨询</a></li>
+<li><a href="#">加入我们</a></li>
+<li><a href="#">联系我们</a></li>
+<li style="width:60px;"><a href="#" style="text-align:right;">English</a></li>
 </ul>
 </div>
+</div>
+<div id="header_right"></div>
+</div>
+
 

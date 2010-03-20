@@ -67,6 +67,9 @@ admin_edit.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+admin_edit.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 admin_edit.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -232,6 +235,13 @@ class cadmin_edit {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $admin;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -306,6 +316,8 @@ class cadmin_edit {
 				if ($this->EditRow()) { // Update record based on key
 					$this->setMessage("更新成功"); // Update success
 					$sReturnUrl = $admin->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "adminview.php")
+						$sReturnUrl = $admin->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Return to caller
 				} else {
 					$this->RestoreFormValues(); // Restore form values if update failed

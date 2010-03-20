@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "friendlinkinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -73,6 +74,9 @@ friendlink_add.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+friendlink_add.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 friendlink_add.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -221,6 +225,9 @@ class cfriendlink_add {
 		// Initialize table object
 		$GLOBALS["friendlink"] = new cfriendlink();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'add', TRUE);
@@ -238,6 +245,13 @@ class cfriendlink_add {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $friendlink;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -323,6 +337,8 @@ class cfriendlink_add {
 		    if ($this->AddRow()) { // Add successful
 		      $this->setMessage("Ìí¼Ó³É¹¦"); // Set up success message
 					$sReturnUrl = $friendlink->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "friendlinkview.php")
+						$sReturnUrl = $friendlink->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Clean up and return
 		    } else {
 		      $this->RestoreFormValues(); // Add failed, restore form values

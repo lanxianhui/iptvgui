@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "serviceinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -90,6 +91,9 @@ service_edit.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+service_edit.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 service_edit.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -371,6 +375,9 @@ class cservice_edit {
 		// Initialize table object
 		$GLOBALS["service"] = new cservice();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'edit', TRUE);
@@ -388,6 +395,13 @@ class cservice_edit {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $service;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -463,6 +477,8 @@ class cservice_edit {
 				if ($this->EditRow()) { // Update record based on key
 					$this->setMessage("更新成功"); // Update success
 					$sReturnUrl = $service->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "serviceview.php")
+						$sReturnUrl = $service->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Return to caller
 				} else {
 					$this->RestoreFormValues(); // Restore form values if update failed
@@ -833,23 +849,23 @@ class cservice_edit {
 			// Field id
 			// Field servicename
 
-			$service->servicename->SetDbValueDef($service->servicename->CurrentValue, NULL);
+			$service->servicename->SetDbValueDef($service->servicename->CurrentValue, "");
 			$rsnew['servicename'] =& $service->servicename->DbValue;
 
 			// Field pubtime
-			$service->pubtime->SetDbValueDef(ew_UnFormatDateTime($service->pubtime->CurrentValue, 5), NULL);
+			$service->pubtime->SetDbValueDef(ew_UnFormatDateTime($service->pubtime->CurrentValue, 5), ew_CurrentDate());
 			$rsnew['pubtime'] =& $service->pubtime->DbValue;
 
 			// Field servicedesc
-			$service->servicedesc->SetDbValueDef($service->servicedesc->CurrentValue, NULL);
+			$service->servicedesc->SetDbValueDef($service->servicedesc->CurrentValue, "");
 			$rsnew['servicedesc'] =& $service->servicedesc->DbValue;
 
 			// Field rootid
-			$service->rootid->SetDbValueDef($service->rootid->CurrentValue, NULL);
+			$service->rootid->SetDbValueDef($service->rootid->CurrentValue, 0);
 			$rsnew['rootid'] =& $service->rootid->DbValue;
 
 			// Field catid
-			$service->catid->SetDbValueDef($service->catid->CurrentValue, NULL);
+			$service->catid->SetDbValueDef($service->catid->CurrentValue, 0);
 			$rsnew['catid'] =& $service->catid->DbValue;
 
 			// Field servicepic

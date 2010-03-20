@@ -67,6 +67,9 @@ admin_add.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+admin_add.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 admin_add.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -224,6 +227,13 @@ class cadmin_add {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $admin;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -309,6 +319,8 @@ class cadmin_add {
 		    if ($this->AddRow()) { // Add successful
 		      $this->setMessage("Ìí¼Ó³É¹¦"); // Set up success message
 					$sReturnUrl = $admin->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "adminview.php")
+						$sReturnUrl = $admin->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Clean up and return
 		    } else {
 		      $this->RestoreFormValues(); // Add failed, restore form values

@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "newsinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -45,6 +46,9 @@ news_list.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+news_list.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 news_list.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -59,10 +63,6 @@ var ew_DHTMLEditors = [];
 
 //-->
 </script>
-<link rel="stylesheet" type="text/css" media="all" href="calendar/calendar-win2k-1.css" title="win2k-1">
-<script type="text/javascript" src="calendar/calendar.js"></script>
-<script type="text/javascript" src="calendar/lang/calendar-en.js"></script>
-<script type="text/javascript" src="calendar/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -89,7 +89,13 @@ var ew_DHTMLEditors = [];
 		$rs = $news_list->LoadRecordset($news_list->lStartRec-1, $news_list->lDisplayRecs);
 ?>
 <p><span class="phpmaker" style="white-space: nowrap;">表: News
+<?php if ($news->Export == "" && $news->CurrentAction == "") { ?>
+&nbsp;&nbsp;<a href="<?php echo $news_list->PageUrl() ?>export=html">导出到 HTML</a>
+&nbsp;&nbsp;<a href="<?php echo $news_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $news_list->PageUrl() ?>export=csv">导出到 CSV</a>
+<?php } ?>
 </span></p>
+<?php if ($Security->IsLoggedIn()) { ?>
 <?php if ($news->Export == "" && $news->CurrentAction == "") { ?>
 <a href="javascript:ew_ToggleSearchPanel(news_list);" style="text-decoration: none;"><img id="news_list_SearchImage" src="images/collapse.gif" alt="" width="9" height="9" border="0"></a><span class="phpmaker">&nbsp;搜索</span><br>
 <div id="news_list_SearchPanel">
@@ -110,172 +116,12 @@ var ew_DHTMLEditors = [];
 </form>
 </div>
 <?php } ?>
+<?php } ?>
 <?php $news_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<form name="fnewslist" id="fnewslist" class="ewForm" action="" method="post">
-<?php if ($news_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$news_list->lOptionCnt = 0;
-	$news_list->lOptionCnt++; // view
-	$news_list->lOptionCnt++; // edit
-	$news_list->lOptionCnt++; // copy
-	$news_list->lOptionCnt++; // Delete
-	$news_list->lOptionCnt += count($news_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $news->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($news->id->Visible) { // id ?>
-	<?php if ($news->SortUrl($news->id) == "") { ?>
-		<td>新闻ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻ID</td><td style="width: 10px;"><?php if ($news->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($news->newstitle->Visible) { // newstitle ?>
-	<?php if ($news->SortUrl($news->newstitle) == "") { ?>
-		<td>新闻标题</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->newstitle) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻标题&nbsp;(*)</td><td style="width: 10px;"><?php if ($news->newstitle->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->newstitle->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($news->catid->Visible) { // catid ?>
-	<?php if ($news->SortUrl($news->catid) == "") { ?>
-		<td>新闻类型</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->catid) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻类型</td><td style="width: 10px;"><?php if ($news->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($news->pubtime->Visible) { // pubtime ?>
-	<?php if ($news->SortUrl($news->pubtime) == "") { ?>
-		<td>发布时间</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->pubtime) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>发布时间</td><td style="width: 10px;"><?php if ($news->pubtime->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->pubtime->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
 <?php if ($news->Export == "") { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php
-
-// Custom list options
-foreach ($news_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-</thead>
-<?php
-if ($news->ExportAll && $news->Export <> "") {
-	$news_list->lStopRec = $news_list->lTotalRecs;
-} else {
-	$news_list->lStopRec = $news_list->lStartRec + $news_list->lDisplayRecs - 1; // Set the last record to display
-}
-$news_list->lRecCount = $news_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$news->SelectLimit && $news_list->lStartRec > 1)
-		$rs->Move($news_list->lStartRec - 1);
-}
-$news_list->lRowCnt = 0;
-while (($news->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$news_list->lRecCount < $news_list->lStopRec) {
-	$news_list->lRecCount++;
-	if (intval($news_list->lRecCount) >= intval($news_list->lStartRec)) {
-		$news_list->lRowCnt++;
-
-	// Init row class and style
-	$news->CssClass = "";
-	$news->CssStyle = "";
-	$news->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($news->CurrentAction == "gridadd") {
-		$news_list->LoadDefaultValues(); // Load default values
-	} else {
-		$news_list->LoadRowValues($rs); // Load row values
-	}
-	$news->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$news_list->RenderRow();
-?>
-	<tr<?php echo $news->RowAttributes() ?>>
-	<?php if ($news->id->Visible) { // id ?>
-		<td<?php echo $news->id->CellAttributes() ?>>
-<div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($news->newstitle->Visible) { // newstitle ?>
-		<td<?php echo $news->newstitle->CellAttributes() ?>>
-<div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($news->catid->Visible) { // catid ?>
-		<td<?php echo $news->catid->CellAttributes() ?>>
-<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($news->pubtime->Visible) { // pubtime ?>
-		<td<?php echo $news->pubtime->CellAttributes() ?>>
-<div<?php echo $news->pubtime->ViewAttributes() ?>><?php echo $news->pubtime->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-<?php if ($news->Export == "") { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $news->ViewUrl() ?>">查看</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $news->EditUrl() ?>">编辑</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $news->CopyUrl() ?>">复制</a>
-</span></td>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $news->DeleteUrl() ?>">删除</a>
-</span></td>
-<?php
-
-// Custom list options
-foreach ($news_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	</tr>
-<?php
-	}
-	if ($news->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
-<?php if ($news->Export == "") { ?>
-<div class="ewGridLowerPanel">
+<div class="ewGridUpperPanel">
 <?php if ($news->CurrentAction <> "gridadd" && $news->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -328,13 +174,203 @@ if ($rs)
 </table>
 </form>
 <?php } ?>
-<?php //if ($news_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
+<?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $news->AddUrl() ?>">添加</a>&nbsp;&nbsp;
+<?php } ?>
+<?php if ($news_list->lTotalRecs > 0) { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<a href="" onclick="if (!ew_KeySelected(document.fnewslist)) alert('请至少选择一条记录'); else if (ew_Confirm('<?php echo $news_list->sDeleteConfirmMsg ?>')) {document.fnewslist.action='newsdelete.php';document.fnewslist.encoding='application/x-www-form-urlencoded';document.fnewslist.submit();};return false;">删除选中</a>&nbsp;&nbsp;
+<?php } ?>
+<?php } ?>
 </span>
-<?php //} ?>
 </div>
 <?php } ?>
+<div class="ewGridMiddlePanel">
+<form name="fnewslist" id="fnewslist" class="ewForm" action="" method="post">
+<?php if ($news_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$news_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$news_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$news_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$news_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$news_list->lOptionCnt++; // Multi-select
+}
+	$news_list->lOptionCnt += count($news_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $news->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($news->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="news_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($news_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+<?php if ($news->id->Visible) { // id ?>
+	<?php if ($news->SortUrl($news->id) == "") { ?>
+		<td>新闻ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻ID</td><td style="width: 10px;"><?php if ($news->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($news->newstitle->Visible) { // newstitle ?>
+	<?php if ($news->SortUrl($news->newstitle) == "") { ?>
+		<td>新闻标题</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->newstitle) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻标题&nbsp;(*)</td><td style="width: 10px;"><?php if ($news->newstitle->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->newstitle->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($news->catid->Visible) { // catid ?>
+	<?php if ($news->SortUrl($news->catid) == "") { ?>
+		<td>新闻类型</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->catid) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>新闻类型</td><td style="width: 10px;"><?php if ($news->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($news->pubtime->Visible) { // pubtime ?>
+	<?php if ($news->SortUrl($news->pubtime) == "") { ?>
+		<td>发布时间</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $news->SortUrl($news->pubtime) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>发布时间</td><td style="width: 10px;"><?php if ($news->pubtime->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($news->pubtime->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+	</tr>
+</thead>
+<?php
+if ($news->ExportAll && $news->Export <> "") {
+	$news_list->lStopRec = $news_list->lTotalRecs;
+} else {
+	$news_list->lStopRec = $news_list->lStartRec + $news_list->lDisplayRecs - 1; // Set the last record to display
+}
+$news_list->lRecCount = $news_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$news->SelectLimit && $news_list->lStartRec > 1)
+		$rs->Move($news_list->lStartRec - 1);
+}
+$news_list->lRowCnt = 0;
+while (($news->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$news_list->lRecCount < $news_list->lStopRec) {
+	$news_list->lRecCount++;
+	if (intval($news_list->lRecCount) >= intval($news_list->lStartRec)) {
+		$news_list->lRowCnt++;
+
+	// Init row class and style
+	$news->CssClass = "";
+	$news->CssStyle = "";
+	$news->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($news->CurrentAction == "gridadd") {
+		$news_list->LoadDefaultValues(); // Load default values
+	} else {
+		$news_list->LoadRowValues($rs); // Load row values
+	}
+	$news->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$news_list->RenderRow();
+?>
+	<tr<?php echo $news->RowAttributes() ?>>
+<?php if ($news->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $news->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $news->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $news->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($news->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($news_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	<?php if ($news->id->Visible) { // id ?>
+		<td<?php echo $news->id->CellAttributes() ?>>
+<div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($news->newstitle->Visible) { // newstitle ?>
+		<td<?php echo $news->newstitle->CellAttributes() ?>>
+<div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($news->catid->Visible) { // catid ?>
+		<td<?php echo $news->catid->CellAttributes() ?>>
+<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($news->pubtime->Visible) { // pubtime ?>
+		<td<?php echo $news->pubtime->CellAttributes() ?>>
+<div<?php echo $news->pubtime->ViewAttributes() ?>><?php echo $news->pubtime->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	</tr>
+<?php
+	}
+	if ($news->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
 </td></tr></table>
 <?php if ($news->Export == "" && $news->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -432,6 +468,9 @@ class cnews_list {
 		// Initialize table object
 		$GLOBALS["news"] = new cnews();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'list', TRUE);
@@ -452,9 +491,28 @@ class cnews_list {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $news;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 	$news->Export = @$_GET["export"]; // Get export parameter
 	$gsExport = $news->Export; // Get export parameter, used in header
 	$gsExportFile = $news->TableVar; // Get export file, used in header
+	if ($news->Export == "print" || $news->Export == "html") {
+
+		// Printer friendly or Export to HTML, no action required
+	}
+	if ($news->Export == "excel") {
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	}
+	if ($news->Export == "csv") {
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.csv');
+	}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -521,6 +579,7 @@ class cnews_list {
 		$sSrchBasic = ""; // Basic search filter
 		$sFilter = "";
 		$this->sSrchWhere = ""; // Search WHERE clause
+		$this->sDeleteConfirmMsg = "你真的要删除这些记录吗?"; // Delete confirm message
 
 		// Master/Detail
 		$this->sDbMasterFilter = ""; // Master filter
@@ -578,6 +637,13 @@ class cnews_list {
 		// Set up filter in Session
 		$news->setSessionWhere($sFilter);
 		$news->CurrentFilter = "";
+
+		// Export data only
+		if (in_array($news->Export, array("html","word","excel","xml","csv"))) {
+			$this->ExportData();
+			$this->Page_Terminate(); // Terminate response
+			exit();
+		}
 	}
 
 	// Return Basic Search sql
@@ -880,6 +946,98 @@ class cnews_list {
 
 		// Call Row Rendered event
 		$news->Row_Rendered();
+	}
+
+	// Export data in XML or CSV format
+	function ExportData() {
+		global $news;
+		$sCsvStr = "";
+
+		// Default export style
+		$sExportStyle = "h";
+
+		// Load recordset
+		$rs = $this->LoadRecordset();
+		$this->lTotalRecs = $rs->RecordCount();
+		$this->lStartRec = 1;
+
+		// Export all
+		if ($news->ExportAll) {
+			$this->lStopRec = $this->lTotalRecs;
+		} else { // Export 1 page only
+			$this->SetUpStartRec(); // Set up start record position
+
+			// Set the last record to display
+			if ($this->lDisplayRecs < 0) {
+				$this->lStopRec = $this->lTotalRecs;
+			} else {
+				$this->lStopRec = $this->lStartRec + $this->lDisplayRecs - 1;
+			}
+		}
+		if ($news->Export == "xml") {
+			$XmlDoc = new cXMLDocument();
+		} else {
+			echo ew_ExportHeader($news->Export);
+
+			// Horizontal format, write header
+			if ($sExportStyle <> "v" || $news->Export == "csv") {
+				$sExportStr = "";
+				ew_ExportAddValue($sExportStr, 'id', $news->Export);
+				ew_ExportAddValue($sExportStr, 'newstitle', $news->Export);
+				ew_ExportAddValue($sExportStr, 'catid', $news->Export);
+				ew_ExportAddValue($sExportStr, 'pubtime', $news->Export);
+				echo ew_ExportLine($sExportStr, $news->Export);
+			}
+		}
+
+		// Move to first record
+		$this->lRecCnt = $this->lStartRec - 1;
+		if (!$rs->EOF) {
+			$rs->MoveFirst();
+			$rs->Move($this->lStartRec - 1);
+		}
+		while (!$rs->EOF && $this->lRecCnt < $this->lStopRec) {
+			$this->lRecCnt++;
+			if (intval($this->lRecCnt) >= intval($this->lStartRec)) {
+				$this->LoadRowValues($rs);
+
+				// Render row for display
+				$news->RowType = EW_ROWTYPE_VIEW; // Render view
+				$this->RenderRow();
+				if ($news->Export == "xml") {
+					$XmlDoc->BeginRow();
+					$XmlDoc->AddField('id', $news->id->CurrentValue);
+					$XmlDoc->AddField('newstitle', $news->newstitle->CurrentValue);
+					$XmlDoc->AddField('catid', $news->catid->CurrentValue);
+					$XmlDoc->AddField('pubtime', $news->pubtime->CurrentValue);
+					$XmlDoc->EndRow();
+				} else {
+					if ($sExportStyle == "v" && $news->Export <> "csv") { // Vertical format
+						echo ew_ExportField('id', $news->id->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						echo ew_ExportField('newstitle', $news->newstitle->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						echo ew_ExportField('catid', $news->catid->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						echo ew_ExportField('pubtime', $news->pubtime->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+					}	else { // Horizontal format
+						$sExportStr = "";
+						ew_ExportAddValue($sExportStr, $news->id->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						ew_ExportAddValue($sExportStr, $news->newstitle->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						ew_ExportAddValue($sExportStr, $news->catid->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						ew_ExportAddValue($sExportStr, $news->pubtime->ExportValue($news->Export, $news->ExportOriginalValue), $news->Export);
+						echo ew_ExportLine($sExportStr, $news->Export);
+					}
+				}
+			}
+			$rs->MoveNext();
+		}
+
+		// Close recordset
+		$rs->Close();
+		if ($news->Export == "xml") {
+			header("Content-Type: text/xml");
+			echo $XmlDoc->XML();
+		} else {
+			echo ew_ExportFooter($news->Export);
+		}
 	}
 
 	// Page Load event

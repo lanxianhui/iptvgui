@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "servicerootinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -47,9 +48,15 @@ serviceroot_add.ValidateForm = function(fobj) {
 	var rowcnt = (fobj.key_count) ? Number(fobj.key_count.value) : 1;
 	for (i=0; i<rowcnt; i++) {
 		infix = (fobj.key_count) ? String(i+1) : "";
+		elm = fobj.elements["x" + infix + "_rootname"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 根类型名");
+		elm = fobj.elements["x" + infix + "_rootorder"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 根类型排序");
 		elm = fobj.elements["x" + infix + "_rootorder"];
 		if (elm && !ew_CheckInteger(elm.value))
-			return ew_OnError(this, elm, "错误的 Integer - Rootorder");
+			return ew_OnError(this, elm, "错误的 Integer - 根类型排序");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -64,6 +71,9 @@ serviceroot_add.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+serviceroot_add.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 serviceroot_add.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -87,7 +97,7 @@ var ew_DHTMLEditors = [];
 //-->
 
 </script>
-<p><span class="phpmaker">添加到 表: Serviceroot<br><br>
+<p><span class="phpmaker">添加到 表: Srviceroot<br><br>
 <a href="<?php echo $serviceroot->getReturnUrl() ?>">返回</a></span></p>
 <?php $serviceroot_add->ShowMessage() ?>
 <form name="fservicerootadd" id="fservicerootadd" action="<?php echo ew_CurrentPage() ?>" method="post" onsubmit="return serviceroot_add.ValidateForm(this);">
@@ -99,7 +109,7 @@ var ew_DHTMLEditors = [];
 <table cellspacing="0" class="ewTable">
 <?php if ($serviceroot->rootname->Visible) { // rootname ?>
 	<tr<?php echo $serviceroot->rootname->RowAttributes ?>>
-		<td class="ewTableHeader">Rootname</td>
+		<td class="ewTableHeader">根类型名<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $serviceroot->rootname->CellAttributes() ?>><span id="el_rootname">
 <input type="text" name="x_rootname" id="x_rootname" size="30" maxlength="200" value="<?php echo $serviceroot->rootname->EditValue ?>"<?php echo $serviceroot->rootname->EditAttributes() ?>>
 </span><?php echo $serviceroot->rootname->CustomMsg ?></td>
@@ -107,7 +117,7 @@ var ew_DHTMLEditors = [];
 <?php } ?>
 <?php if ($serviceroot->rootorder->Visible) { // rootorder ?>
 	<tr<?php echo $serviceroot->rootorder->RowAttributes ?>>
-		<td class="ewTableHeader">Rootorder</td>
+		<td class="ewTableHeader">根类型排序<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $serviceroot->rootorder->CellAttributes() ?>><span id="el_rootorder">
 <input type="text" name="x_rootorder" id="x_rootorder" size="30" value="<?php echo $serviceroot->rootorder->EditValue ?>"<?php echo $serviceroot->rootorder->EditAttributes() ?>>
 </span><?php echo $serviceroot->rootorder->CustomMsg ?></td>
@@ -204,6 +214,9 @@ class cserviceroot_add {
 		// Initialize table object
 		$GLOBALS["serviceroot"] = new cserviceroot();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'add', TRUE);
@@ -221,6 +234,13 @@ class cserviceroot_add {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $serviceroot;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -306,6 +326,8 @@ class cserviceroot_add {
 		    if ($this->AddRow()) { // Add successful
 		      $this->setMessage("添加成功"); // Set up success message
 					$sReturnUrl = $serviceroot->getReturnUrl();
+					if (ew_GetPageName($sReturnUrl) == "servicerootview.php")
+						$sReturnUrl = $serviceroot->ViewUrl(); // View paging, return to view page with keyurl directly
 					$this->Page_Terminate($sReturnUrl); // Clean up and return
 		    } else {
 		      $this->RestoreFormValues(); // Add failed, restore form values
@@ -452,9 +474,17 @@ class cserviceroot_add {
 		// Check if validation required
 		if (!EW_SERVER_VALIDATE)
 			return ($gsFormError == "");
+		if ($serviceroot->rootname->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 根类型名";
+		}
+		if ($serviceroot->rootorder->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 根类型排序";
+		}
 		if (!ew_CheckInteger($serviceroot->rootorder->FormValue)) {
 			if ($gsFormError <> "") $gsFormError .= "<br>";
-			$gsFormError .= "错误的 Integer - Rootorder";
+			$gsFormError .= "错误的 Integer - 根类型排序";
 		}
 
 		// Return validate result

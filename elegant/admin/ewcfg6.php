@@ -22,7 +22,7 @@ define("EW_DEFAULT_DATE_FORMAT", "yyyy/mm/dd", TRUE); // Default date format
 define("EW_DEFAULT_DATE_FORMAT_ID", "5", TRUE); // Default date format
 define("EW_DATE_SEPARATOR", "/", TRUE); // Date separator
 define("EW_PROJECT_NAME", "elegant", TRUE); // Project Name
-define("EW_RANDOM_KEY", 'Z94sdxXri5eyHKws', TRUE); // Random key for encryption
+define("EW_RANDOM_KEY", 'jlq1UThxdQQ8Dp2d', TRUE); // Random key for encryption
 
 /**
  * Encoding for Ajax
@@ -43,8 +43,8 @@ define("EW_ENCODING", "ISO-8859-1", TRUE); // Encoding for Ajax
  * Otherwise, existing users will not be able to login. MD5 hash is
  * irreversible, password will be reset during password recovery.
  */
-define("EW_MD5_PASSWORD", TRUE, TRUE); // Use MD5 password
-define("EW_CASE_SENSITIVE_PASSWORD", TRUE, TRUE); // Case-sensitive password
+define("EW_MD5_PASSWORD", FALSE, TRUE); // Use MD5 password
+define("EW_CASE_SENSITIVE_PASSWORD", FALSE, TRUE); // Case-sensitive password
 
 // Session names
 define("EW_SESSION_STATUS", EW_PROJECT_NAME . "_status", TRUE); // Login Status
@@ -141,7 +141,7 @@ define("EW_SENDER_EMAIL", "", TRUE); // Sender email
 define("EW_RECIPIENT_EMAIL", "", TRUE); // Receiver email
 
 // File upload
-define("EW_UPLOAD_DEST_PATH", "", TRUE); // Upload destination path (relative to app root)
+define("EW_UPLOAD_DEST_PATH", "../upload/", TRUE); // Upload destination path (relative to app root)
 define("EW_UPLOAD_ALLOWED_FILE_EXT", "gif,jpg,jpeg,bmp,png,doc,xls,pdf,zip", TRUE); // Allowed file extensions
 define("EW_IMAGE_ALLOWED_FILE_EXT", "gif,jpg,png,bmp", TRUE); // Allowed file extensions for images
 define("EW_MAX_FILE_SIZE", 2000000, TRUE); // Max file size

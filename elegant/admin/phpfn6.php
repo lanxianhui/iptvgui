@@ -1131,7 +1131,57 @@ class cAdvancedSecurity {
 	// Validate user
 	function ValidateUser($usr, $pwd) {
 		global $conn;
+		global $admin;
 		$ValidateUser = FALSE;
+
+		// Check hard coded admin first
+		if (EW_CASE_SENSITIVE_PASSWORD) {
+			$ValidateUser = (EW_ADMIN_USER_NAME == $usr && EW_ADMIN_PASSWORD == $pwd);
+		} else {
+			$ValidateUser = (strtolower(EW_ADMIN_USER_NAME) == strtolower($usr) &&
+				strtolower(EW_ADMIN_PASSWORD) == strtolower($pwd));
+		}
+		if ($ValidateUser) {
+			$_SESSION[EW_SESSION_STATUS] = "login";
+			$_SESSION[EW_SESSION_SYS_ADMIN] = 1; // System Administrator
+			$this->setCurrentUserName("Administrator"); // Load user name
+		}
+
+		// Check other users
+		if (!$ValidateUser) {
+			$sFilter = "(`usename` = '" . ew_AdjustSql($usr) . "')";
+
+			// Set up filter (Sql Where Clause) and get Return SQL
+			// SQL constructor in <UseTable> class, <UserTable>info.php
+
+			$sSql = $admin->GetSQL($sFilter, "");
+			if ($rs = $conn->Execute($sSql)) {
+				if (!$rs->EOF) {
+					if (EW_CASE_SENSITIVE_PASSWORD) {
+						if (EW_MD5_PASSWORD) {
+							$ValidateUser = ($rs->fields('usepass') == md5($pwd));
+						} else {
+							$ValidateUser = ($rs->fields('usepass') == $pwd);
+						}
+					} else {
+						if (EW_MD5_PASSWORD) {
+							$ValidateUser = ($rs->fields('usepass') == md5(strtolower($pwd)));
+						} else {
+							$ValidateUser = (strtolower($rs->fields('usepass')) == strtolower($pwd));
+						}
+					}
+					if ($ValidateUser) {
+						$_SESSION[EW_SESSION_STATUS] = "login";
+						$_SESSION[EW_SESSION_SYS_ADMIN] = 0; // Non System Administrator
+						$this->setCurrentUserName($rs->fields('usename')); // Load user name
+
+						// Call User Validated event
+						$this->User_Validated($rs);
+					}
+				}
+				$rs->Close();
+			}
+		}
 		return $ValidateUser;
 	}
 

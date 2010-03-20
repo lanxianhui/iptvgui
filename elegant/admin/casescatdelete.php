@@ -6,6 +6,7 @@ ob_start(); // Turn on output buffering
 <?php include "ewmysql6.php" ?>
 <?php include "phpfn6.php" ?>
 <?php include "casescatinfo.php" ?>
+<?php include "admininfo.php" ?>
 <?php include "userfn6.php" ?>
 <?php
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -44,6 +45,9 @@ casescat_delete.Form_CustomValidate =
  	// Your custom validation code here, return false if invalid. 
  	return true;
  }
+casescat_delete.SelectAllKey = function(elem) {
+	ew_SelectAll(elem);
+}
 <?php if (EW_CLIENT_VALIDATE) { ?>
 casescat_delete.ValidateRequired = true; // uses JavaScript validation
 <?php } else { ?>
@@ -215,6 +219,9 @@ class ccasescat_delete {
 		// Initialize table object
 		$GLOBALS["casescat"] = new ccasescat();
 
+		// Initialize other table object
+		$GLOBALS['admin'] = new cadmin();
+
 		// Intialize page id (for backward compatibility)
 		if (!defined("EW_PAGE_ID"))
 			define("EW_PAGE_ID", 'delete', TRUE);
@@ -232,6 +239,13 @@ class ccasescat_delete {
 	//
 	function Page_Init() {
 		global $gsExport, $gsExportFile, $casescat;
+		global $Security;
+		$Security = new cAdvancedSecurity();
+		if (!$Security->IsLoggedIn()) $Security->AutoLogin();
+		if (!$Security->IsLoggedIn()) {
+			$Security->SaveLastUrl();
+			$this->Page_Terminate("login.php");
+		}
 
 		// Global page loading event (in userfn6.php)
 		Page_Loading();
@@ -319,7 +333,7 @@ class ccasescat_delete {
 		if (@$_POST["a_delete"] <> "") {
 			$casescat->CurrentAction = $_POST["a_delete"];
 		} else {
-			$casescat->CurrentAction = "I"; // Display record
+			$casescat->CurrentAction = "D"; // Delete record directly
 		}
 		switch ($casescat->CurrentAction) {
 			case "D": // Delete

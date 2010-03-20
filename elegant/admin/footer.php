@@ -1,3 +1,4 @@
+	<?php if (@$gsExport == "") { ?>
 				<p>&nbsp;</p>			
 			<!-- right column (end) -->
 	    </td>	
@@ -25,5 +26,6 @@ ewDom.getElementsByClassName(EW_TABLE_CLASS, "TABLE", null, ew_SetupTable); // i
 //-->
 
 </script>
+<?php } ?>
 </body>
 </html>

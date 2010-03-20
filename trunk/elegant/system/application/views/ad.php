@@ -1,9 +1,12 @@
+<div id="ad_outer">
 <?php if(count($root) ==0){?>
 <?php $adid = 1;?>
 <?php }?>
 <?php foreach($root as $entry): $adid = $entry["id"];?>
 <?php endforeach;?>
+<div id="ad_left"></div>
 <div id="ad">
+
 <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="916" height="240">
   <param name="movie" value="swf/ad<?php echo $adid ?>.swf">
   <param name="quality" value="high">
@@ -28,4 +31,7 @@
   </object>
   <!--<![endif]-->
 </object>
+
+</div>
+<div id="ad_right"></div>
 </div>

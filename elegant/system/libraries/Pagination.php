@@ -31,10 +31,10 @@ class CI_Pagination {
 	var $per_page	 		= 10; // Max number of items you want shown per page
 	var $num_links			=  2; // Number of "digit" links to show before/after the currently viewed page
 	var $cur_page	 		=  0; // The current page being viewed
-	var $first_link   		= '&lsaquo; First';
-	var $next_link			= '&gt;';
-	var $prev_link			= '&lt;';
-	var $last_link			= 'Last &rsaquo;';
+	var $first_link   		= '首页';
+	var $next_link			= '下一页';
+	var $prev_link			= '上一页';
+	var $last_link			= '尾页';
 	var $uri_segment		= 3;
 	var $full_tag_open		= '';
 	var $full_tag_close		= '';

@@ -93,7 +93,7 @@ class Main extends Controller {
 		if($catid != 4){
 			$this->pagiNewsNation($rid,$catid,"news",$this->pagesize);
 			$data["newslist"]=$this->getNewsByCat($catid,$offset);
-			$data["newspiclist"]=$this->getPicNewsByCat(2,0);
+			$data["newspiclist"]=$this->getPicNewsByCat(2,37);
 		}else{
 			$this->pagiNewsNation($rid,$catid,"news",11);
 			$data["newslist"]=$this->getPicNewsByCat(11,$offset);
@@ -175,6 +175,21 @@ class Main extends Controller {
 		$result = $this->db->get("friendlink");
 		return $result->result_array();
 	}
+    function getCasesCat(){
+		$this->db->order_by("catorder");
+		$result = $this->db->get("casescat");
+		return $result->result_array();
+	}
+    function getCasesCatByID($catid){
+		$this->db->order_by("catorder");
+		$result = $this->db->get_where("casescat",array("id"=>$catid));
+		return $result->result_array();
+	}
+    function getCasesByID($casesid){
+		$result = $this->db->get_where("cases",array("id"=>$casesid));
+		return $result->result_array();
+	}
+	
 	
     function getIndexTopNews(){
 		$this->db->order_by("pubtime","desc");

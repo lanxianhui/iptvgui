@@ -285,26 +285,6 @@ cases_view.ValidateRequired = false; // no JavaScript validation
 </td>
 	</tr>
 <?php } ?>
-<?php if ($cases->casepic9->Visible) { // casepic9 ?>
-	<tr<?php echo $cases->casepic9->RowAttributes ?>>
-		<td class="ewTableHeader">°¸ÀýÍ¼Æ¬9</td>
-		<td<?php echo $cases->casepic9->CellAttributes() ?>>
-<?php if ($cases->casepic9->HrefValue <> "") { ?>
-<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic9->Upload->DbValue ?>" border=0<?php echo $cases->casepic9->ViewAttributes() ?>>
-<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } else { ?>
-<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic9->Upload->DbValue ?>" border=0<?php echo $cases->casepic9->ViewAttributes() ?>>
-<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } ?>
-</td>
-	</tr>
-<?php } ?>
 </table>
 </div>
 </td></tr></table>
@@ -683,7 +663,6 @@ class ccases_view {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
-		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings
@@ -746,10 +725,6 @@ class ccases_view {
 		// casepic8
 		$cases->casepic8->CellCssStyle = "";
 		$cases->casepic8->CellCssClass = "";
-
-		// casepic9
-		$cases->casepic9->CellCssStyle = "";
-		$cases->casepic9->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -892,17 +867,6 @@ class ccases_view {
 			$cases->casepic8->CssClass = "";
 			$cases->casepic8->ViewCustomAttributes = "";
 
-			// casepic9
-			if (!is_null($cases->casepic9->Upload->DbValue)) {
-				$cases->casepic9->ViewValue = $cases->casepic9->Upload->DbValue;
-				$cases->casepic9->ImageAlt = "";
-			} else {
-				$cases->casepic9->ViewValue = "";
-			}
-			$cases->casepic9->CssStyle = "";
-			$cases->casepic9->CssClass = "";
-			$cases->casepic9->ViewCustomAttributes = "";
-
 			// id
 			$cases->id->HrefValue = "";
 
@@ -941,9 +905,6 @@ class ccases_view {
 
 			// casepic8
 			$cases->casepic8->HrefValue = "";
-
-			// casepic9
-			$cases->casepic9->HrefValue = "";
 		}
 
 		// Call Row Rendered event

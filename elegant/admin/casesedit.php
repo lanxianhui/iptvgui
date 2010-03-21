@@ -84,9 +84,6 @@ cases_edit.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_casepic8"];
 		if (elm && !ew_CheckFileType(elm.value))
 			return ew_OnError(this, elm, "不允许上传的文件类型");
-		elm = fobj.elements["x" + infix + "_casepic9"];
-		if (elm && !ew_CheckFileType(elm.value))
-			return ew_OnError(this, elm, "不允许上传的文件类型");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -529,38 +526,6 @@ cases_edit.ar_x_catid = [<?php echo $jswrk ?>];
 </span><?php echo $cases->casepic8->CustomMsg ?></td>
 	</tr>
 <?php } ?>
-<?php if ($cases->casepic9->Visible) { // casepic9 ?>
-	<tr<?php echo $cases->casepic9->RowAttributes ?>>
-		<td class="ewTableHeader">案例图片9</td>
-		<td<?php echo $cases->casepic9->CellAttributes() ?>><span id="el_casepic9">
-<div id="old_x_casepic9">
-<?php if ($cases->casepic9->HrefValue <> "") { ?>
-<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic9->Upload->DbValue ?>" border=0<?php echo $cases->casepic9->ViewAttributes() ?>>
-<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } else { ?>
-<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic9->Upload->DbValue ?>" border=0<?php echo $cases->casepic9->ViewAttributes() ?>>
-<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } ?>
-</div>
-<div id="new_x_casepic9">
-<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
-<input type="radio" name="a_casepic9" id="a_casepic9" value="1" checked="checked">保持&nbsp;
-<input type="radio" name="a_casepic9" id="a_casepic9" value="2">移除&nbsp;
-<input type="radio" name="a_casepic9" id="a_casepic9" value="3">替换<br>
-<?php } else { ?>
-<input type="hidden" name="a_casepic9" id="a_casepic9" value="3">
-<?php } ?>
-<input type="file" name="x_casepic9" id="x_casepic9" onchange="if (this.form.a_casepic9[2]) this.form.a_casepic9[2].checked=true;"<?php echo $cases->casepic9->EditAttributes() ?>>
-</div>
-</span><?php echo $cases->casepic9->CustomMsg ?></td>
-	</tr>
-<?php } ?>
 </table>
 </div>
 </td></tr></table>
@@ -848,14 +813,6 @@ class ccases_edit {
 				$this->Page_Terminate();
 				exit();
 			}
-			if ($cases->casepic9->Upload->UploadFile()) {
-
-				// No action required
-			} else {
-				echo $cases->casepic9->Upload->Message;
-				$this->Page_Terminate();
-				exit();
-			}
 	}
 
 	// Load form values
@@ -926,7 +883,6 @@ class ccases_edit {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
-		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings
@@ -989,10 +945,6 @@ class ccases_edit {
 		// casepic8
 		$cases->casepic8->CellCssStyle = "";
 		$cases->casepic8->CellCssClass = "";
-
-		// casepic9
-		$cases->casepic9->CellCssStyle = "";
-		$cases->casepic9->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -1135,17 +1087,6 @@ class ccases_edit {
 			$cases->casepic8->CssClass = "";
 			$cases->casepic8->ViewCustomAttributes = "";
 
-			// casepic9
-			if (!is_null($cases->casepic9->Upload->DbValue)) {
-				$cases->casepic9->ViewValue = $cases->casepic9->Upload->DbValue;
-				$cases->casepic9->ImageAlt = "";
-			} else {
-				$cases->casepic9->ViewValue = "";
-			}
-			$cases->casepic9->CssStyle = "";
-			$cases->casepic9->CssClass = "";
-			$cases->casepic9->ViewCustomAttributes = "";
-
 			// id
 			$cases->id->HrefValue = "";
 
@@ -1184,9 +1125,6 @@ class ccases_edit {
 
 			// casepic8
 			$cases->casepic8->HrefValue = "";
-
-			// casepic9
-			$cases->casepic9->HrefValue = "";
 		} elseif ($cases->RowType == EW_ROWTYPE_EDIT) { // Edit row
 
 			// id
@@ -1298,15 +1236,6 @@ class ccases_edit {
 				$cases->casepic8->EditValue = "";
 			}
 
-			// casepic9
-			$cases->casepic9->EditCustomAttributes = "";
-			if (!is_null($cases->casepic9->Upload->DbValue)) {
-				$cases->casepic9->EditValue = $cases->casepic9->Upload->DbValue;
-				$cases->casepic9->ImageAlt = "";
-			} else {
-				$cases->casepic9->EditValue = "";
-			}
-
 			// Edit refer script
 			// id
 
@@ -1347,9 +1276,6 @@ class ccases_edit {
 
 			// casepic8
 			$cases->casepic8->HrefValue = "";
-
-			// casepic9
-			$cases->casepic9->HrefValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1424,14 +1350,6 @@ class ccases_edit {
 		}
 		if ($cases->casepic8->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
 			if ($cases->casepic8->Upload->FileSize > EW_MAX_FILE_SIZE)
-				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
-		}
-		if (!ew_CheckFileType($cases->casepic9->Upload->FileName)) {
-			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "不允许上传的文件类型";
-		}
-		if ($cases->casepic9->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
-			if ($cases->casepic9->Upload->FileSize > EW_MAX_FILE_SIZE)
 				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
 		}
 
@@ -1593,17 +1511,6 @@ class ccases_edit {
 			}
 			}
 
-			// Field casepic9
-			$cases->casepic9->Upload->SaveToSession(); // Save file value to Session
-			if ($cases->casepic9->Upload->Action == "2" || $cases->casepic9->Upload->Action == "3") { // Update/Remove
-			$cases->casepic9->Upload->DbValue = $rs->fields('casepic9'); // Get original value
-			if (is_null($cases->casepic9->Upload->Value)) {
-				$rsnew['casepic9'] = NULL;
-			} else {
-				$rsnew['casepic9'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic9->Upload->FileName);
-			}
-			}
-
 			// Call Row Updating event
 			$bUpdateRow = $cases->Row_Updating($rsold, $rsnew);
 			if ($bUpdateRow) {
@@ -1647,11 +1554,6 @@ class ccases_edit {
 			if (!is_null($cases->casepic8->Upload->Value)) {
 				$cases->casepic8->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic8'], FALSE);
 			}
-
-			// Field casepic9
-			if (!is_null($cases->casepic9->Upload->Value)) {
-				$cases->casepic9->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic9'], FALSE);
-			}
 				$conn->raiseErrorFn = 'ew_ErrorFn';
 				$EditRow = $conn->Execute($cases->UpdateSQL($rsnew));
 				$conn->raiseErrorFn = '';
@@ -1694,9 +1596,6 @@ class ccases_edit {
 
 		// Field casepic8
 		$cases->casepic8->Upload->RemoveFromSession(); // Remove file value from Session
-
-		// Field casepic9
-		$cases->casepic9->Upload->RemoveFromSession(); // Remove file value from Session
 		return $EditRow;
 	}
 

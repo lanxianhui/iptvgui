@@ -6,6 +6,7 @@
 <title>CHINYA DESIGN主页</title>
 <link href="css/site.css" type="text/css" rel="stylesheet"/>
 <script src="js/jquery.js" type="text/javascript"></script>
+<script src="js/jqueryimg.js" type="text/javascript"></script>
 <script src="js/swfobject.js" type="text/javascript"></script>
 <script src="js/common.js" type="text/javascript"></script>
 </head>
@@ -22,7 +23,7 @@
 <ul>
 <li style="width:60px;"><a href="index.php/main" style="text-align:left;">首页</a></li>
 <li><a href="index.php/main/elegant/2/1">关于清雅</a></li>
-<li><a href="index.php/main/cases/3/14">项目案例</a></li>
+<li><a href="index.php/main/cases/1">项目案例</a></li>
 <li><a href="index.php/main/news/4/1">新闻资讯</a></li>
 <li><a href="index.php/main/consulting/5/13">项目咨询</a></li>
 <li><a href="index.php/main/join/6/6">加入我们</a></li>

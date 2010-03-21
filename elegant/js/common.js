@@ -8,6 +8,13 @@ function searchList(){
 	}
 }
 
+function changePic(object){
+	jQuery("#focus").fadeOut("slow",function(){
+		jQuery("#focus").attr("src",jQuery(object).attr("src"));
+		jQuery("#focus").fadeIn("slow");
+	});
+}
+
 function submitSign(baseurl){
 	var title = jQuery("#title").attr("value");
 	var company = jQuery("#company").attr("value");

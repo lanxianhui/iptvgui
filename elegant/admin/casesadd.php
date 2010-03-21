@@ -84,9 +84,6 @@ cases_add.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_casepic8"];
 		if (elm && !ew_CheckFileType(elm.value))
 			return ew_OnError(this, elm, "不允许上传的文件类型");
-		elm = fobj.elements["x" + infix + "_casepic9"];
-		if (elm && !ew_CheckFileType(elm.value))
-			return ew_OnError(this, elm, "不允许上传的文件类型");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -335,15 +332,6 @@ cases_add.ar_x_catid = [<?php echo $jswrk ?>];
 <input type="file" name="x_casepic8" id="x_casepic8"<?php echo $cases->casepic8->EditAttributes() ?>>
 </div>
 </span><?php echo $cases->casepic8->CustomMsg ?></td>
-	</tr>
-<?php } ?>
-<?php if ($cases->casepic9->Visible) { // casepic9 ?>
-	<tr<?php echo $cases->casepic9->RowAttributes ?>>
-		<td class="ewTableHeader">案例图片9</td>
-		<td<?php echo $cases->casepic9->CellAttributes() ?>><span id="el_casepic9">
-<input type="file" name="x_casepic9" id="x_casepic9"<?php echo $cases->casepic9->EditAttributes() ?>>
-</div>
-</span><?php echo $cases->casepic9->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 </table>
@@ -646,14 +634,6 @@ class ccases_add {
 				$this->Page_Terminate();
 				exit();
 			}
-			if ($cases->casepic9->Upload->UploadFile()) {
-
-				// No action required
-			} else {
-				echo $cases->casepic9->Upload->Message;
-				$this->Page_Terminate();
-				exit();
-			}
 	}
 
 	// Load default values
@@ -728,7 +708,6 @@ class ccases_add {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
-		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings
@@ -787,10 +766,6 @@ class ccases_add {
 		// casepic8
 		$cases->casepic8->CellCssStyle = "";
 		$cases->casepic8->CellCssClass = "";
-
-		// casepic9
-		$cases->casepic9->CellCssStyle = "";
-		$cases->casepic9->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -933,17 +908,6 @@ class ccases_add {
 			$cases->casepic8->CssClass = "";
 			$cases->casepic8->ViewCustomAttributes = "";
 
-			// casepic9
-			if (!is_null($cases->casepic9->Upload->DbValue)) {
-				$cases->casepic9->ViewValue = $cases->casepic9->Upload->DbValue;
-				$cases->casepic9->ImageAlt = "";
-			} else {
-				$cases->casepic9->ViewValue = "";
-			}
-			$cases->casepic9->CssStyle = "";
-			$cases->casepic9->CssClass = "";
-			$cases->casepic9->ViewCustomAttributes = "";
-
 			// casetitle
 			$cases->casetitle->HrefValue = "";
 
@@ -979,9 +943,6 @@ class ccases_add {
 
 			// casepic8
 			$cases->casepic8->HrefValue = "";
-
-			// casepic9
-			$cases->casepic9->HrefValue = "";
 		} elseif ($cases->RowType == EW_ROWTYPE_ADD) { // Add row
 
 			// casetitle
@@ -1085,15 +1046,6 @@ class ccases_add {
 			} else {
 				$cases->casepic8->EditValue = "";
 			}
-
-			// casepic9
-			$cases->casepic9->EditCustomAttributes = "";
-			if (!is_null($cases->casepic9->Upload->DbValue)) {
-				$cases->casepic9->EditValue = $cases->casepic9->Upload->DbValue;
-				$cases->casepic9->ImageAlt = "";
-			} else {
-				$cases->casepic9->EditValue = "";
-			}
 		}
 
 		// Call Row Rendered event
@@ -1168,14 +1120,6 @@ class ccases_add {
 		}
 		if ($cases->casepic8->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
 			if ($cases->casepic8->Upload->FileSize > EW_MAX_FILE_SIZE)
-				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
-		}
-		if (!ew_CheckFileType($cases->casepic9->Upload->FileName)) {
-			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "不允许上传的文件类型";
-		}
-		if ($cases->casepic9->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
-			if ($cases->casepic9->Upload->FileSize > EW_MAX_FILE_SIZE)
 				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
 		}
 
@@ -1297,14 +1241,6 @@ class ccases_add {
 			$rsnew['casepic8'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic8->Upload->FileName);
 		}
 
-		// Field casepic9
-		$cases->casepic9->Upload->SaveToSession(); // Save file value to Session
-		if (is_null($cases->casepic9->Upload->Value)) {
-			$rsnew['casepic9'] = NULL;
-		} else {
-			$rsnew['casepic9'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic9->Upload->FileName);
-		}
-
 		// Call Row Inserting event
 		$bInsertRow = $cases->Row_Inserting($rsnew);
 		if ($bInsertRow) {
@@ -1347,11 +1283,6 @@ class ccases_add {
 			// Field casepic8
 			if (!is_null($cases->casepic8->Upload->Value)) {
 				$cases->casepic8->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic8'], FALSE);
-			}
-
-			// Field casepic9
-			if (!is_null($cases->casepic9->Upload->Value)) {
-				$cases->casepic9->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic9'], FALSE);
 			}
 			$conn->raiseErrorFn = 'ew_ErrorFn';
 			$AddRow = $conn->Execute($cases->InsertSQL($rsnew));
@@ -1396,9 +1327,6 @@ class ccases_add {
 
 		// Field casepic8
 		$cases->casepic8->Upload->RemoveFromSession(); // Remove file value from Session
-
-		// Field casepic9
-		$cases->casepic9->Upload->RemoveFromSession(); // Remove file value from Session
 		return $AddRow;
 	}
 

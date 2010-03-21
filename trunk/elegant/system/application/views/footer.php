@@ -1,3 +1,8 @@
+<div id="bg_outer">
+<div id="bg_ftinfo">
+<img id="bg" src="images/bg_07.jpg"/>
+</div>
+</div>
 <div id="footer_outer">
 <div id="infofooter">
 <ul>

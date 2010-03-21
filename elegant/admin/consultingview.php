@@ -87,7 +87,49 @@ consulting_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $consulting_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($consulting->id->Visible) { // id ?>
+	<tr<?php echo $consulting->id->RowAttributes ?>>
+		<td class="ewTableHeader">咨询ID</td>
+		<td<?php echo $consulting->id->CellAttributes() ?>>
+<div<?php echo $consulting->id->ViewAttributes() ?>><?php echo $consulting->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($consulting->title->Visible) { // title ?>
+	<tr<?php echo $consulting->title->RowAttributes ?>>
+		<td class="ewTableHeader">称呼</td>
+		<td<?php echo $consulting->title->CellAttributes() ?>>
+<div<?php echo $consulting->title->ViewAttributes() ?>><?php echo $consulting->title->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($consulting->company->Visible) { // company ?>
+	<tr<?php echo $consulting->company->RowAttributes ?>>
+		<td class="ewTableHeader">公司</td>
+		<td<?php echo $consulting->company->CellAttributes() ?>>
+<div<?php echo $consulting->company->ViewAttributes() ?>><?php echo $consulting->company->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($consulting->phone->Visible) { // phone ?>
+	<tr<?php echo $consulting->phone->RowAttributes ?>>
+		<td class="ewTableHeader">电话</td>
+		<td<?php echo $consulting->phone->CellAttributes() ?>>
+<div<?php echo $consulting->phone->ViewAttributes() ?>><?php echo $consulting->phone->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($consulting->content->Visible) { // content ?>
+	<tr<?php echo $consulting->content->RowAttributes ?>>
+		<td class="ewTableHeader">内容</td>
+		<td<?php echo $consulting->content->CellAttributes() ?>>
+<div<?php echo $consulting->content->ViewAttributes() ?>><?php echo $consulting->content->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($consulting->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,49 +176,7 @@ consulting_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($consulting->id->Visible) { // id ?>
-	<tr<?php echo $consulting->id->RowAttributes ?>>
-		<td class="ewTableHeader">咨询ID</td>
-		<td<?php echo $consulting->id->CellAttributes() ?>>
-<div<?php echo $consulting->id->ViewAttributes() ?>><?php echo $consulting->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($consulting->title->Visible) { // title ?>
-	<tr<?php echo $consulting->title->RowAttributes ?>>
-		<td class="ewTableHeader">称呼</td>
-		<td<?php echo $consulting->title->CellAttributes() ?>>
-<div<?php echo $consulting->title->ViewAttributes() ?>><?php echo $consulting->title->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($consulting->company->Visible) { // company ?>
-	<tr<?php echo $consulting->company->RowAttributes ?>>
-		<td class="ewTableHeader">公司</td>
-		<td<?php echo $consulting->company->CellAttributes() ?>>
-<div<?php echo $consulting->company->ViewAttributes() ?>><?php echo $consulting->company->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($consulting->phone->Visible) { // phone ?>
-	<tr<?php echo $consulting->phone->RowAttributes ?>>
-		<td class="ewTableHeader">电话</td>
-		<td<?php echo $consulting->phone->CellAttributes() ?>>
-<div<?php echo $consulting->phone->ViewAttributes() ?>><?php echo $consulting->phone->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($consulting->content->Visible) { // content ?>
-	<tr<?php echo $consulting->content->RowAttributes ?>>
-		<td class="ewTableHeader">内容</td>
-		<td<?php echo $consulting->content->CellAttributes() ?>>
-<div<?php echo $consulting->content->ViewAttributes() ?>><?php echo $consulting->content->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($consulting->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">

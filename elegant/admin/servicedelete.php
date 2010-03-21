@@ -93,9 +93,9 @@ if ($service_deletelTotalRecs <= 0) { // No record found, exit
 	<tr class="ewTableHeader">
 		<td valign="top">服务ID</td>
 		<td valign="top">服务名</td>
-		<td valign="top">发布时间</td>
 		<td valign="top">根类型</td>
 		<td valign="top">服务类型</td>
+		<td valign="top">发布时间</td>
 	</tr>
 	</thead>
 	<tbody>
@@ -121,12 +121,12 @@ while (!$rs->EOF) {
 <div<?php echo $service->id->ViewAttributes() ?>><?php echo $service->id->ListViewValue() ?></div></td>
 		<td<?php echo $service->servicename->CellAttributes() ?>>
 <div<?php echo $service->servicename->ViewAttributes() ?>><?php echo $service->servicename->ListViewValue() ?></div></td>
-		<td<?php echo $service->pubtime->CellAttributes() ?>>
-<div<?php echo $service->pubtime->ViewAttributes() ?>><?php echo $service->pubtime->ListViewValue() ?></div></td>
 		<td<?php echo $service->rootid->CellAttributes() ?>>
 <div<?php echo $service->rootid->ViewAttributes() ?>><?php echo $service->rootid->ListViewValue() ?></div></td>
 		<td<?php echo $service->catid->CellAttributes() ?>>
 <div<?php echo $service->catid->ViewAttributes() ?>><?php echo $service->catid->ListViewValue() ?></div></td>
+		<td<?php echo $service->pubtime->CellAttributes() ?>>
+<div<?php echo $service->pubtime->ViewAttributes() ?>><?php echo $service->pubtime->ListViewValue() ?></div></td>
 	</tr>
 <?php
 	$rs->MoveNext();
@@ -482,10 +482,10 @@ class cservice_delete {
 		global $service;
 		$service->id->setDbValue($rs->fields('id'));
 		$service->servicename->setDbValue($rs->fields('servicename'));
-		$service->pubtime->setDbValue($rs->fields('pubtime'));
-		$service->servicedesc->setDbValue($rs->fields('servicedesc'));
 		$service->rootid->setDbValue($rs->fields('rootid'));
 		$service->catid->setDbValue($rs->fields('catid'));
+		$service->pubtime->setDbValue($rs->fields('pubtime'));
+		$service->servicedesc->setDbValue($rs->fields('servicedesc'));
 		$service->servicepic->Upload->DbValue = $rs->fields('servicepic');
 	}
 
@@ -506,10 +506,6 @@ class cservice_delete {
 		$service->servicename->CellCssStyle = "";
 		$service->servicename->CellCssClass = "";
 
-		// pubtime
-		$service->pubtime->CellCssStyle = "";
-		$service->pubtime->CellCssClass = "";
-
 		// rootid
 		$service->rootid->CellCssStyle = "";
 		$service->rootid->CellCssClass = "";
@@ -517,6 +513,10 @@ class cservice_delete {
 		// catid
 		$service->catid->CellCssStyle = "";
 		$service->catid->CellCssClass = "";
+
+		// pubtime
+		$service->pubtime->CellCssStyle = "";
+		$service->pubtime->CellCssClass = "";
 		if ($service->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -531,15 +531,19 @@ class cservice_delete {
 			$service->servicename->CssClass = "";
 			$service->servicename->ViewCustomAttributes = "";
 
-			// pubtime
-			$service->pubtime->ViewValue = $service->pubtime->CurrentValue;
-			$service->pubtime->ViewValue = ew_FormatDateTime($service->pubtime->ViewValue, 5);
-			$service->pubtime->CssStyle = "";
-			$service->pubtime->CssClass = "";
-			$service->pubtime->ViewCustomAttributes = "";
-
 			// rootid
-			$service->rootid->ViewValue = $service->rootid->CurrentValue;
+			if (strval($service->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `serviceroot` WHERE `id` = " . ew_AdjustSql($service->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$service->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$service->rootid->ViewValue = $service->rootid->CurrentValue;
+				}
+			} else {
+				$service->rootid->ViewValue = NULL;
+			}
 			$service->rootid->CssStyle = "";
 			$service->rootid->CssClass = "";
 			$service->rootid->ViewCustomAttributes = "";
@@ -561,20 +565,27 @@ class cservice_delete {
 			$service->catid->CssClass = "";
 			$service->catid->ViewCustomAttributes = "";
 
+			// pubtime
+			$service->pubtime->ViewValue = $service->pubtime->CurrentValue;
+			$service->pubtime->ViewValue = ew_FormatDateTime($service->pubtime->ViewValue, 5);
+			$service->pubtime->CssStyle = "";
+			$service->pubtime->CssClass = "";
+			$service->pubtime->ViewCustomAttributes = "";
+
 			// id
 			$service->id->HrefValue = "";
 
 			// servicename
 			$service->servicename->HrefValue = "";
 
-			// pubtime
-			$service->pubtime->HrefValue = "";
-
 			// rootid
 			$service->rootid->HrefValue = "";
 
 			// catid
 			$service->catid->HrefValue = "";
+
+			// pubtime
+			$service->pubtime->HrefValue = "";
 		}
 
 		// Call Row Rendered event

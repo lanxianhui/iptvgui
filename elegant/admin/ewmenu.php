@@ -123,13 +123,19 @@ if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(1, "账号管理", "adminlist.php", -1);
 }
 if (IsLoggedIn()) {
-	$RootMenu->AddMenuItem(2, "案例管理", "caseslist.php", -1);
+	$RootMenu->AddMenuItem(11, "团队成员", "teamlist.php", -1);
 }
 if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(3, "案例类型", "casescatlist.php", -1);
 }
 if (IsLoggedIn()) {
-	$RootMenu->AddMenuItem(4, "咨询", "consultinglist.php", -1);
+	$RootMenu->AddMenuItem(12, "案例根类", "casesrootlist.php", -1);
+}
+if (IsLoggedIn()) {
+	$RootMenu->AddMenuItem(2, "案例管理", "caseslist.php", -1);
+}
+if (IsLoggedIn()) {
+	$RootMenu->AddMenuItem(4, "咨询列表", "consultinglist.php", -1);
 }
 if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(5, "友情链接", "friendlinklist.php", -1);

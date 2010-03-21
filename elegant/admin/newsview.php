@@ -87,7 +87,49 @@ news_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $news_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($news->id->Visible) { // id ?>
+	<tr<?php echo $news->id->RowAttributes ?>>
+		<td class="ewTableHeader">新闻ID</td>
+		<td<?php echo $news->id->CellAttributes() ?>>
+<div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($news->newstitle->Visible) { // newstitle ?>
+	<tr<?php echo $news->newstitle->RowAttributes ?>>
+		<td class="ewTableHeader">新闻标题</td>
+		<td<?php echo $news->newstitle->CellAttributes() ?>>
+<div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($news->catid->Visible) { // catid ?>
+	<tr<?php echo $news->catid->RowAttributes ?>>
+		<td class="ewTableHeader">新闻类型</td>
+		<td<?php echo $news->catid->CellAttributes() ?>>
+<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($news->newsdesc->Visible) { // newsdesc ?>
+	<tr<?php echo $news->newsdesc->RowAttributes ?>>
+		<td class="ewTableHeader">新闻内容</td>
+		<td<?php echo $news->newsdesc->CellAttributes() ?>>
+<div<?php echo $news->newsdesc->ViewAttributes() ?>><?php echo $news->newsdesc->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($news->pubtime->Visible) { // pubtime ?>
+	<tr<?php echo $news->pubtime->RowAttributes ?>>
+		<td class="ewTableHeader">发布时间</td>
+		<td<?php echo $news->pubtime->CellAttributes() ?>>
+<div<?php echo $news->pubtime->ViewAttributes() ?>><?php echo $news->pubtime->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($news->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,69 +176,7 @@ news_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($news->id->Visible) { // id ?>
-	<tr<?php echo $news->id->RowAttributes ?>>
-		<td class="ewTableHeader">新闻ID</td>
-		<td<?php echo $news->id->CellAttributes() ?>>
-<div<?php echo $news->id->ViewAttributes() ?>><?php echo $news->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($news->newstitle->Visible) { // newstitle ?>
-	<tr<?php echo $news->newstitle->RowAttributes ?>>
-		<td class="ewTableHeader">新闻标题</td>
-		<td<?php echo $news->newstitle->CellAttributes() ?>>
-<div<?php echo $news->newstitle->ViewAttributes() ?>><?php echo $news->newstitle->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($news->catid->Visible) { // catid ?>
-	<tr<?php echo $news->catid->RowAttributes ?>>
-		<td class="ewTableHeader">新闻类型</td>
-		<td<?php echo $news->catid->CellAttributes() ?>>
-<div<?php echo $news->catid->ViewAttributes() ?>><?php echo $news->catid->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($news->newsdesc->Visible) { // newsdesc ?>
-	<tr<?php echo $news->newsdesc->RowAttributes ?>>
-		<td class="ewTableHeader">新闻内容</td>
-		<td<?php echo $news->newsdesc->CellAttributes() ?>>
-<div<?php echo $news->newsdesc->ViewAttributes() ?>><?php echo $news->newsdesc->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($news->pubtime->Visible) { // pubtime ?>
-	<tr<?php echo $news->pubtime->RowAttributes ?>>
-		<td class="ewTableHeader">发布时间</td>
-		<td<?php echo $news->pubtime->CellAttributes() ?>>
-<div<?php echo $news->pubtime->ViewAttributes() ?>><?php echo $news->pubtime->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($news->newsimg->Visible) { // newsimg ?>
-	<tr<?php echo $news->newsimg->RowAttributes ?>>
-		<td class="ewTableHeader">新闻图片</td>
-		<td<?php echo $news->newsimg->CellAttributes() ?>>
-<?php if ($news->newsimg->HrefValue <> "") { ?>
-<?php if (!is_null($news->newsimg->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $news->newsimg->Upload->DbValue ?>" border=0<?php echo $news->newsimg->ViewAttributes() ?>>
-<?php } elseif (!in_array($news->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } else { ?>
-<?php if (!is_null($news->newsimg->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $news->newsimg->Upload->DbValue ?>" border=0<?php echo $news->newsimg->ViewAttributes() ?>>
-<?php } elseif (!in_array($news->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } ?>
-</td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($news->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">
@@ -515,7 +495,6 @@ class cnews_view {
 		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
-		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
 	}
 
 	// Render row values based on field settings
@@ -546,10 +525,6 @@ class cnews_view {
 		// pubtime
 		$news->pubtime->CellCssStyle = "";
 		$news->pubtime->CellCssClass = "";
-
-		// newsimg
-		$news->newsimg->CellCssStyle = "";
-		$news->newsimg->CellCssClass = "";
 		if ($news->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -594,17 +569,6 @@ class cnews_view {
 			$news->pubtime->CssClass = "";
 			$news->pubtime->ViewCustomAttributes = "";
 
-			// newsimg
-			if (!is_null($news->newsimg->Upload->DbValue)) {
-				$news->newsimg->ViewValue = $news->newsimg->Upload->DbValue;
-				$news->newsimg->ImageAlt = "";
-			} else {
-				$news->newsimg->ViewValue = "";
-			}
-			$news->newsimg->CssStyle = "";
-			$news->newsimg->CssClass = "";
-			$news->newsimg->ViewCustomAttributes = "";
-
 			// id
 			$news->id->HrefValue = "";
 
@@ -619,9 +583,6 @@ class cnews_view {
 
 			// pubtime
 			$news->pubtime->HrefValue = "";
-
-			// newsimg
-			$news->newsimg->HrefValue = "";
 		}
 
 		// Call Row Rendered event

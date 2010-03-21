@@ -87,7 +87,35 @@ serviceroot_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $serviceroot_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($serviceroot->id->Visible) { // id ?>
+	<tr<?php echo $serviceroot->id->RowAttributes ?>>
+		<td class="ewTableHeader">根ID</td>
+		<td<?php echo $serviceroot->id->CellAttributes() ?>>
+<div<?php echo $serviceroot->id->ViewAttributes() ?>><?php echo $serviceroot->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($serviceroot->rootname->Visible) { // rootname ?>
+	<tr<?php echo $serviceroot->rootname->RowAttributes ?>>
+		<td class="ewTableHeader">根类型名</td>
+		<td<?php echo $serviceroot->rootname->CellAttributes() ?>>
+<div<?php echo $serviceroot->rootname->ViewAttributes() ?>><?php echo $serviceroot->rootname->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($serviceroot->rootorder->Visible) { // rootorder ?>
+	<tr<?php echo $serviceroot->rootorder->RowAttributes ?>>
+		<td class="ewTableHeader">根类型排序</td>
+		<td<?php echo $serviceroot->rootorder->CellAttributes() ?>>
+<div<?php echo $serviceroot->rootorder->ViewAttributes() ?>><?php echo $serviceroot->rootorder->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($serviceroot->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,35 +162,7 @@ serviceroot_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($serviceroot->id->Visible) { // id ?>
-	<tr<?php echo $serviceroot->id->RowAttributes ?>>
-		<td class="ewTableHeader">根ID</td>
-		<td<?php echo $serviceroot->id->CellAttributes() ?>>
-<div<?php echo $serviceroot->id->ViewAttributes() ?>><?php echo $serviceroot->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($serviceroot->rootname->Visible) { // rootname ?>
-	<tr<?php echo $serviceroot->rootname->RowAttributes ?>>
-		<td class="ewTableHeader">根类型名</td>
-		<td<?php echo $serviceroot->rootname->CellAttributes() ?>>
-<div<?php echo $serviceroot->rootname->ViewAttributes() ?>><?php echo $serviceroot->rootname->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($serviceroot->rootorder->Visible) { // rootorder ?>
-	<tr<?php echo $serviceroot->rootorder->RowAttributes ?>>
-		<td class="ewTableHeader">根类型排序</td>
-		<td<?php echo $serviceroot->rootorder->CellAttributes() ?>>
-<div<?php echo $serviceroot->rootorder->ViewAttributes() ?>><?php echo $serviceroot->rootorder->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($serviceroot->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">

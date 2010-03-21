@@ -87,7 +87,49 @@ servicecat_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $servicecat_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($servicecat->id->Visible) { // id ?>
+	<tr<?php echo $servicecat->id->RowAttributes ?>>
+		<td class="ewTableHeader">类型ID</td>
+		<td<?php echo $servicecat->id->CellAttributes() ?>>
+<div<?php echo $servicecat->id->ViewAttributes() ?>><?php echo $servicecat->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($servicecat->catname->Visible) { // catname ?>
+	<tr<?php echo $servicecat->catname->RowAttributes ?>>
+		<td class="ewTableHeader">类型名字</td>
+		<td<?php echo $servicecat->catname->CellAttributes() ?>>
+<div<?php echo $servicecat->catname->ViewAttributes() ?>><?php echo $servicecat->catname->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($servicecat->rootid->Visible) { // rootid ?>
+	<tr<?php echo $servicecat->rootid->RowAttributes ?>>
+		<td class="ewTableHeader">所属根类型</td>
+		<td<?php echo $servicecat->rootid->CellAttributes() ?>>
+<div<?php echo $servicecat->rootid->ViewAttributes() ?>><?php echo $servicecat->rootid->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($servicecat->catdesc->Visible) { // catdesc ?>
+	<tr<?php echo $servicecat->catdesc->RowAttributes ?>>
+		<td class="ewTableHeader">类型描述</td>
+		<td<?php echo $servicecat->catdesc->CellAttributes() ?>>
+<div<?php echo $servicecat->catdesc->ViewAttributes() ?>><?php echo $servicecat->catdesc->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($servicecat->catorder->Visible) { // catorder ?>
+	<tr<?php echo $servicecat->catorder->RowAttributes ?>>
+		<td class="ewTableHeader">类型排序</td>
+		<td<?php echo $servicecat->catorder->CellAttributes() ?>>
+<div<?php echo $servicecat->catorder->ViewAttributes() ?>><?php echo $servicecat->catorder->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($servicecat->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,49 +176,7 @@ servicecat_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($servicecat->id->Visible) { // id ?>
-	<tr<?php echo $servicecat->id->RowAttributes ?>>
-		<td class="ewTableHeader">类型ID</td>
-		<td<?php echo $servicecat->id->CellAttributes() ?>>
-<div<?php echo $servicecat->id->ViewAttributes() ?>><?php echo $servicecat->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($servicecat->catname->Visible) { // catname ?>
-	<tr<?php echo $servicecat->catname->RowAttributes ?>>
-		<td class="ewTableHeader">类型名字</td>
-		<td<?php echo $servicecat->catname->CellAttributes() ?>>
-<div<?php echo $servicecat->catname->ViewAttributes() ?>><?php echo $servicecat->catname->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($servicecat->rootid->Visible) { // rootid ?>
-	<tr<?php echo $servicecat->rootid->RowAttributes ?>>
-		<td class="ewTableHeader">所属根类型</td>
-		<td<?php echo $servicecat->rootid->CellAttributes() ?>>
-<div<?php echo $servicecat->rootid->ViewAttributes() ?>><?php echo $servicecat->rootid->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($servicecat->catdesc->Visible) { // catdesc ?>
-	<tr<?php echo $servicecat->catdesc->RowAttributes ?>>
-		<td class="ewTableHeader">类型描述</td>
-		<td<?php echo $servicecat->catdesc->CellAttributes() ?>>
-<div<?php echo $servicecat->catdesc->ViewAttributes() ?>><?php echo $servicecat->catdesc->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($servicecat->catorder->Visible) { // catorder ?>
-	<tr<?php echo $servicecat->catorder->RowAttributes ?>>
-		<td class="ewTableHeader">类型排序</td>
-		<td<?php echo $servicecat->catorder->CellAttributes() ?>>
-<div<?php echo $servicecat->catorder->ViewAttributes() ?>><?php echo $servicecat->catorder->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($servicecat->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">
@@ -540,7 +540,18 @@ class cservicecat_view {
 			$servicecat->catname->ViewCustomAttributes = "";
 
 			// rootid
-			$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
+			if (strval($servicecat->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `serviceroot` WHERE `id` = " . ew_AdjustSql($servicecat->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$servicecat->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
+				}
+			} else {
+				$servicecat->rootid->ViewValue = NULL;
+			}
 			$servicecat->rootid->CssStyle = "";
 			$servicecat->rootid->CssClass = "";
 			$servicecat->rootid->ViewCustomAttributes = "";

@@ -404,7 +404,18 @@ class cservicecat {
 		$this->catname->ViewCustomAttributes = "";
 
 		// rootid
-		$this->rootid->ViewValue = $this->rootid->CurrentValue;
+		if (strval($this->rootid->CurrentValue) <> "") {
+			$sSqlWrk = "SELECT `rootname` FROM `serviceroot` WHERE `id` = " . ew_AdjustSql($this->rootid->CurrentValue) . "";
+			$rswrk = $conn->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+				$this->rootid->ViewValue = $rswrk->fields('rootname');
+				$rswrk->Close();
+			} else {
+				$this->rootid->ViewValue = $this->rootid->CurrentValue;
+			}
+		} else {
+			$this->rootid->ViewValue = NULL;
+		}
 		$this->rootid->CssStyle = "";
 		$this->rootid->CssClass = "";
 		$this->rootid->ViewCustomAttributes = "";

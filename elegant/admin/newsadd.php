@@ -63,9 +63,6 @@ news_add.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_pubtime"];
 		if (elm && !ew_CheckDate(elm.value))
 			return ew_OnError(this, elm, "错误的日期格式, 格式 = yyyy/mm/dd - 发布时间");
-		elm = fobj.elements["x" + infix + "_newsimg"];
-		if (elm && !ew_CheckFileType(elm.value))
-			return ew_OnError(this, elm, "不允许上传的文件类型");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -140,7 +137,7 @@ function ew_FocusDHTMLEditor(name) {
 <p><span class="phpmaker">添加到 表: News<br><br>
 <a href="<?php echo $news->getReturnUrl() ?>">返回</a></span></p>
 <?php $news_add->ShowMessage() ?>
-<form name="fnewsadd" id="fnewsadd" action="<?php echo ew_CurrentPage() ?>" method="post" enctype="multipart/form-data">
+<form name="fnewsadd" id="fnewsadd" action="<?php echo ew_CurrentPage() ?>" method="post">
 <p>
 <input type="hidden" name="t" id="t" value="news">
 <input type="hidden" name="a_add" id="a_add" value="A">
@@ -205,15 +202,6 @@ ew_DHTMLEditors.push(new ew_DHTMLEditor("x_newsdesc", function() {
 		<td<?php echo $news->pubtime->CellAttributes() ?>><span id="el_pubtime">
 <input type="text" name="x_pubtime" id="x_pubtime" value="<?php echo $news->pubtime->EditValue ?>"<?php echo $news->pubtime->EditAttributes() ?>>
 </span><?php echo $news->pubtime->CustomMsg ?></td>
-	</tr>
-<?php } ?>
-<?php if ($news->newsimg->Visible) { // newsimg ?>
-	<tr<?php echo $news->newsimg->RowAttributes ?>>
-		<td class="ewTableHeader">新闻图片</td>
-		<td<?php echo $news->newsimg->CellAttributes() ?>><span id="el_newsimg">
-<input type="file" name="x_newsimg" id="x_newsimg"<?php echo $news->newsimg->EditAttributes() ?>>
-</div>
-</span><?php echo $news->newsimg->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 </table>
@@ -394,7 +382,6 @@ class cnews_add {
 		// Process form if post back
 		if (@$_POST["a_add"] <> "") {
 		   $news->CurrentAction = $_POST["a_add"]; // Get form action
-		  $this->GetUploadFiles(); // Get upload files
 		  $this->LoadFormValues(); // Load form values
 
 			// Validate Form
@@ -446,14 +433,6 @@ class cnews_add {
 		global $objForm, $news;
 
 		// Get upload data
-			if ($news->newsimg->Upload->UploadFile()) {
-
-				// No action required
-			} else {
-				echo $news->newsimg->Upload->Message;
-				$this->Page_Terminate();
-				exit();
-			}
 	}
 
 	// Load default values
@@ -522,7 +501,6 @@ class cnews_add {
 		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
-		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
 	}
 
 	// Render row values based on field settings
@@ -549,10 +527,6 @@ class cnews_add {
 		// pubtime
 		$news->pubtime->CellCssStyle = "";
 		$news->pubtime->CellCssClass = "";
-
-		// newsimg
-		$news->newsimg->CellCssStyle = "";
-		$news->newsimg->CellCssClass = "";
 		if ($news->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -597,17 +571,6 @@ class cnews_add {
 			$news->pubtime->CssClass = "";
 			$news->pubtime->ViewCustomAttributes = "";
 
-			// newsimg
-			if (!is_null($news->newsimg->Upload->DbValue)) {
-				$news->newsimg->ViewValue = $news->newsimg->Upload->DbValue;
-				$news->newsimg->ImageAlt = "";
-			} else {
-				$news->newsimg->ViewValue = "";
-			}
-			$news->newsimg->CssStyle = "";
-			$news->newsimg->CssClass = "";
-			$news->newsimg->ViewCustomAttributes = "";
-
 			// newstitle
 			$news->newstitle->HrefValue = "";
 
@@ -619,9 +582,6 @@ class cnews_add {
 
 			// pubtime
 			$news->pubtime->HrefValue = "";
-
-			// newsimg
-			$news->newsimg->HrefValue = "";
 		} elseif ($news->RowType == EW_ROWTYPE_ADD) { // Add row
 
 			// newstitle
@@ -646,15 +606,6 @@ class cnews_add {
 			// pubtime
 			$news->pubtime->EditCustomAttributes = "";
 			$news->pubtime->EditValue = ew_HtmlEncode(ew_FormatDateTime($news->pubtime->CurrentValue, 5));
-
-			// newsimg
-			$news->newsimg->EditCustomAttributes = "";
-			if (!is_null($news->newsimg->Upload->DbValue)) {
-				$news->newsimg->EditValue = $news->newsimg->Upload->DbValue;
-				$news->newsimg->ImageAlt = "";
-			} else {
-				$news->newsimg->EditValue = "";
-			}
 		}
 
 		// Call Row Rendered event
@@ -667,14 +618,6 @@ class cnews_add {
 
 		// Initialize
 		$gsFormError = "";
-		if (!ew_CheckFileType($news->newsimg->Upload->FileName)) {
-			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "不允许上传的文件类型";
-		}
-		if ($news->newsimg->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
-			if ($news->newsimg->Upload->FileSize > EW_MAX_FILE_SIZE)
-				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
-		}
 
 		// Check if validation required
 		if (!EW_SERVER_VALIDATE)
@@ -734,22 +677,9 @@ class cnews_add {
 		$news->pubtime->SetDbValueDef(ew_UnFormatDateTime($news->pubtime->CurrentValue, 5), ew_CurrentDate());
 		$rsnew['pubtime'] =& $news->pubtime->DbValue;
 
-		// Field newsimg
-		$news->newsimg->Upload->SaveToSession(); // Save file value to Session
-		if (is_null($news->newsimg->Upload->Value)) {
-			$rsnew['newsimg'] = NULL;
-		} else {
-			$rsnew['newsimg'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $news->newsimg->Upload->FileName);
-		}
-
 		// Call Row Inserting event
 		$bInsertRow = $news->Row_Inserting($rsnew);
 		if ($bInsertRow) {
-
-			// Field newsimg
-			if (!is_null($news->newsimg->Upload->Value)) {
-				$news->newsimg->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['newsimg'], FALSE);
-			}
 			$conn->raiseErrorFn = 'ew_ErrorFn';
 			$AddRow = $conn->Execute($news->InsertSQL($rsnew));
 			$conn->raiseErrorFn = '';
@@ -769,9 +699,6 @@ class cnews_add {
 			// Call Row Inserted event
 			$news->Row_Inserted($rsnew);
 		}
-
-		// Field newsimg
-		$news->newsimg->Upload->RemoveFromSession(); // Remove file value from Session
 		return $AddRow;
 	}
 

@@ -51,15 +51,42 @@ cases_edit.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_casetitle"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 案例标题");
-		elm = fobj.elements["x" + infix + "_casepic"];
-		if (elm && !ew_CheckFileType(elm.value))
-			return ew_OnError(this, elm, "不允许上传的文件类型");
 		elm = fobj.elements["x" + infix + "_casedesc"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 案例描述");
+		elm = fobj.elements["x" + infix + "_rootid"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 根类型");
 		elm = fobj.elements["x" + infix + "_catid"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 案例类型");
+		elm = fobj.elements["x" + infix + "_casepic1"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic2"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic3"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic4"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic5"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic6"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic7"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic8"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_casepic9"];
+		if (elm && !ew_CheckFileType(elm.value))
+			return ew_OnError(this, elm, "不允许上传的文件类型");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -157,38 +184,6 @@ function ew_FocusDHTMLEditor(name) {
 </span><?php echo $cases->casetitle->CustomMsg ?></td>
 	</tr>
 <?php } ?>
-<?php if ($cases->casepic->Visible) { // casepic ?>
-	<tr<?php echo $cases->casepic->RowAttributes ?>>
-		<td class="ewTableHeader">案例图片</td>
-		<td<?php echo $cases->casepic->CellAttributes() ?>><span id="el_casepic">
-<div id="old_x_casepic">
-<?php if ($cases->casepic->HrefValue <> "") { ?>
-<?php if (!is_null($cases->casepic->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic->Upload->DbValue ?>" border=0<?php echo $cases->casepic->ViewAttributes() ?>>
-<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } else { ?>
-<?php if (!is_null($cases->casepic->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic->Upload->DbValue ?>" border=0<?php echo $cases->casepic->ViewAttributes() ?>>
-<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } ?>
-</div>
-<div id="new_x_casepic">
-<?php if (!is_null($cases->casepic->Upload->DbValue)) { ?>
-<input type="radio" name="a_casepic" id="a_casepic" value="1" checked="checked">保持&nbsp;
-<input type="radio" name="a_casepic" id="a_casepic" value="2">移除&nbsp;
-<input type="radio" name="a_casepic" id="a_casepic" value="3">替换<br>
-<?php } else { ?>
-<input type="hidden" name="a_casepic" id="a_casepic" value="3">
-<?php } ?>
-<input type="file" name="x_casepic" id="x_casepic" onchange="if (this.form.a_casepic[2]) this.form.a_casepic[2].checked=true;"<?php echo $cases->casepic->EditAttributes() ?>>
-</div>
-</span><?php echo $cases->casepic->CustomMsg ?></td>
-	</tr>
-<?php } ?>
 <?php if ($cases->casedesc->Visible) { // casedesc ?>
 	<tr<?php echo $cases->casedesc->RowAttributes ?>>
 		<td class="ewTableHeader">案例描述<span class='ewmsg'>&nbsp;*</span></td>
@@ -206,6 +201,31 @@ ew_DHTMLEditors.push(new ew_DHTMLEditor("x_casedesc", function() {
 -->
 </script>
 </span><?php echo $cases->casedesc->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->rootid->Visible) { // rootid ?>
+	<tr<?php echo $cases->rootid->RowAttributes ?>>
+		<td class="ewTableHeader">根类型<span class='ewmsg'>&nbsp;*</span></td>
+		<td<?php echo $cases->rootid->CellAttributes() ?>><span id="el_rootid">
+<select id="x_rootid" name="x_rootid" onchange="ew_UpdateOpt('x_catid','x_rootid',cases_edit.ar_x_catid);"<?php echo $cases->rootid->EditAttributes() ?>>
+<?php
+if (is_array($cases->rootid->EditValue)) {
+	$arwrk = $cases->rootid->EditValue;
+	$rowswrk = count($arwrk);
+	$emptywrk = TRUE;
+	for ($rowcntwrk = 0; $rowcntwrk < $rowswrk; $rowcntwrk++) {
+		$selwrk = (strval($cases->rootid->CurrentValue) == strval($arwrk[$rowcntwrk][0])) ? " selected=\"selected\"" : "";
+		if ($selwrk <> "") $emptywrk = FALSE;
+?>
+<option value="<?php echo ew_HtmlEncode($arwrk[$rowcntwrk][0]) ?>"<?php echo $selwrk ?>>
+<?php echo $arwrk[$rowcntwrk][1] ?>
+</option>
+<?php
+	}
+}
+?>
+</select>
+</span><?php echo $cases->rootid->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 <?php if ($cases->catid->Visible) { // catid ?>
@@ -230,7 +250,315 @@ if (is_array($cases->catid->EditValue)) {
 }
 ?>
 </select>
+<?php
+$jswrk = "";
+if (is_array($cases->catid->EditValue)) {
+	$arwrk = $cases->catid->EditValue;
+	$arwrkcnt = count($arwrk);
+	for ($rowcntwrk = 1; $rowcntwrk < $arwrkcnt; $rowcntwrk++) {
+		if ($jswrk <> "") $jswrk .= ",";
+		$jswrk .= "['" . ew_JsEncode($arwrk[$rowcntwrk][0]) . "',"; // Value
+		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][1]) . "',"; // Display field 1
+		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][2]) . "',"; // Display field 2
+		$jswrk .= "'" . ew_JsEncode($arwrk[$rowcntwrk][3]) . "']"; // Filter field
+	}
+}
+?>
+<script type="text/javascript">
+<!--
+cases_edit.ar_x_catid = [<?php echo $jswrk ?>];
+
+//-->
+</script>
 </span><?php echo $cases->catid->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic1->Visible) { // casepic1 ?>
+	<tr<?php echo $cases->casepic1->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片1</td>
+		<td<?php echo $cases->casepic1->CellAttributes() ?>><span id="el_casepic1">
+<div id="old_x_casepic1">
+<?php if ($cases->casepic1->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic1->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic1->Upload->DbValue ?>" border=0<?php echo $cases->casepic1->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic1->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic1->Upload->DbValue ?>" border=0<?php echo $cases->casepic1->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic1">
+<?php if (!is_null($cases->casepic1->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic1" id="a_casepic1" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic1" id="a_casepic1" value="2">移除&nbsp;
+<input type="radio" name="a_casepic1" id="a_casepic1" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic1" id="a_casepic1" value="3">
+<?php } ?>
+<input type="file" name="x_casepic1" id="x_casepic1" onchange="if (this.form.a_casepic1[2]) this.form.a_casepic1[2].checked=true;"<?php echo $cases->casepic1->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic1->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic2->Visible) { // casepic2 ?>
+	<tr<?php echo $cases->casepic2->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片2</td>
+		<td<?php echo $cases->casepic2->CellAttributes() ?>><span id="el_casepic2">
+<div id="old_x_casepic2">
+<?php if ($cases->casepic2->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic2->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic2->Upload->DbValue ?>" border=0<?php echo $cases->casepic2->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic2->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic2->Upload->DbValue ?>" border=0<?php echo $cases->casepic2->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic2">
+<?php if (!is_null($cases->casepic2->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic2" id="a_casepic2" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic2" id="a_casepic2" value="2">移除&nbsp;
+<input type="radio" name="a_casepic2" id="a_casepic2" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic2" id="a_casepic2" value="3">
+<?php } ?>
+<input type="file" name="x_casepic2" id="x_casepic2" onchange="if (this.form.a_casepic2[2]) this.form.a_casepic2[2].checked=true;"<?php echo $cases->casepic2->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic2->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic3->Visible) { // casepic3 ?>
+	<tr<?php echo $cases->casepic3->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片3</td>
+		<td<?php echo $cases->casepic3->CellAttributes() ?>><span id="el_casepic3">
+<div id="old_x_casepic3">
+<?php if ($cases->casepic3->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic3->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic3->Upload->DbValue ?>" border=0<?php echo $cases->casepic3->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic3->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic3->Upload->DbValue ?>" border=0<?php echo $cases->casepic3->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic3">
+<?php if (!is_null($cases->casepic3->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic3" id="a_casepic3" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic3" id="a_casepic3" value="2">移除&nbsp;
+<input type="radio" name="a_casepic3" id="a_casepic3" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic3" id="a_casepic3" value="3">
+<?php } ?>
+<input type="file" name="x_casepic3" id="x_casepic3" onchange="if (this.form.a_casepic3[2]) this.form.a_casepic3[2].checked=true;"<?php echo $cases->casepic3->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic3->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic4->Visible) { // casepic4 ?>
+	<tr<?php echo $cases->casepic4->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片4</td>
+		<td<?php echo $cases->casepic4->CellAttributes() ?>><span id="el_casepic4">
+<div id="old_x_casepic4">
+<?php if ($cases->casepic4->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic4->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic4->Upload->DbValue ?>" border=0<?php echo $cases->casepic4->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic4->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic4->Upload->DbValue ?>" border=0<?php echo $cases->casepic4->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic4">
+<?php if (!is_null($cases->casepic4->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic4" id="a_casepic4" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic4" id="a_casepic4" value="2">移除&nbsp;
+<input type="radio" name="a_casepic4" id="a_casepic4" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic4" id="a_casepic4" value="3">
+<?php } ?>
+<input type="file" name="x_casepic4" id="x_casepic4" onchange="if (this.form.a_casepic4[2]) this.form.a_casepic4[2].checked=true;"<?php echo $cases->casepic4->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic4->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic5->Visible) { // casepic5 ?>
+	<tr<?php echo $cases->casepic5->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片5</td>
+		<td<?php echo $cases->casepic5->CellAttributes() ?>><span id="el_casepic5">
+<div id="old_x_casepic5">
+<?php if ($cases->casepic5->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic5->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic5->Upload->DbValue ?>" border=0<?php echo $cases->casepic5->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic5->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic5->Upload->DbValue ?>" border=0<?php echo $cases->casepic5->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic5">
+<?php if (!is_null($cases->casepic5->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic5" id="a_casepic5" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic5" id="a_casepic5" value="2">移除&nbsp;
+<input type="radio" name="a_casepic5" id="a_casepic5" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic5" id="a_casepic5" value="3">
+<?php } ?>
+<input type="file" name="x_casepic5" id="x_casepic5" onchange="if (this.form.a_casepic5[2]) this.form.a_casepic5[2].checked=true;"<?php echo $cases->casepic5->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic5->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic6->Visible) { // casepic6 ?>
+	<tr<?php echo $cases->casepic6->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片6</td>
+		<td<?php echo $cases->casepic6->CellAttributes() ?>><span id="el_casepic6">
+<div id="old_x_casepic6">
+<?php if ($cases->casepic6->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic6->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic6->Upload->DbValue ?>" border=0<?php echo $cases->casepic6->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic6->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic6->Upload->DbValue ?>" border=0<?php echo $cases->casepic6->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic6">
+<?php if (!is_null($cases->casepic6->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic6" id="a_casepic6" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic6" id="a_casepic6" value="2">移除&nbsp;
+<input type="radio" name="a_casepic6" id="a_casepic6" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic6" id="a_casepic6" value="3">
+<?php } ?>
+<input type="file" name="x_casepic6" id="x_casepic6" onchange="if (this.form.a_casepic6[2]) this.form.a_casepic6[2].checked=true;"<?php echo $cases->casepic6->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic6->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic7->Visible) { // casepic7 ?>
+	<tr<?php echo $cases->casepic7->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片7</td>
+		<td<?php echo $cases->casepic7->CellAttributes() ?>><span id="el_casepic7">
+<div id="old_x_casepic7">
+<?php if ($cases->casepic7->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic7->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic7->Upload->DbValue ?>" border=0<?php echo $cases->casepic7->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic7->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic7->Upload->DbValue ?>" border=0<?php echo $cases->casepic7->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic7">
+<?php if (!is_null($cases->casepic7->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic7" id="a_casepic7" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic7" id="a_casepic7" value="2">移除&nbsp;
+<input type="radio" name="a_casepic7" id="a_casepic7" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic7" id="a_casepic7" value="3">
+<?php } ?>
+<input type="file" name="x_casepic7" id="x_casepic7" onchange="if (this.form.a_casepic7[2]) this.form.a_casepic7[2].checked=true;"<?php echo $cases->casepic7->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic7->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic8->Visible) { // casepic8 ?>
+	<tr<?php echo $cases->casepic8->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片8</td>
+		<td<?php echo $cases->casepic8->CellAttributes() ?>><span id="el_casepic8">
+<div id="old_x_casepic8">
+<?php if ($cases->casepic8->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic8->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic8->Upload->DbValue ?>" border=0<?php echo $cases->casepic8->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic8->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic8->Upload->DbValue ?>" border=0<?php echo $cases->casepic8->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic8">
+<?php if (!is_null($cases->casepic8->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic8" id="a_casepic8" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic8" id="a_casepic8" value="2">移除&nbsp;
+<input type="radio" name="a_casepic8" id="a_casepic8" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic8" id="a_casepic8" value="3">
+<?php } ?>
+<input type="file" name="x_casepic8" id="x_casepic8" onchange="if (this.form.a_casepic8[2]) this.form.a_casepic8[2].checked=true;"<?php echo $cases->casepic8->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic8->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casepic9->Visible) { // casepic9 ?>
+	<tr<?php echo $cases->casepic9->RowAttributes ?>>
+		<td class="ewTableHeader">案例图片9</td>
+		<td<?php echo $cases->casepic9->CellAttributes() ?>><span id="el_casepic9">
+<div id="old_x_casepic9">
+<?php if ($cases->casepic9->HrefValue <> "") { ?>
+<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic9->Upload->DbValue ?>" border=0<?php echo $cases->casepic9->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $cases->casepic9->Upload->DbValue ?>" border=0<?php echo $cases->casepic9->ViewAttributes() ?>>
+<?php } elseif (!in_array($cases->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</div>
+<div id="new_x_casepic9">
+<?php if (!is_null($cases->casepic9->Upload->DbValue)) { ?>
+<input type="radio" name="a_casepic9" id="a_casepic9" value="1" checked="checked">保持&nbsp;
+<input type="radio" name="a_casepic9" id="a_casepic9" value="2">移除&nbsp;
+<input type="radio" name="a_casepic9" id="a_casepic9" value="3">替换<br>
+<?php } else { ?>
+<input type="hidden" name="a_casepic9" id="a_casepic9" value="3">
+<?php } ?>
+<input type="file" name="x_casepic9" id="x_casepic9" onchange="if (this.form.a_casepic9[2]) this.form.a_casepic9[2].checked=true;"<?php echo $cases->casepic9->EditAttributes() ?>>
+</div>
+</span><?php echo $cases->casepic9->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 </table>
@@ -239,6 +567,12 @@ if (is_array($cases->catid->EditValue)) {
 <p>
 <input type="button" name="btnAction" id="btnAction" value="    编辑    " onclick="ew_SubmitForm(cases_edit, this.form);">
 </form>
+<script language="JavaScript">
+<!--
+ew_UpdateOpts([['x_catid','x_rootid',cases_edit.ar_x_catid]]);
+
+//-->
+</script>
 <script type="text/javascript">
 <!--
 ew_CreateEditor();  // Create DHTML editor(s)
@@ -450,11 +784,75 @@ class ccases_edit {
 		global $objForm, $cases;
 
 		// Get upload data
-			if ($cases->casepic->Upload->UploadFile()) {
+			if ($cases->casepic1->Upload->UploadFile()) {
 
 				// No action required
 			} else {
-				echo $cases->casepic->Upload->Message;
+				echo $cases->casepic1->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic2->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic2->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic3->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic3->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic4->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic4->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic5->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic5->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic6->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic6->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic7->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic7->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic8->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic8->Upload->Message;
+				$this->Page_Terminate();
+				exit();
+			}
+			if ($cases->casepic9->Upload->UploadFile()) {
+
+				// No action required
+			} else {
+				echo $cases->casepic9->Upload->Message;
 				$this->Page_Terminate();
 				exit();
 			}
@@ -468,6 +866,7 @@ class ccases_edit {
 		$cases->id->setFormValue($objForm->GetValue("x_id"));
 		$cases->casetitle->setFormValue($objForm->GetValue("x_casetitle"));
 		$cases->casedesc->setFormValue($objForm->GetValue("x_casedesc"));
+		$cases->rootid->setFormValue($objForm->GetValue("x_rootid"));
 		$cases->catid->setFormValue($objForm->GetValue("x_catid"));
 	}
 
@@ -478,6 +877,7 @@ class ccases_edit {
 		$cases->id->CurrentValue = $cases->id->FormValue;
 		$cases->casetitle->CurrentValue = $cases->casetitle->FormValue;
 		$cases->casedesc->CurrentValue = $cases->casedesc->FormValue;
+		$cases->rootid->CurrentValue = $cases->rootid->FormValue;
 		$cases->catid->CurrentValue = $cases->catid->FormValue;
 	}
 
@@ -515,9 +915,18 @@ class ccases_edit {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casepic->Upload->DbValue = $rs->fields('casepic');
 		$cases->casedesc->setDbValue($rs->fields('casedesc'));
+		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
+		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
+		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
+		$cases->casepic4->Upload->DbValue = $rs->fields('casepic4');
+		$cases->casepic5->Upload->DbValue = $rs->fields('casepic5');
+		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
+		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
+		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings
@@ -537,17 +946,53 @@ class ccases_edit {
 		$cases->casetitle->CellCssStyle = "";
 		$cases->casetitle->CellCssClass = "";
 
-		// casepic
-		$cases->casepic->CellCssStyle = "";
-		$cases->casepic->CellCssClass = "";
-
 		// casedesc
 		$cases->casedesc->CellCssStyle = "";
 		$cases->casedesc->CellCssClass = "";
 
+		// rootid
+		$cases->rootid->CellCssStyle = "";
+		$cases->rootid->CellCssClass = "";
+
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
+
+		// casepic1
+		$cases->casepic1->CellCssStyle = "";
+		$cases->casepic1->CellCssClass = "";
+
+		// casepic2
+		$cases->casepic2->CellCssStyle = "";
+		$cases->casepic2->CellCssClass = "";
+
+		// casepic3
+		$cases->casepic3->CellCssStyle = "";
+		$cases->casepic3->CellCssClass = "";
+
+		// casepic4
+		$cases->casepic4->CellCssStyle = "";
+		$cases->casepic4->CellCssClass = "";
+
+		// casepic5
+		$cases->casepic5->CellCssStyle = "";
+		$cases->casepic5->CellCssClass = "";
+
+		// casepic6
+		$cases->casepic6->CellCssStyle = "";
+		$cases->casepic6->CellCssClass = "";
+
+		// casepic7
+		$cases->casepic7->CellCssStyle = "";
+		$cases->casepic7->CellCssClass = "";
+
+		// casepic8
+		$cases->casepic8->CellCssStyle = "";
+		$cases->casepic8->CellCssClass = "";
+
+		// casepic9
+		$cases->casepic9->CellCssStyle = "";
+		$cases->casepic9->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -562,22 +1007,28 @@ class ccases_edit {
 			$cases->casetitle->CssClass = "";
 			$cases->casetitle->ViewCustomAttributes = "";
 
-			// casepic
-			if (!is_null($cases->casepic->Upload->DbValue)) {
-				$cases->casepic->ViewValue = $cases->casepic->Upload->DbValue;
-				$cases->casepic->ImageAlt = "";
-			} else {
-				$cases->casepic->ViewValue = "";
-			}
-			$cases->casepic->CssStyle = "";
-			$cases->casepic->CssClass = "";
-			$cases->casepic->ViewCustomAttributes = "";
-
 			// casedesc
 			$cases->casedesc->ViewValue = $cases->casedesc->CurrentValue;
 			$cases->casedesc->CssStyle = "";
 			$cases->casedesc->CssClass = "";
 			$cases->casedesc->ViewCustomAttributes = "";
+
+			// rootid
+			if (strval($cases->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($cases->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$cases->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$cases->rootid->ViewValue = $cases->rootid->CurrentValue;
+				}
+			} else {
+				$cases->rootid->ViewValue = NULL;
+			}
+			$cases->rootid->CssStyle = "";
+			$cases->rootid->CssClass = "";
+			$cases->rootid->ViewCustomAttributes = "";
 
 			// catid
 			if (strval($cases->catid->CurrentValue) <> "") {
@@ -596,20 +1047,146 @@ class ccases_edit {
 			$cases->catid->CssClass = "";
 			$cases->catid->ViewCustomAttributes = "";
 
+			// casepic1
+			if (!is_null($cases->casepic1->Upload->DbValue)) {
+				$cases->casepic1->ViewValue = $cases->casepic1->Upload->DbValue;
+				$cases->casepic1->ImageAlt = "";
+			} else {
+				$cases->casepic1->ViewValue = "";
+			}
+			$cases->casepic1->CssStyle = "";
+			$cases->casepic1->CssClass = "";
+			$cases->casepic1->ViewCustomAttributes = "";
+
+			// casepic2
+			if (!is_null($cases->casepic2->Upload->DbValue)) {
+				$cases->casepic2->ViewValue = $cases->casepic2->Upload->DbValue;
+				$cases->casepic2->ImageAlt = "";
+			} else {
+				$cases->casepic2->ViewValue = "";
+			}
+			$cases->casepic2->CssStyle = "";
+			$cases->casepic2->CssClass = "";
+			$cases->casepic2->ViewCustomAttributes = "";
+
+			// casepic3
+			if (!is_null($cases->casepic3->Upload->DbValue)) {
+				$cases->casepic3->ViewValue = $cases->casepic3->Upload->DbValue;
+				$cases->casepic3->ImageAlt = "";
+			} else {
+				$cases->casepic3->ViewValue = "";
+			}
+			$cases->casepic3->CssStyle = "";
+			$cases->casepic3->CssClass = "";
+			$cases->casepic3->ViewCustomAttributes = "";
+
+			// casepic4
+			if (!is_null($cases->casepic4->Upload->DbValue)) {
+				$cases->casepic4->ViewValue = $cases->casepic4->Upload->DbValue;
+				$cases->casepic4->ImageAlt = "";
+			} else {
+				$cases->casepic4->ViewValue = "";
+			}
+			$cases->casepic4->CssStyle = "";
+			$cases->casepic4->CssClass = "";
+			$cases->casepic4->ViewCustomAttributes = "";
+
+			// casepic5
+			if (!is_null($cases->casepic5->Upload->DbValue)) {
+				$cases->casepic5->ViewValue = $cases->casepic5->Upload->DbValue;
+				$cases->casepic5->ImageAlt = "";
+			} else {
+				$cases->casepic5->ViewValue = "";
+			}
+			$cases->casepic5->CssStyle = "";
+			$cases->casepic5->CssClass = "";
+			$cases->casepic5->ViewCustomAttributes = "";
+
+			// casepic6
+			if (!is_null($cases->casepic6->Upload->DbValue)) {
+				$cases->casepic6->ViewValue = $cases->casepic6->Upload->DbValue;
+				$cases->casepic6->ImageAlt = "";
+			} else {
+				$cases->casepic6->ViewValue = "";
+			}
+			$cases->casepic6->CssStyle = "";
+			$cases->casepic6->CssClass = "";
+			$cases->casepic6->ViewCustomAttributes = "";
+
+			// casepic7
+			if (!is_null($cases->casepic7->Upload->DbValue)) {
+				$cases->casepic7->ViewValue = $cases->casepic7->Upload->DbValue;
+				$cases->casepic7->ImageAlt = "";
+			} else {
+				$cases->casepic7->ViewValue = "";
+			}
+			$cases->casepic7->CssStyle = "";
+			$cases->casepic7->CssClass = "";
+			$cases->casepic7->ViewCustomAttributes = "";
+
+			// casepic8
+			if (!is_null($cases->casepic8->Upload->DbValue)) {
+				$cases->casepic8->ViewValue = $cases->casepic8->Upload->DbValue;
+				$cases->casepic8->ImageAlt = "";
+			} else {
+				$cases->casepic8->ViewValue = "";
+			}
+			$cases->casepic8->CssStyle = "";
+			$cases->casepic8->CssClass = "";
+			$cases->casepic8->ViewCustomAttributes = "";
+
+			// casepic9
+			if (!is_null($cases->casepic9->Upload->DbValue)) {
+				$cases->casepic9->ViewValue = $cases->casepic9->Upload->DbValue;
+				$cases->casepic9->ImageAlt = "";
+			} else {
+				$cases->casepic9->ViewValue = "";
+			}
+			$cases->casepic9->CssStyle = "";
+			$cases->casepic9->CssClass = "";
+			$cases->casepic9->ViewCustomAttributes = "";
+
 			// id
 			$cases->id->HrefValue = "";
 
 			// casetitle
 			$cases->casetitle->HrefValue = "";
 
-			// casepic
-			$cases->casepic->HrefValue = "";
-
 			// casedesc
 			$cases->casedesc->HrefValue = "";
 
+			// rootid
+			$cases->rootid->HrefValue = "";
+
 			// catid
 			$cases->catid->HrefValue = "";
+
+			// casepic1
+			$cases->casepic1->HrefValue = "";
+
+			// casepic2
+			$cases->casepic2->HrefValue = "";
+
+			// casepic3
+			$cases->casepic3->HrefValue = "";
+
+			// casepic4
+			$cases->casepic4->HrefValue = "";
+
+			// casepic5
+			$cases->casepic5->HrefValue = "";
+
+			// casepic6
+			$cases->casepic6->HrefValue = "";
+
+			// casepic7
+			$cases->casepic7->HrefValue = "";
+
+			// casepic8
+			$cases->casepic8->HrefValue = "";
+
+			// casepic9
+			$cases->casepic9->HrefValue = "";
 		} elseif ($cases->RowType == EW_ROWTYPE_EDIT) { // Edit row
 
 			// id
@@ -623,29 +1200,112 @@ class ccases_edit {
 			$cases->casetitle->EditCustomAttributes = "";
 			$cases->casetitle->EditValue = ew_HtmlEncode($cases->casetitle->CurrentValue);
 
-			// casepic
-			$cases->casepic->EditCustomAttributes = "";
-			if (!is_null($cases->casepic->Upload->DbValue)) {
-				$cases->casepic->EditValue = $cases->casepic->Upload->DbValue;
-				$cases->casepic->ImageAlt = "";
-			} else {
-				$cases->casepic->EditValue = "";
-			}
-
 			// casedesc
 			$cases->casedesc->EditCustomAttributes = "";
 			$cases->casedesc->EditValue = ew_HtmlEncode($cases->casedesc->CurrentValue);
 
-			// catid
-			$cases->catid->EditCustomAttributes = "";
-			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `casescat`";
+			// rootid
+			$cases->rootid->EditCustomAttributes = "";
+			$sSqlWrk = "SELECT `id`, `rootname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `casesroot`";
 			$sWhereWrk = "";
 			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
 			$rswrk = $conn->Execute($sSqlWrk);
 			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
 			if ($rswrk) $rswrk->Close();
 			array_unshift($arwrk, array("", "请选择"));
+			$cases->rootid->EditValue = $arwrk;
+
+			// catid
+			$cases->catid->EditCustomAttributes = "";
+			$sSqlWrk = "SELECT `id`, `catname`, '' AS Disp2Fld, `rootid` FROM `casescat`";
+			$sWhereWrk = "";
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
+			$rswrk = $conn->Execute($sSqlWrk);
+			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
+			if ($rswrk) $rswrk->Close();
+			array_unshift($arwrk, array("", "请选择", ""));
 			$cases->catid->EditValue = $arwrk;
+
+			// casepic1
+			$cases->casepic1->EditCustomAttributes = "";
+			if (!is_null($cases->casepic1->Upload->DbValue)) {
+				$cases->casepic1->EditValue = $cases->casepic1->Upload->DbValue;
+				$cases->casepic1->ImageAlt = "";
+			} else {
+				$cases->casepic1->EditValue = "";
+			}
+
+			// casepic2
+			$cases->casepic2->EditCustomAttributes = "";
+			if (!is_null($cases->casepic2->Upload->DbValue)) {
+				$cases->casepic2->EditValue = $cases->casepic2->Upload->DbValue;
+				$cases->casepic2->ImageAlt = "";
+			} else {
+				$cases->casepic2->EditValue = "";
+			}
+
+			// casepic3
+			$cases->casepic3->EditCustomAttributes = "";
+			if (!is_null($cases->casepic3->Upload->DbValue)) {
+				$cases->casepic3->EditValue = $cases->casepic3->Upload->DbValue;
+				$cases->casepic3->ImageAlt = "";
+			} else {
+				$cases->casepic3->EditValue = "";
+			}
+
+			// casepic4
+			$cases->casepic4->EditCustomAttributes = "";
+			if (!is_null($cases->casepic4->Upload->DbValue)) {
+				$cases->casepic4->EditValue = $cases->casepic4->Upload->DbValue;
+				$cases->casepic4->ImageAlt = "";
+			} else {
+				$cases->casepic4->EditValue = "";
+			}
+
+			// casepic5
+			$cases->casepic5->EditCustomAttributes = "";
+			if (!is_null($cases->casepic5->Upload->DbValue)) {
+				$cases->casepic5->EditValue = $cases->casepic5->Upload->DbValue;
+				$cases->casepic5->ImageAlt = "";
+			} else {
+				$cases->casepic5->EditValue = "";
+			}
+
+			// casepic6
+			$cases->casepic6->EditCustomAttributes = "";
+			if (!is_null($cases->casepic6->Upload->DbValue)) {
+				$cases->casepic6->EditValue = $cases->casepic6->Upload->DbValue;
+				$cases->casepic6->ImageAlt = "";
+			} else {
+				$cases->casepic6->EditValue = "";
+			}
+
+			// casepic7
+			$cases->casepic7->EditCustomAttributes = "";
+			if (!is_null($cases->casepic7->Upload->DbValue)) {
+				$cases->casepic7->EditValue = $cases->casepic7->Upload->DbValue;
+				$cases->casepic7->ImageAlt = "";
+			} else {
+				$cases->casepic7->EditValue = "";
+			}
+
+			// casepic8
+			$cases->casepic8->EditCustomAttributes = "";
+			if (!is_null($cases->casepic8->Upload->DbValue)) {
+				$cases->casepic8->EditValue = $cases->casepic8->Upload->DbValue;
+				$cases->casepic8->ImageAlt = "";
+			} else {
+				$cases->casepic8->EditValue = "";
+			}
+
+			// casepic9
+			$cases->casepic9->EditCustomAttributes = "";
+			if (!is_null($cases->casepic9->Upload->DbValue)) {
+				$cases->casepic9->EditValue = $cases->casepic9->Upload->DbValue;
+				$cases->casepic9->ImageAlt = "";
+			} else {
+				$cases->casepic9->EditValue = "";
+			}
 
 			// Edit refer script
 			// id
@@ -655,14 +1315,41 @@ class ccases_edit {
 			// casetitle
 			$cases->casetitle->HrefValue = "";
 
-			// casepic
-			$cases->casepic->HrefValue = "";
-
 			// casedesc
 			$cases->casedesc->HrefValue = "";
 
+			// rootid
+			$cases->rootid->HrefValue = "";
+
 			// catid
 			$cases->catid->HrefValue = "";
+
+			// casepic1
+			$cases->casepic1->HrefValue = "";
+
+			// casepic2
+			$cases->casepic2->HrefValue = "";
+
+			// casepic3
+			$cases->casepic3->HrefValue = "";
+
+			// casepic4
+			$cases->casepic4->HrefValue = "";
+
+			// casepic5
+			$cases->casepic5->HrefValue = "";
+
+			// casepic6
+			$cases->casepic6->HrefValue = "";
+
+			// casepic7
+			$cases->casepic7->HrefValue = "";
+
+			// casepic8
+			$cases->casepic8->HrefValue = "";
+
+			// casepic9
+			$cases->casepic9->HrefValue = "";
 		}
 
 		// Call Row Rendered event
@@ -675,12 +1362,76 @@ class ccases_edit {
 
 		// Initialize
 		$gsFormError = "";
-		if (!ew_CheckFileType($cases->casepic->Upload->FileName)) {
+		if (!ew_CheckFileType($cases->casepic1->Upload->FileName)) {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "不允许上传的文件类型";
 		}
-		if ($cases->casepic->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
-			if ($cases->casepic->Upload->FileSize > EW_MAX_FILE_SIZE)
+		if ($cases->casepic1->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic1->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic2->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic2->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic2->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic3->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic3->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic3->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic4->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic4->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic4->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic5->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic5->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic5->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic6->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic6->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic6->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic7->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic7->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic7->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic8->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic8->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic8->Upload->FileSize > EW_MAX_FILE_SIZE)
+				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
+		}
+		if (!ew_CheckFileType($cases->casepic9->Upload->FileName)) {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "不允许上传的文件类型";
+		}
+		if ($cases->casepic9->Upload->FileSize > 0 && EW_MAX_FILE_SIZE > 0) {
+			if ($cases->casepic9->Upload->FileSize > EW_MAX_FILE_SIZE)
 				$gsFormError .= str_replace("%s", EW_MAX_FILE_SIZE, "文件大小超过限制 (%s 字节)");
 		}
 
@@ -694,6 +1445,10 @@ class ccases_edit {
 		if ($cases->casedesc->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 案例描述";
+		}
+		if ($cases->rootid->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 根类型";
 		}
 		if ($cases->catid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
@@ -735,35 +1490,167 @@ class ccases_edit {
 			// Field id
 			// Field casetitle
 
-			$cases->casetitle->SetDbValueDef($cases->casetitle->CurrentValue, NULL);
+			$cases->casetitle->SetDbValueDef($cases->casetitle->CurrentValue, "");
 			$rsnew['casetitle'] =& $cases->casetitle->DbValue;
 
-			// Field casepic
-			$cases->casepic->Upload->SaveToSession(); // Save file value to Session
-			if ($cases->casepic->Upload->Action == "2" || $cases->casepic->Upload->Action == "3") { // Update/Remove
-			$cases->casepic->Upload->DbValue = $rs->fields('casepic'); // Get original value
-			if (is_null($cases->casepic->Upload->Value)) {
-				$rsnew['casepic'] = NULL;
-			} else {
-				$rsnew['casepic'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic->Upload->FileName);
-			}
-			}
-
 			// Field casedesc
-			$cases->casedesc->SetDbValueDef($cases->casedesc->CurrentValue, NULL);
+			$cases->casedesc->SetDbValueDef($cases->casedesc->CurrentValue, "");
 			$rsnew['casedesc'] =& $cases->casedesc->DbValue;
 
+			// Field rootid
+			$cases->rootid->SetDbValueDef($cases->rootid->CurrentValue, 0);
+			$rsnew['rootid'] =& $cases->rootid->DbValue;
+
 			// Field catid
-			$cases->catid->SetDbValueDef($cases->catid->CurrentValue, NULL);
+			$cases->catid->SetDbValueDef($cases->catid->CurrentValue, 0);
 			$rsnew['catid'] =& $cases->catid->DbValue;
+
+			// Field casepic1
+			$cases->casepic1->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic1->Upload->Action == "2" || $cases->casepic1->Upload->Action == "3") { // Update/Remove
+			$cases->casepic1->Upload->DbValue = $rs->fields('casepic1'); // Get original value
+			if (is_null($cases->casepic1->Upload->Value)) {
+				$rsnew['casepic1'] = NULL;
+			} else {
+				$rsnew['casepic1'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic1->Upload->FileName);
+			}
+			}
+
+			// Field casepic2
+			$cases->casepic2->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic2->Upload->Action == "2" || $cases->casepic2->Upload->Action == "3") { // Update/Remove
+			$cases->casepic2->Upload->DbValue = $rs->fields('casepic2'); // Get original value
+			if (is_null($cases->casepic2->Upload->Value)) {
+				$rsnew['casepic2'] = NULL;
+			} else {
+				$rsnew['casepic2'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic2->Upload->FileName);
+			}
+			}
+
+			// Field casepic3
+			$cases->casepic3->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic3->Upload->Action == "2" || $cases->casepic3->Upload->Action == "3") { // Update/Remove
+			$cases->casepic3->Upload->DbValue = $rs->fields('casepic3'); // Get original value
+			if (is_null($cases->casepic3->Upload->Value)) {
+				$rsnew['casepic3'] = NULL;
+			} else {
+				$rsnew['casepic3'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic3->Upload->FileName);
+			}
+			}
+
+			// Field casepic4
+			$cases->casepic4->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic4->Upload->Action == "2" || $cases->casepic4->Upload->Action == "3") { // Update/Remove
+			$cases->casepic4->Upload->DbValue = $rs->fields('casepic4'); // Get original value
+			if (is_null($cases->casepic4->Upload->Value)) {
+				$rsnew['casepic4'] = NULL;
+			} else {
+				$rsnew['casepic4'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic4->Upload->FileName);
+			}
+			}
+
+			// Field casepic5
+			$cases->casepic5->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic5->Upload->Action == "2" || $cases->casepic5->Upload->Action == "3") { // Update/Remove
+			$cases->casepic5->Upload->DbValue = $rs->fields('casepic5'); // Get original value
+			if (is_null($cases->casepic5->Upload->Value)) {
+				$rsnew['casepic5'] = NULL;
+			} else {
+				$rsnew['casepic5'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic5->Upload->FileName);
+			}
+			}
+
+			// Field casepic6
+			$cases->casepic6->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic6->Upload->Action == "2" || $cases->casepic6->Upload->Action == "3") { // Update/Remove
+			$cases->casepic6->Upload->DbValue = $rs->fields('casepic6'); // Get original value
+			if (is_null($cases->casepic6->Upload->Value)) {
+				$rsnew['casepic6'] = NULL;
+			} else {
+				$rsnew['casepic6'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic6->Upload->FileName);
+			}
+			}
+
+			// Field casepic7
+			$cases->casepic7->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic7->Upload->Action == "2" || $cases->casepic7->Upload->Action == "3") { // Update/Remove
+			$cases->casepic7->Upload->DbValue = $rs->fields('casepic7'); // Get original value
+			if (is_null($cases->casepic7->Upload->Value)) {
+				$rsnew['casepic7'] = NULL;
+			} else {
+				$rsnew['casepic7'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic7->Upload->FileName);
+			}
+			}
+
+			// Field casepic8
+			$cases->casepic8->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic8->Upload->Action == "2" || $cases->casepic8->Upload->Action == "3") { // Update/Remove
+			$cases->casepic8->Upload->DbValue = $rs->fields('casepic8'); // Get original value
+			if (is_null($cases->casepic8->Upload->Value)) {
+				$rsnew['casepic8'] = NULL;
+			} else {
+				$rsnew['casepic8'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic8->Upload->FileName);
+			}
+			}
+
+			// Field casepic9
+			$cases->casepic9->Upload->SaveToSession(); // Save file value to Session
+			if ($cases->casepic9->Upload->Action == "2" || $cases->casepic9->Upload->Action == "3") { // Update/Remove
+			$cases->casepic9->Upload->DbValue = $rs->fields('casepic9'); // Get original value
+			if (is_null($cases->casepic9->Upload->Value)) {
+				$rsnew['casepic9'] = NULL;
+			} else {
+				$rsnew['casepic9'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic9->Upload->FileName);
+			}
+			}
 
 			// Call Row Updating event
 			$bUpdateRow = $cases->Row_Updating($rsold, $rsnew);
 			if ($bUpdateRow) {
 
-			// Field casepic
-			if (!is_null($cases->casepic->Upload->Value)) {
-				$cases->casepic->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic'], FALSE);
+			// Field casepic1
+			if (!is_null($cases->casepic1->Upload->Value)) {
+				$cases->casepic1->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic1'], FALSE);
+			}
+
+			// Field casepic2
+			if (!is_null($cases->casepic2->Upload->Value)) {
+				$cases->casepic2->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic2'], FALSE);
+			}
+
+			// Field casepic3
+			if (!is_null($cases->casepic3->Upload->Value)) {
+				$cases->casepic3->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic3'], FALSE);
+			}
+
+			// Field casepic4
+			if (!is_null($cases->casepic4->Upload->Value)) {
+				$cases->casepic4->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic4'], FALSE);
+			}
+
+			// Field casepic5
+			if (!is_null($cases->casepic5->Upload->Value)) {
+				$cases->casepic5->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic5'], FALSE);
+			}
+
+			// Field casepic6
+			if (!is_null($cases->casepic6->Upload->Value)) {
+				$cases->casepic6->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic6'], FALSE);
+			}
+
+			// Field casepic7
+			if (!is_null($cases->casepic7->Upload->Value)) {
+				$cases->casepic7->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic7'], FALSE);
+			}
+
+			// Field casepic8
+			if (!is_null($cases->casepic8->Upload->Value)) {
+				$cases->casepic8->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic8'], FALSE);
+			}
+
+			// Field casepic9
+			if (!is_null($cases->casepic9->Upload->Value)) {
+				$cases->casepic9->Upload->SaveToFile(EW_UPLOAD_DEST_PATH, $rsnew['casepic9'], FALSE);
 			}
 				$conn->raiseErrorFn = 'ew_ErrorFn';
 				$EditRow = $conn->Execute($cases->UpdateSQL($rsnew));
@@ -784,8 +1671,32 @@ class ccases_edit {
 			$cases->Row_Updated($rsold, $rsnew);
 		$rs->Close();
 
-		// Field casepic
-		$cases->casepic->Upload->RemoveFromSession(); // Remove file value from Session
+		// Field casepic1
+		$cases->casepic1->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic2
+		$cases->casepic2->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic3
+		$cases->casepic3->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic4
+		$cases->casepic4->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic5
+		$cases->casepic5->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic6
+		$cases->casepic6->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic7
+		$cases->casepic7->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic8
+		$cases->casepic8->Upload->RemoveFromSession(); // Remove file value from Session
+
+		// Field casepic9
+		$cases->casepic9->Upload->RemoveFromSession(); // Remove file value from Session
 		return $EditRow;
 	}
 

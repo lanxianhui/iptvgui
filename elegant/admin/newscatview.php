@@ -87,7 +87,35 @@ newscat_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $newscat_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($newscat->id->Visible) { // id ?>
+	<tr<?php echo $newscat->id->RowAttributes ?>>
+		<td class="ewTableHeader">类型ID</td>
+		<td<?php echo $newscat->id->CellAttributes() ?>>
+<div<?php echo $newscat->id->ViewAttributes() ?>><?php echo $newscat->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($newscat->catname->Visible) { // catname ?>
+	<tr<?php echo $newscat->catname->RowAttributes ?>>
+		<td class="ewTableHeader">类型名称</td>
+		<td<?php echo $newscat->catname->CellAttributes() ?>>
+<div<?php echo $newscat->catname->ViewAttributes() ?>><?php echo $newscat->catname->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($newscat->catorder->Visible) { // catorder ?>
+	<tr<?php echo $newscat->catorder->RowAttributes ?>>
+		<td class="ewTableHeader">类型排序</td>
+		<td<?php echo $newscat->catorder->CellAttributes() ?>>
+<div<?php echo $newscat->catorder->ViewAttributes() ?>><?php echo $newscat->catorder->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($newscat->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,35 +162,7 @@ newscat_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($newscat->id->Visible) { // id ?>
-	<tr<?php echo $newscat->id->RowAttributes ?>>
-		<td class="ewTableHeader">类型ID</td>
-		<td<?php echo $newscat->id->CellAttributes() ?>>
-<div<?php echo $newscat->id->ViewAttributes() ?>><?php echo $newscat->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($newscat->catname->Visible) { // catname ?>
-	<tr<?php echo $newscat->catname->RowAttributes ?>>
-		<td class="ewTableHeader">类型名称</td>
-		<td<?php echo $newscat->catname->CellAttributes() ?>>
-<div<?php echo $newscat->catname->ViewAttributes() ?>><?php echo $newscat->catname->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($newscat->catorder->Visible) { // catorder ?>
-	<tr<?php echo $newscat->catorder->RowAttributes ?>>
-		<td class="ewTableHeader">类型排序</td>
-		<td<?php echo $newscat->catorder->CellAttributes() ?>>
-<div<?php echo $newscat->catorder->ViewAttributes() ?>><?php echo $newscat->catorder->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($newscat->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">

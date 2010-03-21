@@ -87,7 +87,42 @@ friendlink_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $friendlink_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($friendlink->id->Visible) { // id ?>
+	<tr<?php echo $friendlink->id->RowAttributes ?>>
+		<td class="ewTableHeader">链接ID</td>
+		<td<?php echo $friendlink->id->CellAttributes() ?>>
+<div<?php echo $friendlink->id->ViewAttributes() ?>><?php echo $friendlink->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($friendlink->linkname->Visible) { // linkname ?>
+	<tr<?php echo $friendlink->linkname->RowAttributes ?>>
+		<td class="ewTableHeader">链接名</td>
+		<td<?php echo $friendlink->linkname->CellAttributes() ?>>
+<div<?php echo $friendlink->linkname->ViewAttributes() ?>><?php echo $friendlink->linkname->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($friendlink->linkaddress->Visible) { // linkaddress ?>
+	<tr<?php echo $friendlink->linkaddress->RowAttributes ?>>
+		<td class="ewTableHeader">链接地址</td>
+		<td<?php echo $friendlink->linkaddress->CellAttributes() ?>>
+<div<?php echo $friendlink->linkaddress->ViewAttributes() ?>><?php echo $friendlink->linkaddress->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($friendlink->linkorder->Visible) { // linkorder ?>
+	<tr<?php echo $friendlink->linkorder->RowAttributes ?>>
+		<td class="ewTableHeader">连接排序</td>
+		<td<?php echo $friendlink->linkorder->CellAttributes() ?>>
+<div<?php echo $friendlink->linkorder->ViewAttributes() ?>><?php echo $friendlink->linkorder->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($friendlink->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,42 +169,7 @@ friendlink_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($friendlink->id->Visible) { // id ?>
-	<tr<?php echo $friendlink->id->RowAttributes ?>>
-		<td class="ewTableHeader">链接ID</td>
-		<td<?php echo $friendlink->id->CellAttributes() ?>>
-<div<?php echo $friendlink->id->ViewAttributes() ?>><?php echo $friendlink->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($friendlink->linkname->Visible) { // linkname ?>
-	<tr<?php echo $friendlink->linkname->RowAttributes ?>>
-		<td class="ewTableHeader">链接名</td>
-		<td<?php echo $friendlink->linkname->CellAttributes() ?>>
-<div<?php echo $friendlink->linkname->ViewAttributes() ?>><?php echo $friendlink->linkname->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($friendlink->linkaddress->Visible) { // linkaddress ?>
-	<tr<?php echo $friendlink->linkaddress->RowAttributes ?>>
-		<td class="ewTableHeader">链接地址</td>
-		<td<?php echo $friendlink->linkaddress->CellAttributes() ?>>
-<div<?php echo $friendlink->linkaddress->ViewAttributes() ?>><?php echo $friendlink->linkaddress->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($friendlink->linkorder->Visible) { // linkorder ?>
-	<tr<?php echo $friendlink->linkorder->RowAttributes ?>>
-		<td class="ewTableHeader">连接排序</td>
-		<td<?php echo $friendlink->linkorder->CellAttributes() ?>>
-<div<?php echo $friendlink->linkorder->ViewAttributes() ?>><?php echo $friendlink->linkorder->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($friendlink->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">

@@ -87,7 +87,76 @@ service_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $service_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($service->id->Visible) { // id ?>
+	<tr<?php echo $service->id->RowAttributes ?>>
+		<td class="ewTableHeader">服务ID</td>
+		<td<?php echo $service->id->CellAttributes() ?>>
+<div<?php echo $service->id->ViewAttributes() ?>><?php echo $service->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($service->servicename->Visible) { // servicename ?>
+	<tr<?php echo $service->servicename->RowAttributes ?>>
+		<td class="ewTableHeader">服务名</td>
+		<td<?php echo $service->servicename->CellAttributes() ?>>
+<div<?php echo $service->servicename->ViewAttributes() ?>><?php echo $service->servicename->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($service->rootid->Visible) { // rootid ?>
+	<tr<?php echo $service->rootid->RowAttributes ?>>
+		<td class="ewTableHeader">根类型</td>
+		<td<?php echo $service->rootid->CellAttributes() ?>>
+<div<?php echo $service->rootid->ViewAttributes() ?>><?php echo $service->rootid->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($service->catid->Visible) { // catid ?>
+	<tr<?php echo $service->catid->RowAttributes ?>>
+		<td class="ewTableHeader">服务类型</td>
+		<td<?php echo $service->catid->CellAttributes() ?>>
+<div<?php echo $service->catid->ViewAttributes() ?>><?php echo $service->catid->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($service->pubtime->Visible) { // pubtime ?>
+	<tr<?php echo $service->pubtime->RowAttributes ?>>
+		<td class="ewTableHeader">发布时间</td>
+		<td<?php echo $service->pubtime->CellAttributes() ?>>
+<div<?php echo $service->pubtime->ViewAttributes() ?>><?php echo $service->pubtime->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($service->servicedesc->Visible) { // servicedesc ?>
+	<tr<?php echo $service->servicedesc->RowAttributes ?>>
+		<td class="ewTableHeader">服务描述</td>
+		<td<?php echo $service->servicedesc->CellAttributes() ?>>
+<div<?php echo $service->servicedesc->ViewAttributes() ?>><?php echo $service->servicedesc->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($service->servicepic->Visible) { // servicepic ?>
+	<tr<?php echo $service->servicepic->RowAttributes ?>>
+		<td class="ewTableHeader">服务图片</td>
+		<td<?php echo $service->servicepic->CellAttributes() ?>>
+<?php if ($service->servicepic->HrefValue <> "") { ?>
+<?php if (!is_null($service->servicepic->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $service->servicepic->Upload->DbValue ?>" border=0<?php echo $service->servicepic->ViewAttributes() ?>>
+<?php } elseif (!in_array($service->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } else { ?>
+<?php if (!is_null($service->servicepic->Upload->DbValue)) { ?>
+<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $service->servicepic->Upload->DbValue ?>" border=0<?php echo $service->servicepic->ViewAttributes() ?>>
+<?php } elseif (!in_array($service->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
+&nbsp;
+<?php } ?>
+<?php } ?>
+</td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($service->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -134,76 +203,7 @@ service_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($service->id->Visible) { // id ?>
-	<tr<?php echo $service->id->RowAttributes ?>>
-		<td class="ewTableHeader">服务ID</td>
-		<td<?php echo $service->id->CellAttributes() ?>>
-<div<?php echo $service->id->ViewAttributes() ?>><?php echo $service->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($service->servicename->Visible) { // servicename ?>
-	<tr<?php echo $service->servicename->RowAttributes ?>>
-		<td class="ewTableHeader">服务名</td>
-		<td<?php echo $service->servicename->CellAttributes() ?>>
-<div<?php echo $service->servicename->ViewAttributes() ?>><?php echo $service->servicename->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($service->pubtime->Visible) { // pubtime ?>
-	<tr<?php echo $service->pubtime->RowAttributes ?>>
-		<td class="ewTableHeader">发布时间</td>
-		<td<?php echo $service->pubtime->CellAttributes() ?>>
-<div<?php echo $service->pubtime->ViewAttributes() ?>><?php echo $service->pubtime->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($service->servicedesc->Visible) { // servicedesc ?>
-	<tr<?php echo $service->servicedesc->RowAttributes ?>>
-		<td class="ewTableHeader">服务描述</td>
-		<td<?php echo $service->servicedesc->CellAttributes() ?>>
-<div<?php echo $service->servicedesc->ViewAttributes() ?>><?php echo $service->servicedesc->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($service->rootid->Visible) { // rootid ?>
-	<tr<?php echo $service->rootid->RowAttributes ?>>
-		<td class="ewTableHeader">根类型</td>
-		<td<?php echo $service->rootid->CellAttributes() ?>>
-<div<?php echo $service->rootid->ViewAttributes() ?>><?php echo $service->rootid->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($service->catid->Visible) { // catid ?>
-	<tr<?php echo $service->catid->RowAttributes ?>>
-		<td class="ewTableHeader">服务类型</td>
-		<td<?php echo $service->catid->CellAttributes() ?>>
-<div<?php echo $service->catid->ViewAttributes() ?>><?php echo $service->catid->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($service->servicepic->Visible) { // servicepic ?>
-	<tr<?php echo $service->servicepic->RowAttributes ?>>
-		<td class="ewTableHeader">服务图片</td>
-		<td<?php echo $service->servicepic->CellAttributes() ?>>
-<?php if ($service->servicepic->HrefValue <> "") { ?>
-<?php if (!is_null($service->servicepic->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $service->servicepic->Upload->DbValue ?>" border=0<?php echo $service->servicepic->ViewAttributes() ?>>
-<?php } elseif (!in_array($service->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } else { ?>
-<?php if (!is_null($service->servicepic->Upload->DbValue)) { ?>
-<img src="<?php echo ew_UploadPathEx(FALSE, EW_UPLOAD_DEST_PATH) . $service->servicepic->Upload->DbValue ?>" border=0<?php echo $service->servicepic->ViewAttributes() ?>>
-<?php } elseif (!in_array($service->CurrentAction, array("I", "edit", "gridedit"))) { ?>	
-&nbsp;
-<?php } ?>
-<?php } ?>
-</td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($service->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">
@@ -519,10 +519,10 @@ class cservice_view {
 		global $service;
 		$service->id->setDbValue($rs->fields('id'));
 		$service->servicename->setDbValue($rs->fields('servicename'));
-		$service->pubtime->setDbValue($rs->fields('pubtime'));
-		$service->servicedesc->setDbValue($rs->fields('servicedesc'));
 		$service->rootid->setDbValue($rs->fields('rootid'));
 		$service->catid->setDbValue($rs->fields('catid'));
+		$service->pubtime->setDbValue($rs->fields('pubtime'));
+		$service->servicedesc->setDbValue($rs->fields('servicedesc'));
 		$service->servicepic->Upload->DbValue = $rs->fields('servicepic');
 	}
 
@@ -543,14 +543,6 @@ class cservice_view {
 		$service->servicename->CellCssStyle = "";
 		$service->servicename->CellCssClass = "";
 
-		// pubtime
-		$service->pubtime->CellCssStyle = "";
-		$service->pubtime->CellCssClass = "";
-
-		// servicedesc
-		$service->servicedesc->CellCssStyle = "";
-		$service->servicedesc->CellCssClass = "";
-
 		// rootid
 		$service->rootid->CellCssStyle = "";
 		$service->rootid->CellCssClass = "";
@@ -558,6 +550,14 @@ class cservice_view {
 		// catid
 		$service->catid->CellCssStyle = "";
 		$service->catid->CellCssClass = "";
+
+		// pubtime
+		$service->pubtime->CellCssStyle = "";
+		$service->pubtime->CellCssClass = "";
+
+		// servicedesc
+		$service->servicedesc->CellCssStyle = "";
+		$service->servicedesc->CellCssClass = "";
 
 		// servicepic
 		$service->servicepic->CellCssStyle = "";
@@ -576,21 +576,19 @@ class cservice_view {
 			$service->servicename->CssClass = "";
 			$service->servicename->ViewCustomAttributes = "";
 
-			// pubtime
-			$service->pubtime->ViewValue = $service->pubtime->CurrentValue;
-			$service->pubtime->ViewValue = ew_FormatDateTime($service->pubtime->ViewValue, 5);
-			$service->pubtime->CssStyle = "";
-			$service->pubtime->CssClass = "";
-			$service->pubtime->ViewCustomAttributes = "";
-
-			// servicedesc
-			$service->servicedesc->ViewValue = $service->servicedesc->CurrentValue;
-			$service->servicedesc->CssStyle = "";
-			$service->servicedesc->CssClass = "";
-			$service->servicedesc->ViewCustomAttributes = "";
-
 			// rootid
-			$service->rootid->ViewValue = $service->rootid->CurrentValue;
+			if (strval($service->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `serviceroot` WHERE `id` = " . ew_AdjustSql($service->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$service->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$service->rootid->ViewValue = $service->rootid->CurrentValue;
+				}
+			} else {
+				$service->rootid->ViewValue = NULL;
+			}
 			$service->rootid->CssStyle = "";
 			$service->rootid->CssClass = "";
 			$service->rootid->ViewCustomAttributes = "";
@@ -612,6 +610,19 @@ class cservice_view {
 			$service->catid->CssClass = "";
 			$service->catid->ViewCustomAttributes = "";
 
+			// pubtime
+			$service->pubtime->ViewValue = $service->pubtime->CurrentValue;
+			$service->pubtime->ViewValue = ew_FormatDateTime($service->pubtime->ViewValue, 5);
+			$service->pubtime->CssStyle = "";
+			$service->pubtime->CssClass = "";
+			$service->pubtime->ViewCustomAttributes = "";
+
+			// servicedesc
+			$service->servicedesc->ViewValue = $service->servicedesc->CurrentValue;
+			$service->servicedesc->CssStyle = "";
+			$service->servicedesc->CssClass = "";
+			$service->servicedesc->ViewCustomAttributes = "";
+
 			// servicepic
 			if (!is_null($service->servicepic->Upload->DbValue)) {
 				$service->servicepic->ViewValue = $service->servicepic->Upload->DbValue;
@@ -629,17 +640,17 @@ class cservice_view {
 			// servicename
 			$service->servicename->HrefValue = "";
 
-			// pubtime
-			$service->pubtime->HrefValue = "";
-
-			// servicedesc
-			$service->servicedesc->HrefValue = "";
-
 			// rootid
 			$service->rootid->HrefValue = "";
 
 			// catid
 			$service->catid->HrefValue = "";
+
+			// pubtime
+			$service->pubtime->HrefValue = "";
+
+			// servicedesc
+			$service->servicedesc->HrefValue = "";
 
 			// servicepic
 			$service->servicepic->HrefValue = "";

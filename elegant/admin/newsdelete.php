@@ -482,7 +482,6 @@ class cnews_delete {
 		$news->catid->setDbValue($rs->fields('catid'));
 		$news->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$news->pubtime->setDbValue($rs->fields('pubtime'));
-		$news->newsimg->Upload->DbValue = $rs->fields('newsimg');
 	}
 
 	// Render row values based on field settings

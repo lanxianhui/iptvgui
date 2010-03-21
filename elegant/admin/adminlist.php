@@ -90,7 +90,7 @@ var ew_DHTMLEditors = [];
 <p><span class="phpmaker" style="white-space: nowrap;">表: Admin
 <?php if ($admin->Export == "" && $admin->CurrentAction == "") { ?>
 &nbsp;&nbsp;<a href="<?php echo $admin_list->PageUrl() ?>export=html">导出到 HTML</a>
-&nbsp;&nbsp;<a href="<?php echo $admin_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $admin_list->PageUrl() ?>export=xml">导出到 XML</a>
 &nbsp;&nbsp;<a href="<?php echo $admin_list->PageUrl() ?>export=csv">导出到 CSV</a>
 <?php } ?>
 </span></p>
@@ -119,8 +119,179 @@ var ew_DHTMLEditors = [];
 <?php $admin_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<form name="fadminlist" id="fadminlist" class="ewForm" action="" method="post">
+<?php if ($admin_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$admin_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$admin_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$admin_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$admin_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$admin_list->lOptionCnt++; // Multi-select
+}
+	$admin_list->lOptionCnt += count($admin_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $admin->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($admin->id->Visible) { // id ?>
+	<?php if ($admin->SortUrl($admin->id) == "") { ?>
+		<td>账号ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $admin->SortUrl($admin->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>账号ID</td><td style="width: 10px;"><?php if ($admin->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($admin->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($admin->usename->Visible) { // usename ?>
+	<?php if ($admin->SortUrl($admin->usename) == "") { ?>
+		<td>账号名称</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $admin->SortUrl($admin->usename) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>账号名称&nbsp;(*)</td><td style="width: 10px;"><?php if ($admin->usename->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($admin->usename->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($admin->usepass->Visible) { // usepass ?>
+	<?php if ($admin->SortUrl($admin->usepass) == "") { ?>
+		<td>账号密码</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $admin->SortUrl($admin->usepass) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>账号密码</td><td style="width: 10px;"><?php if ($admin->usepass->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($admin->usepass->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
 <?php if ($admin->Export == "") { ?>
-<div class="ewGridUpperPanel">
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="admin_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($admin_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+	</tr>
+</thead>
+<?php
+if ($admin->ExportAll && $admin->Export <> "") {
+	$admin_list->lStopRec = $admin_list->lTotalRecs;
+} else {
+	$admin_list->lStopRec = $admin_list->lStartRec + $admin_list->lDisplayRecs - 1; // Set the last record to display
+}
+$admin_list->lRecCount = $admin_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$admin->SelectLimit && $admin_list->lStartRec > 1)
+		$rs->Move($admin_list->lStartRec - 1);
+}
+$admin_list->lRowCnt = 0;
+while (($admin->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$admin_list->lRecCount < $admin_list->lStopRec) {
+	$admin_list->lRecCount++;
+	if (intval($admin_list->lRecCount) >= intval($admin_list->lStartRec)) {
+		$admin_list->lRowCnt++;
+
+	// Init row class and style
+	$admin->CssClass = "";
+	$admin->CssStyle = "";
+	$admin->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($admin->CurrentAction == "gridadd") {
+		$admin_list->LoadDefaultValues(); // Load default values
+	} else {
+		$admin_list->LoadRowValues($rs); // Load row values
+	}
+	$admin->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$admin_list->RenderRow();
+?>
+	<tr<?php echo $admin->RowAttributes() ?>>
+	<?php if ($admin->id->Visible) { // id ?>
+		<td<?php echo $admin->id->CellAttributes() ?>>
+<div<?php echo $admin->id->ViewAttributes() ?>><?php echo $admin->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($admin->usename->Visible) { // usename ?>
+		<td<?php echo $admin->usename->CellAttributes() ?>>
+<div<?php echo $admin->usename->ViewAttributes() ?>><?php echo $admin->usename->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($admin->usepass->Visible) { // usepass ?>
+		<td<?php echo $admin->usepass->CellAttributes() ?>>
+<div<?php echo $admin->usepass->ViewAttributes() ?>><?php echo $admin->usepass->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+<?php if ($admin->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $admin->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $admin->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $admin->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($admin->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($admin_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	</tr>
+<?php
+	}
+	if ($admin->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
+<?php if ($admin->Export == "") { ?>
+<div class="ewGridLowerPanel">
 <?php if ($admin->CurrentAction <> "gridadd" && $admin->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -173,6 +344,7 @@ var ew_DHTMLEditors = [];
 </table>
 </form>
 <?php } ?>
+<?php //if ($admin_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
 <?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $admin->AddUrl() ?>">添加</a>&nbsp;&nbsp;
@@ -183,179 +355,9 @@ var ew_DHTMLEditors = [];
 <?php } ?>
 <?php } ?>
 </span>
+<?php //} ?>
 </div>
 <?php } ?>
-<div class="ewGridMiddlePanel">
-<form name="fadminlist" id="fadminlist" class="ewForm" action="" method="post">
-<?php if ($admin_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$admin_list->lOptionCnt = 0;
-if ($Security->IsLoggedIn()) {
-	$admin_list->lOptionCnt++; // view
-}
-if ($Security->IsLoggedIn()) {
-	$admin_list->lOptionCnt++; // edit
-}
-if ($Security->IsLoggedIn()) {
-	$admin_list->lOptionCnt++; // copy
-}
-if ($Security->IsLoggedIn()) {
-	$admin_list->lOptionCnt++; // Multi-select
-}
-	$admin_list->lOptionCnt += count($admin_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $admin->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($admin->Export == "") { ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="admin_list.SelectAllKey(this);"></td>
-<?php } ?>
-<?php
-
-// Custom list options
-foreach ($admin_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-<?php if ($admin->id->Visible) { // id ?>
-	<?php if ($admin->SortUrl($admin->id) == "") { ?>
-		<td>账号ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $admin->SortUrl($admin->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>账号ID</td><td style="width: 10px;"><?php if ($admin->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($admin->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($admin->usename->Visible) { // usename ?>
-	<?php if ($admin->SortUrl($admin->usename) == "") { ?>
-		<td>账号名称</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $admin->SortUrl($admin->usename) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>账号名称&nbsp;(*)</td><td style="width: 10px;"><?php if ($admin->usename->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($admin->usename->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($admin->usepass->Visible) { // usepass ?>
-	<?php if ($admin->SortUrl($admin->usepass) == "") { ?>
-		<td>账号密码</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $admin->SortUrl($admin->usepass) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>账号密码</td><td style="width: 10px;"><?php if ($admin->usepass->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($admin->usepass->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-	</tr>
-</thead>
-<?php
-if ($admin->ExportAll && $admin->Export <> "") {
-	$admin_list->lStopRec = $admin_list->lTotalRecs;
-} else {
-	$admin_list->lStopRec = $admin_list->lStartRec + $admin_list->lDisplayRecs - 1; // Set the last record to display
-}
-$admin_list->lRecCount = $admin_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$admin->SelectLimit && $admin_list->lStartRec > 1)
-		$rs->Move($admin_list->lStartRec - 1);
-}
-$admin_list->lRowCnt = 0;
-while (($admin->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$admin_list->lRecCount < $admin_list->lStopRec) {
-	$admin_list->lRecCount++;
-	if (intval($admin_list->lRecCount) >= intval($admin_list->lStartRec)) {
-		$admin_list->lRowCnt++;
-
-	// Init row class and style
-	$admin->CssClass = "";
-	$admin->CssStyle = "";
-	$admin->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($admin->CurrentAction == "gridadd") {
-		$admin_list->LoadDefaultValues(); // Load default values
-	} else {
-		$admin_list->LoadRowValues($rs); // Load row values
-	}
-	$admin->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$admin_list->RenderRow();
-?>
-	<tr<?php echo $admin->RowAttributes() ?>>
-<?php if ($admin->Export == "") { ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $admin->ViewUrl() ?>">查看</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $admin->EditUrl() ?>">编辑</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $admin->CopyUrl() ?>">复制</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($admin->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
-</span></td>
-<?php } ?>
-<?php
-
-// Custom list options
-foreach ($admin_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	<?php if ($admin->id->Visible) { // id ?>
-		<td<?php echo $admin->id->CellAttributes() ?>>
-<div<?php echo $admin->id->ViewAttributes() ?>><?php echo $admin->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($admin->usename->Visible) { // usename ?>
-		<td<?php echo $admin->usename->CellAttributes() ?>>
-<div<?php echo $admin->usename->ViewAttributes() ?>><?php echo $admin->usename->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($admin->usepass->Visible) { // usepass ?>
-		<td<?php echo $admin->usepass->CellAttributes() ?>>
-<div<?php echo $admin->usepass->ViewAttributes() ?>><?php echo $admin->usepass->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	</tr>
-<?php
-	}
-	if ($admin->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
 </td></tr></table>
 <?php if ($admin->Export == "" && $admin->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -487,9 +489,9 @@ class cadmin_list {
 
 		// Printer friendly or Export to HTML, no action required
 	}
-	if ($admin->Export == "excel") {
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	if ($admin->Export == "xml") {
+		header('Content-Type: text/xml');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xml');
 	}
 	if ($admin->Export == "csv") {
 		header('Content-Type: application/csv');

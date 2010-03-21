@@ -86,7 +86,35 @@ admin_view.ValidateRequired = false; // no JavaScript validation
 </span></p>
 <?php $admin_view->ShowMessage() ?>
 <p>
+<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<table cellspacing="0" class="ewTable">
+<?php if ($admin->id->Visible) { // id ?>
+	<tr<?php echo $admin->id->RowAttributes ?>>
+		<td class="ewTableHeader">ÕËºÅID</td>
+		<td<?php echo $admin->id->CellAttributes() ?>>
+<div<?php echo $admin->id->ViewAttributes() ?>><?php echo $admin->id->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($admin->usename->Visible) { // usename ?>
+	<tr<?php echo $admin->usename->RowAttributes ?>>
+		<td class="ewTableHeader">ÕËºÅÃû³Æ</td>
+		<td<?php echo $admin->usename->CellAttributes() ?>>
+<div<?php echo $admin->usename->ViewAttributes() ?>><?php echo $admin->usename->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($admin->usepass->Visible) { // usepass ?>
+	<tr<?php echo $admin->usepass->RowAttributes ?>>
+		<td class="ewTableHeader">ÕËºÅÃÜÂë</td>
+		<td<?php echo $admin->usepass->CellAttributes() ?>>
+<div<?php echo $admin->usepass->ViewAttributes() ?>><?php echo $admin->usepass->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+</table>
+</div>
+</td></tr></table>
 <?php if ($admin->Export == "") { ?>
+<br>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
 	<tr>
@@ -133,35 +161,7 @@ admin_view.ValidateRequired = false; // no JavaScript validation
 	</tr>
 </table>
 </form>
-<br>
 <?php } ?>
-<table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
-<div class="ewGridMiddlePanel">
-<table cellspacing="0" class="ewTable">
-<?php if ($admin->id->Visible) { // id ?>
-	<tr<?php echo $admin->id->RowAttributes ?>>
-		<td class="ewTableHeader">ÕËºÅID</td>
-		<td<?php echo $admin->id->CellAttributes() ?>>
-<div<?php echo $admin->id->ViewAttributes() ?>><?php echo $admin->id->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($admin->usename->Visible) { // usename ?>
-	<tr<?php echo $admin->usename->RowAttributes ?>>
-		<td class="ewTableHeader">ÕËºÅÃû³Æ</td>
-		<td<?php echo $admin->usename->CellAttributes() ?>>
-<div<?php echo $admin->usename->ViewAttributes() ?>><?php echo $admin->usename->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-<?php if ($admin->usepass->Visible) { // usepass ?>
-	<tr<?php echo $admin->usepass->RowAttributes ?>>
-		<td class="ewTableHeader">ÕËºÅÃÜÂë</td>
-		<td<?php echo $admin->usepass->CellAttributes() ?>>
-<div<?php echo $admin->usepass->ViewAttributes() ?>><?php echo $admin->usepass->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
-</table>
-</div>
-</td></tr></table>
 <p>
 <?php if ($admin->Export == "") { ?>
 <script language="JavaScript" type="text/javascript">

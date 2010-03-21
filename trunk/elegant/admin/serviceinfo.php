@@ -12,10 +12,10 @@ class cservice {
 	var $SelectLimit = FALSE;
 	var $id;
 	var $servicename;
-	var $pubtime;
-	var $servicedesc;
 	var $rootid;
 	var $catid;
+	var $pubtime;
+	var $servicedesc;
 	var $servicepic;
 	var $fields = array();
 	var $UseTokenInUrl = EW_USE_TOKEN_IN_URL;
@@ -33,14 +33,14 @@ class cservice {
 		$this->fields['id'] =& $this->id;
 		$this->servicename = new cField('service', 'x_servicename', 'servicename', "`servicename`", 200, -1, FALSE);
 		$this->fields['servicename'] =& $this->servicename;
-		$this->pubtime = new cField('service', 'x_pubtime', 'pubtime', "`pubtime`", 135, 5, FALSE);
-		$this->fields['pubtime'] =& $this->pubtime;
-		$this->servicedesc = new cField('service', 'x_servicedesc', 'servicedesc', "`servicedesc`", 201, -1, FALSE);
-		$this->fields['servicedesc'] =& $this->servicedesc;
 		$this->rootid = new cField('service', 'x_rootid', 'rootid', "`rootid`", 20, -1, FALSE);
 		$this->fields['rootid'] =& $this->rootid;
 		$this->catid = new cField('service', 'x_catid', 'catid', "`catid`", 20, -1, FALSE);
 		$this->fields['catid'] =& $this->catid;
+		$this->pubtime = new cField('service', 'x_pubtime', 'pubtime', "`pubtime`", 135, 5, FALSE);
+		$this->fields['pubtime'] =& $this->pubtime;
+		$this->servicedesc = new cField('service', 'x_servicedesc', 'servicedesc', "`servicedesc`", 201, -1, FALSE);
+		$this->fields['servicedesc'] =& $this->servicedesc;
 		$this->servicepic = new cField('service', 'x_servicepic', 'servicepic', "`servicepic`", 201, -1, TRUE);
 		$this->fields['servicepic'] =& $this->servicepic;
 	}
@@ -385,10 +385,10 @@ class cservice {
 	function LoadListRowValues(&$rs) {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->servicename->setDbValue($rs->fields('servicename'));
-		$this->pubtime->setDbValue($rs->fields('pubtime'));
-		$this->servicedesc->setDbValue($rs->fields('servicedesc'));
 		$this->rootid->setDbValue($rs->fields('rootid'));
 		$this->catid->setDbValue($rs->fields('catid'));
+		$this->pubtime->setDbValue($rs->fields('pubtime'));
+		$this->servicedesc->setDbValue($rs->fields('servicedesc'));
 		$this->servicepic->Upload->DbValue = $rs->fields('servicepic');
 	}
 
@@ -411,15 +411,19 @@ class cservice {
 		$this->servicename->CssClass = "";
 		$this->servicename->ViewCustomAttributes = "";
 
-		// pubtime
-		$this->pubtime->ViewValue = $this->pubtime->CurrentValue;
-		$this->pubtime->ViewValue = ew_FormatDateTime($this->pubtime->ViewValue, 5);
-		$this->pubtime->CssStyle = "";
-		$this->pubtime->CssClass = "";
-		$this->pubtime->ViewCustomAttributes = "";
-
 		// rootid
-		$this->rootid->ViewValue = $this->rootid->CurrentValue;
+		if (strval($this->rootid->CurrentValue) <> "") {
+			$sSqlWrk = "SELECT `rootname` FROM `serviceroot` WHERE `id` = " . ew_AdjustSql($this->rootid->CurrentValue) . "";
+			$rswrk = $conn->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+				$this->rootid->ViewValue = $rswrk->fields('rootname');
+				$rswrk->Close();
+			} else {
+				$this->rootid->ViewValue = $this->rootid->CurrentValue;
+			}
+		} else {
+			$this->rootid->ViewValue = NULL;
+		}
 		$this->rootid->CssStyle = "";
 		$this->rootid->CssClass = "";
 		$this->rootid->ViewCustomAttributes = "";
@@ -441,20 +445,27 @@ class cservice {
 		$this->catid->CssClass = "";
 		$this->catid->ViewCustomAttributes = "";
 
+		// pubtime
+		$this->pubtime->ViewValue = $this->pubtime->CurrentValue;
+		$this->pubtime->ViewValue = ew_FormatDateTime($this->pubtime->ViewValue, 5);
+		$this->pubtime->CssStyle = "";
+		$this->pubtime->CssClass = "";
+		$this->pubtime->ViewCustomAttributes = "";
+
 		// id
 		$this->id->HrefValue = "";
 
 		// servicename
 		$this->servicename->HrefValue = "";
 
-		// pubtime
-		$this->pubtime->HrefValue = "";
-
 		// rootid
 		$this->rootid->HrefValue = "";
 
 		// catid
 		$this->catid->HrefValue = "";
+
+		// pubtime
+		$this->pubtime->HrefValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();

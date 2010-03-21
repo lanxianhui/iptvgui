@@ -12,9 +12,18 @@ class ccases {
 	var $SelectLimit = FALSE;
 	var $id;
 	var $casetitle;
-	var $casepic;
 	var $casedesc;
+	var $rootid;
 	var $catid;
+	var $casepic1;
+	var $casepic2;
+	var $casepic3;
+	var $casepic4;
+	var $casepic5;
+	var $casepic6;
+	var $casepic7;
+	var $casepic8;
+	var $casepic9;
 	var $fields = array();
 	var $UseTokenInUrl = EW_USE_TOKEN_IN_URL;
 	var $Export; // Export
@@ -31,12 +40,30 @@ class ccases {
 		$this->fields['id'] =& $this->id;
 		$this->casetitle = new cField('cases', 'x_casetitle', 'casetitle', "`casetitle`", 200, -1, FALSE);
 		$this->fields['casetitle'] =& $this->casetitle;
-		$this->casepic = new cField('cases', 'x_casepic', 'casepic', "`casepic`", 201, -1, TRUE);
-		$this->fields['casepic'] =& $this->casepic;
 		$this->casedesc = new cField('cases', 'x_casedesc', 'casedesc', "`casedesc`", 201, -1, FALSE);
 		$this->fields['casedesc'] =& $this->casedesc;
+		$this->rootid = new cField('cases', 'x_rootid', 'rootid', "`rootid`", 20, -1, FALSE);
+		$this->fields['rootid'] =& $this->rootid;
 		$this->catid = new cField('cases', 'x_catid', 'catid', "`catid`", 20, -1, FALSE);
 		$this->fields['catid'] =& $this->catid;
+		$this->casepic1 = new cField('cases', 'x_casepic1', 'casepic1', "`casepic1`", 201, -1, TRUE);
+		$this->fields['casepic1'] =& $this->casepic1;
+		$this->casepic2 = new cField('cases', 'x_casepic2', 'casepic2', "`casepic2`", 201, -1, TRUE);
+		$this->fields['casepic2'] =& $this->casepic2;
+		$this->casepic3 = new cField('cases', 'x_casepic3', 'casepic3', "`casepic3`", 201, -1, TRUE);
+		$this->fields['casepic3'] =& $this->casepic3;
+		$this->casepic4 = new cField('cases', 'x_casepic4', 'casepic4', "`casepic4`", 201, -1, TRUE);
+		$this->fields['casepic4'] =& $this->casepic4;
+		$this->casepic5 = new cField('cases', 'x_casepic5', 'casepic5', "`casepic5`", 201, -1, TRUE);
+		$this->fields['casepic5'] =& $this->casepic5;
+		$this->casepic6 = new cField('cases', 'x_casepic6', 'casepic6', "`casepic6`", 201, -1, TRUE);
+		$this->fields['casepic6'] =& $this->casepic6;
+		$this->casepic7 = new cField('cases', 'x_casepic7', 'casepic7', "`casepic7`", 201, -1, TRUE);
+		$this->fields['casepic7'] =& $this->casepic7;
+		$this->casepic8 = new cField('cases', 'x_casepic8', 'casepic8', "`casepic8`", 201, -1, TRUE);
+		$this->fields['casepic8'] =& $this->casepic8;
+		$this->casepic9 = new cField('cases', 'x_casepic9', 'casepic9', "`casepic9`", 201, -1, TRUE);
+		$this->fields['casepic9'] =& $this->casepic9;
 	}
 
 	// Records per page
@@ -379,9 +406,18 @@ class ccases {
 	function LoadListRowValues(&$rs) {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->casetitle->setDbValue($rs->fields('casetitle'));
-		$this->casepic->Upload->DbValue = $rs->fields('casepic');
 		$this->casedesc->setDbValue($rs->fields('casedesc'));
+		$this->rootid->setDbValue($rs->fields('rootid'));
 		$this->catid->setDbValue($rs->fields('catid'));
+		$this->casepic1->Upload->DbValue = $rs->fields('casepic1');
+		$this->casepic2->Upload->DbValue = $rs->fields('casepic2');
+		$this->casepic3->Upload->DbValue = $rs->fields('casepic3');
+		$this->casepic4->Upload->DbValue = $rs->fields('casepic4');
+		$this->casepic5->Upload->DbValue = $rs->fields('casepic5');
+		$this->casepic6->Upload->DbValue = $rs->fields('casepic6');
+		$this->casepic7->Upload->DbValue = $rs->fields('casepic7');
+		$this->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$this->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render list row values
@@ -402,6 +438,23 @@ class ccases {
 		$this->casetitle->CssStyle = "";
 		$this->casetitle->CssClass = "";
 		$this->casetitle->ViewCustomAttributes = "";
+
+		// rootid
+		if (strval($this->rootid->CurrentValue) <> "") {
+			$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($this->rootid->CurrentValue) . "";
+			$rswrk = $conn->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+				$this->rootid->ViewValue = $rswrk->fields('rootname');
+				$rswrk->Close();
+			} else {
+				$this->rootid->ViewValue = $this->rootid->CurrentValue;
+			}
+		} else {
+			$this->rootid->ViewValue = NULL;
+		}
+		$this->rootid->CssStyle = "";
+		$this->rootid->CssClass = "";
+		$this->rootid->ViewCustomAttributes = "";
 
 		// catid
 		if (strval($this->catid->CurrentValue) <> "") {
@@ -425,6 +478,9 @@ class ccases {
 
 		// casetitle
 		$this->casetitle->HrefValue = "";
+
+		// rootid
+		$this->rootid->HrefValue = "";
 
 		// catid
 		$this->catid->HrefValue = "";

@@ -57,6 +57,9 @@ casescat_edit.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_catorder"];
 		if (elm && !ew_CheckInteger(elm.value))
 			return ew_OnError(this, elm, "错误的 Integer - 类型排序");
+		elm = fobj.elements["x" + infix + "_rootid"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 根类型");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -129,6 +132,31 @@ var ew_DHTMLEditors = [];
 		<td<?php echo $casescat->catorder->CellAttributes() ?>><span id="el_catorder">
 <input type="text" name="x_catorder" id="x_catorder" size="30" value="<?php echo $casescat->catorder->EditValue ?>"<?php echo $casescat->catorder->EditAttributes() ?>>
 </span><?php echo $casescat->catorder->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($casescat->rootid->Visible) { // rootid ?>
+	<tr<?php echo $casescat->rootid->RowAttributes ?>>
+		<td class="ewTableHeader">根类型<span class='ewmsg'>&nbsp;*</span></td>
+		<td<?php echo $casescat->rootid->CellAttributes() ?>><span id="el_rootid">
+<select id="x_rootid" name="x_rootid"<?php echo $casescat->rootid->EditAttributes() ?>>
+<?php
+if (is_array($casescat->rootid->EditValue)) {
+	$arwrk = $casescat->rootid->EditValue;
+	$rowswrk = count($arwrk);
+	$emptywrk = TRUE;
+	for ($rowcntwrk = 0; $rowcntwrk < $rowswrk; $rowcntwrk++) {
+		$selwrk = (strval($casescat->rootid->CurrentValue) == strval($arwrk[$rowcntwrk][0])) ? " selected=\"selected\"" : "";
+		if ($selwrk <> "") $emptywrk = FALSE;
+?>
+<option value="<?php echo ew_HtmlEncode($arwrk[$rowcntwrk][0]) ?>"<?php echo $selwrk ?>>
+<?php echo $arwrk[$rowcntwrk][1] ?>
+</option>
+<?php
+	}
+}
+?>
+</select>
+</span><?php echo $casescat->rootid->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 </table>
@@ -351,6 +379,7 @@ class ccasescat_edit {
 		$casescat->id->setFormValue($objForm->GetValue("x_id"));
 		$casescat->catname->setFormValue($objForm->GetValue("x_catname"));
 		$casescat->catorder->setFormValue($objForm->GetValue("x_catorder"));
+		$casescat->rootid->setFormValue($objForm->GetValue("x_rootid"));
 	}
 
 	// Restore form values
@@ -360,6 +389,7 @@ class ccasescat_edit {
 		$casescat->id->CurrentValue = $casescat->id->FormValue;
 		$casescat->catname->CurrentValue = $casescat->catname->FormValue;
 		$casescat->catorder->CurrentValue = $casescat->catorder->FormValue;
+		$casescat->rootid->CurrentValue = $casescat->rootid->FormValue;
 	}
 
 	// Load row based on key values
@@ -397,6 +427,7 @@ class ccasescat_edit {
 		$casescat->id->setDbValue($rs->fields('id'));
 		$casescat->catname->setDbValue($rs->fields('catname'));
 		$casescat->catorder->setDbValue($rs->fields('catorder'));
+		$casescat->rootid->setDbValue($rs->fields('rootid'));
 	}
 
 	// Render row values based on field settings
@@ -419,6 +450,10 @@ class ccasescat_edit {
 		// catorder
 		$casescat->catorder->CellCssStyle = "";
 		$casescat->catorder->CellCssClass = "";
+
+		// rootid
+		$casescat->rootid->CellCssStyle = "";
+		$casescat->rootid->CellCssClass = "";
 		if ($casescat->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -439,6 +474,23 @@ class ccasescat_edit {
 			$casescat->catorder->CssClass = "";
 			$casescat->catorder->ViewCustomAttributes = "";
 
+			// rootid
+			if (strval($casescat->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($casescat->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$casescat->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$casescat->rootid->ViewValue = $casescat->rootid->CurrentValue;
+				}
+			} else {
+				$casescat->rootid->ViewValue = NULL;
+			}
+			$casescat->rootid->CssStyle = "";
+			$casescat->rootid->CssClass = "";
+			$casescat->rootid->ViewCustomAttributes = "";
+
 			// id
 			$casescat->id->HrefValue = "";
 
@@ -447,6 +499,9 @@ class ccasescat_edit {
 
 			// catorder
 			$casescat->catorder->HrefValue = "";
+
+			// rootid
+			$casescat->rootid->HrefValue = "";
 		} elseif ($casescat->RowType == EW_ROWTYPE_EDIT) { // Edit row
 
 			// id
@@ -464,6 +519,17 @@ class ccasescat_edit {
 			$casescat->catorder->EditCustomAttributes = "";
 			$casescat->catorder->EditValue = ew_HtmlEncode($casescat->catorder->CurrentValue);
 
+			// rootid
+			$casescat->rootid->EditCustomAttributes = "";
+			$sSqlWrk = "SELECT `id`, `rootname`, '' AS Disp2Fld, '' AS SelectFilterFld FROM `casesroot`";
+			$sWhereWrk = "";
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE $sWhereWrk";
+			$rswrk = $conn->Execute($sSqlWrk);
+			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
+			if ($rswrk) $rswrk->Close();
+			array_unshift($arwrk, array("", "请选择"));
+			$casescat->rootid->EditValue = $arwrk;
+
 			// Edit refer script
 			// id
 
@@ -474,6 +540,9 @@ class ccasescat_edit {
 
 			// catorder
 			$casescat->catorder->HrefValue = "";
+
+			// rootid
+			$casescat->rootid->HrefValue = "";
 		}
 
 		// Call Row Rendered event
@@ -501,6 +570,10 @@ class ccasescat_edit {
 		if (!ew_CheckInteger($casescat->catorder->FormValue)) {
 			if ($gsFormError <> "") $gsFormError .= "<br>";
 			$gsFormError .= "错误的 Integer - 类型排序";
+		}
+		if ($casescat->rootid->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 根类型";
 		}
 
 		// Return validate result
@@ -538,12 +611,16 @@ class ccasescat_edit {
 			// Field id
 			// Field catname
 
-			$casescat->catname->SetDbValueDef($casescat->catname->CurrentValue, NULL);
+			$casescat->catname->SetDbValueDef($casescat->catname->CurrentValue, "");
 			$rsnew['catname'] =& $casescat->catname->DbValue;
 
 			// Field catorder
-			$casescat->catorder->SetDbValueDef($casescat->catorder->CurrentValue, NULL);
+			$casescat->catorder->SetDbValueDef($casescat->catorder->CurrentValue, 0);
 			$rsnew['catorder'] =& $casescat->catorder->DbValue;
+
+			// Field rootid
+			$casescat->rootid->SetDbValueDef($casescat->rootid->CurrentValue, 0);
+			$rsnew['rootid'] =& $casescat->rootid->DbValue;
 
 			// Call Row Updating event
 			$bUpdateRow = $casescat->Row_Updating($rsold, $rsnew);

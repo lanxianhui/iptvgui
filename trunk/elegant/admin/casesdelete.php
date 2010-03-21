@@ -93,6 +93,7 @@ if ($cases_deletelTotalRecs <= 0) { // No record found, exit
 	<tr class="ewTableHeader">
 		<td valign="top">案例ID</td>
 		<td valign="top">案例标题</td>
+		<td valign="top">根类型</td>
 		<td valign="top">案例类型</td>
 	</tr>
 	</thead>
@@ -119,6 +120,8 @@ while (!$rs->EOF) {
 <div<?php echo $cases->id->ViewAttributes() ?>><?php echo $cases->id->ListViewValue() ?></div></td>
 		<td<?php echo $cases->casetitle->CellAttributes() ?>>
 <div<?php echo $cases->casetitle->ViewAttributes() ?>><?php echo $cases->casetitle->ListViewValue() ?></div></td>
+		<td<?php echo $cases->rootid->CellAttributes() ?>>
+<div<?php echo $cases->rootid->ViewAttributes() ?>><?php echo $cases->rootid->ListViewValue() ?></div></td>
 		<td<?php echo $cases->catid->CellAttributes() ?>>
 <div<?php echo $cases->catid->ViewAttributes() ?>><?php echo $cases->catid->ListViewValue() ?></div></td>
 	</tr>
@@ -476,9 +479,18 @@ class ccases_delete {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casepic->Upload->DbValue = $rs->fields('casepic');
 		$cases->casedesc->setDbValue($rs->fields('casedesc'));
+		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
+		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
+		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
+		$cases->casepic4->Upload->DbValue = $rs->fields('casepic4');
+		$cases->casepic5->Upload->DbValue = $rs->fields('casepic5');
+		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
+		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
+		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings
@@ -498,6 +510,10 @@ class ccases_delete {
 		$cases->casetitle->CellCssStyle = "";
 		$cases->casetitle->CellCssClass = "";
 
+		// rootid
+		$cases->rootid->CellCssStyle = "";
+		$cases->rootid->CellCssClass = "";
+
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
@@ -514,6 +530,23 @@ class ccases_delete {
 			$cases->casetitle->CssStyle = "";
 			$cases->casetitle->CssClass = "";
 			$cases->casetitle->ViewCustomAttributes = "";
+
+			// rootid
+			if (strval($cases->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($cases->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$cases->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$cases->rootid->ViewValue = $cases->rootid->CurrentValue;
+				}
+			} else {
+				$cases->rootid->ViewValue = NULL;
+			}
+			$cases->rootid->CssStyle = "";
+			$cases->rootid->CssClass = "";
+			$cases->rootid->ViewCustomAttributes = "";
 
 			// catid
 			if (strval($cases->catid->CurrentValue) <> "") {
@@ -537,6 +570,9 @@ class ccases_delete {
 
 			// casetitle
 			$cases->casetitle->HrefValue = "";
+
+			// rootid
+			$cases->rootid->HrefValue = "";
 
 			// catid
 			$cases->catid->HrefValue = "";

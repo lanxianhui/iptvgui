@@ -91,7 +91,7 @@ var ew_DHTMLEditors = [];
 <p><span class="phpmaker" style="white-space: nowrap;">表: Cases
 <?php if ($cases->Export == "" && $cases->CurrentAction == "") { ?>
 &nbsp;&nbsp;<a href="<?php echo $cases_list->PageUrl() ?>export=html">导出到 HTML</a>
-&nbsp;&nbsp;<a href="<?php echo $cases_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $cases_list->PageUrl() ?>export=xml">导出到 XML</a>
 &nbsp;&nbsp;<a href="<?php echo $cases_list->PageUrl() ?>export=csv">导出到 CSV</a>
 <?php } ?>
 </span></p>
@@ -120,8 +120,193 @@ var ew_DHTMLEditors = [];
 <?php $cases_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<form name="fcaseslist" id="fcaseslist" class="ewForm" action="" method="post">
+<?php if ($cases_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$cases_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$cases_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$cases_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$cases_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$cases_list->lOptionCnt++; // Multi-select
+}
+	$cases_list->lOptionCnt += count($cases_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $cases->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($cases->id->Visible) { // id ?>
+	<?php if ($cases->SortUrl($cases->id) == "") { ?>
+		<td>案例ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例ID</td><td style="width: 10px;"><?php if ($cases->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($cases->casetitle->Visible) { // casetitle ?>
+	<?php if ($cases->SortUrl($cases->casetitle) == "") { ?>
+		<td>案例标题</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->casetitle) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例标题&nbsp;(*)</td><td style="width: 10px;"><?php if ($cases->casetitle->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->casetitle->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($cases->rootid->Visible) { // rootid ?>
+	<?php if ($cases->SortUrl($cases->rootid) == "") { ?>
+		<td>根类型</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->rootid) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>根类型</td><td style="width: 10px;"><?php if ($cases->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($cases->catid->Visible) { // catid ?>
+	<?php if ($cases->SortUrl($cases->catid) == "") { ?>
+		<td>案例类型</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->catid) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例类型</td><td style="width: 10px;"><?php if ($cases->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
 <?php if ($cases->Export == "") { ?>
-<div class="ewGridUpperPanel">
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="cases_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($cases_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+	</tr>
+</thead>
+<?php
+if ($cases->ExportAll && $cases->Export <> "") {
+	$cases_list->lStopRec = $cases_list->lTotalRecs;
+} else {
+	$cases_list->lStopRec = $cases_list->lStartRec + $cases_list->lDisplayRecs - 1; // Set the last record to display
+}
+$cases_list->lRecCount = $cases_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$cases->SelectLimit && $cases_list->lStartRec > 1)
+		$rs->Move($cases_list->lStartRec - 1);
+}
+$cases_list->lRowCnt = 0;
+while (($cases->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$cases_list->lRecCount < $cases_list->lStopRec) {
+	$cases_list->lRecCount++;
+	if (intval($cases_list->lRecCount) >= intval($cases_list->lStartRec)) {
+		$cases_list->lRowCnt++;
+
+	// Init row class and style
+	$cases->CssClass = "";
+	$cases->CssStyle = "";
+	$cases->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($cases->CurrentAction == "gridadd") {
+		$cases_list->LoadDefaultValues(); // Load default values
+	} else {
+		$cases_list->LoadRowValues($rs); // Load row values
+	}
+	$cases->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$cases_list->RenderRow();
+?>
+	<tr<?php echo $cases->RowAttributes() ?>>
+	<?php if ($cases->id->Visible) { // id ?>
+		<td<?php echo $cases->id->CellAttributes() ?>>
+<div<?php echo $cases->id->ViewAttributes() ?>><?php echo $cases->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($cases->casetitle->Visible) { // casetitle ?>
+		<td<?php echo $cases->casetitle->CellAttributes() ?>>
+<div<?php echo $cases->casetitle->ViewAttributes() ?>><?php echo $cases->casetitle->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($cases->rootid->Visible) { // rootid ?>
+		<td<?php echo $cases->rootid->CellAttributes() ?>>
+<div<?php echo $cases->rootid->ViewAttributes() ?>><?php echo $cases->rootid->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($cases->catid->Visible) { // catid ?>
+		<td<?php echo $cases->catid->CellAttributes() ?>>
+<div<?php echo $cases->catid->ViewAttributes() ?>><?php echo $cases->catid->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+<?php if ($cases->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $cases->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $cases->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $cases->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($cases->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($cases_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	</tr>
+<?php
+	}
+	if ($cases->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
+<?php if ($cases->Export == "") { ?>
+<div class="ewGridLowerPanel">
 <?php if ($cases->CurrentAction <> "gridadd" && $cases->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -174,6 +359,7 @@ var ew_DHTMLEditors = [];
 </table>
 </form>
 <?php } ?>
+<?php //if ($cases_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
 <?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $cases->AddUrl() ?>">添加</a>&nbsp;&nbsp;
@@ -184,179 +370,9 @@ var ew_DHTMLEditors = [];
 <?php } ?>
 <?php } ?>
 </span>
+<?php //} ?>
 </div>
 <?php } ?>
-<div class="ewGridMiddlePanel">
-<form name="fcaseslist" id="fcaseslist" class="ewForm" action="" method="post">
-<?php if ($cases_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$cases_list->lOptionCnt = 0;
-if ($Security->IsLoggedIn()) {
-	$cases_list->lOptionCnt++; // view
-}
-if ($Security->IsLoggedIn()) {
-	$cases_list->lOptionCnt++; // edit
-}
-if ($Security->IsLoggedIn()) {
-	$cases_list->lOptionCnt++; // copy
-}
-if ($Security->IsLoggedIn()) {
-	$cases_list->lOptionCnt++; // Multi-select
-}
-	$cases_list->lOptionCnt += count($cases_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $cases->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($cases->Export == "") { ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="cases_list.SelectAllKey(this);"></td>
-<?php } ?>
-<?php
-
-// Custom list options
-foreach ($cases_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-<?php if ($cases->id->Visible) { // id ?>
-	<?php if ($cases->SortUrl($cases->id) == "") { ?>
-		<td>案例ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例ID</td><td style="width: 10px;"><?php if ($cases->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($cases->casetitle->Visible) { // casetitle ?>
-	<?php if ($cases->SortUrl($cases->casetitle) == "") { ?>
-		<td>案例标题</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->casetitle) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例标题&nbsp;(*)</td><td style="width: 10px;"><?php if ($cases->casetitle->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->casetitle->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($cases->catid->Visible) { // catid ?>
-	<?php if ($cases->SortUrl($cases->catid) == "") { ?>
-		<td>案例类型</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->catid) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例类型</td><td style="width: 10px;"><?php if ($cases->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-	</tr>
-</thead>
-<?php
-if ($cases->ExportAll && $cases->Export <> "") {
-	$cases_list->lStopRec = $cases_list->lTotalRecs;
-} else {
-	$cases_list->lStopRec = $cases_list->lStartRec + $cases_list->lDisplayRecs - 1; // Set the last record to display
-}
-$cases_list->lRecCount = $cases_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$cases->SelectLimit && $cases_list->lStartRec > 1)
-		$rs->Move($cases_list->lStartRec - 1);
-}
-$cases_list->lRowCnt = 0;
-while (($cases->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$cases_list->lRecCount < $cases_list->lStopRec) {
-	$cases_list->lRecCount++;
-	if (intval($cases_list->lRecCount) >= intval($cases_list->lStartRec)) {
-		$cases_list->lRowCnt++;
-
-	// Init row class and style
-	$cases->CssClass = "";
-	$cases->CssStyle = "";
-	$cases->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($cases->CurrentAction == "gridadd") {
-		$cases_list->LoadDefaultValues(); // Load default values
-	} else {
-		$cases_list->LoadRowValues($rs); // Load row values
-	}
-	$cases->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$cases_list->RenderRow();
-?>
-	<tr<?php echo $cases->RowAttributes() ?>>
-<?php if ($cases->Export == "") { ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $cases->ViewUrl() ?>">查看</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $cases->EditUrl() ?>">编辑</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $cases->CopyUrl() ?>">复制</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($cases->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
-</span></td>
-<?php } ?>
-<?php
-
-// Custom list options
-foreach ($cases_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	<?php if ($cases->id->Visible) { // id ?>
-		<td<?php echo $cases->id->CellAttributes() ?>>
-<div<?php echo $cases->id->ViewAttributes() ?>><?php echo $cases->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($cases->casetitle->Visible) { // casetitle ?>
-		<td<?php echo $cases->casetitle->CellAttributes() ?>>
-<div<?php echo $cases->casetitle->ViewAttributes() ?>><?php echo $cases->casetitle->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($cases->catid->Visible) { // catid ?>
-		<td<?php echo $cases->catid->CellAttributes() ?>>
-<div<?php echo $cases->catid->ViewAttributes() ?>><?php echo $cases->catid->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	</tr>
-<?php
-	}
-	if ($cases->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
 </td></tr></table>
 <?php if ($cases->Export == "" && $cases->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -491,9 +507,9 @@ class ccases_list {
 
 		// Printer friendly or Export to HTML, no action required
 	}
-	if ($cases->Export == "excel") {
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	if ($cases->Export == "xml") {
+		header('Content-Type: text/xml');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xml');
 	}
 	if ($cases->Export == "csv") {
 		header('Content-Type: application/csv');
@@ -638,8 +654,16 @@ class ccases_list {
 		$sKeyword = ew_AdjustSql($Keyword);
 		$sql = "";
 		$sql .= $cases->casetitle->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
-		$sql .= $cases->casepic->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
 		$sql .= $cases->casedesc->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic1->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic2->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic3->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic4->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic5->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic6->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic7->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic8->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
+		$sql .= $cases->casepic9->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
 		if (substr($sql, -4) == " OR ") $sql = substr($sql, 0, strlen($sql)-4);
 		return $sql;
 	}
@@ -708,6 +732,7 @@ class ccases_list {
 			$cases->CurrentOrderType = @$_GET["ordertype"];
 			$cases->UpdateSort($cases->id); // Field 
 			$cases->UpdateSort($cases->casetitle); // Field 
+			$cases->UpdateSort($cases->rootid); // Field 
 			$cases->UpdateSort($cases->catid); // Field 
 			$cases->setStartRecordNumber(1); // Reset start position
 		}
@@ -746,6 +771,7 @@ class ccases_list {
 				$cases->setSessionOrderBy($sOrderBy);
 				$cases->id->setSort("");
 				$cases->casetitle->setSort("");
+				$cases->rootid->setSort("");
 				$cases->catid->setSort("");
 			}
 
@@ -847,9 +873,18 @@ class ccases_list {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casepic->Upload->DbValue = $rs->fields('casepic');
 		$cases->casedesc->setDbValue($rs->fields('casedesc'));
+		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
+		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
+		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
+		$cases->casepic4->Upload->DbValue = $rs->fields('casepic4');
+		$cases->casepic5->Upload->DbValue = $rs->fields('casepic5');
+		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
+		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
+		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings
@@ -869,6 +904,10 @@ class ccases_list {
 		$cases->casetitle->CellCssStyle = "";
 		$cases->casetitle->CellCssClass = "";
 
+		// rootid
+		$cases->rootid->CellCssStyle = "";
+		$cases->rootid->CellCssClass = "";
+
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
@@ -885,6 +924,23 @@ class ccases_list {
 			$cases->casetitle->CssStyle = "";
 			$cases->casetitle->CssClass = "";
 			$cases->casetitle->ViewCustomAttributes = "";
+
+			// rootid
+			if (strval($cases->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($cases->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$cases->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$cases->rootid->ViewValue = $cases->rootid->CurrentValue;
+				}
+			} else {
+				$cases->rootid->ViewValue = NULL;
+			}
+			$cases->rootid->CssStyle = "";
+			$cases->rootid->CssClass = "";
+			$cases->rootid->ViewCustomAttributes = "";
 
 			// catid
 			if (strval($cases->catid->CurrentValue) <> "") {
@@ -908,6 +964,9 @@ class ccases_list {
 
 			// casetitle
 			$cases->casetitle->HrefValue = "";
+
+			// rootid
+			$cases->rootid->HrefValue = "";
 
 			// catid
 			$cases->catid->HrefValue = "";
@@ -953,6 +1012,7 @@ class ccases_list {
 				$sExportStr = "";
 				ew_ExportAddValue($sExportStr, 'id', $cases->Export);
 				ew_ExportAddValue($sExportStr, 'casetitle', $cases->Export);
+				ew_ExportAddValue($sExportStr, 'rootid', $cases->Export);
 				ew_ExportAddValue($sExportStr, 'catid', $cases->Export);
 				echo ew_ExportLine($sExportStr, $cases->Export);
 			}
@@ -976,17 +1036,20 @@ class ccases_list {
 					$XmlDoc->BeginRow();
 					$XmlDoc->AddField('id', $cases->id->CurrentValue);
 					$XmlDoc->AddField('casetitle', $cases->casetitle->CurrentValue);
+					$XmlDoc->AddField('rootid', $cases->rootid->CurrentValue);
 					$XmlDoc->AddField('catid', $cases->catid->CurrentValue);
 					$XmlDoc->EndRow();
 				} else {
 					if ($sExportStyle == "v" && $cases->Export <> "csv") { // Vertical format
 						echo ew_ExportField('id', $cases->id->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						echo ew_ExportField('casetitle', $cases->casetitle->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
+						echo ew_ExportField('rootid', $cases->rootid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						echo ew_ExportField('catid', $cases->catid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 					}	else { // Horizontal format
 						$sExportStr = "";
 						ew_ExportAddValue($sExportStr, $cases->id->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						ew_ExportAddValue($sExportStr, $cases->casetitle->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
+						ew_ExportAddValue($sExportStr, $cases->rootid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						ew_ExportAddValue($sExportStr, $cases->catid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						echo ew_ExportLine($sExportStr, $cases->Export);
 					}

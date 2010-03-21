@@ -15,7 +15,6 @@ class cnews {
 	var $catid;
 	var $newsdesc;
 	var $pubtime;
-	var $newsimg;
 	var $fields = array();
 	var $UseTokenInUrl = EW_USE_TOKEN_IN_URL;
 	var $Export; // Export
@@ -38,8 +37,6 @@ class cnews {
 		$this->fields['newsdesc'] =& $this->newsdesc;
 		$this->pubtime = new cField('news', 'x_pubtime', 'pubtime', "`pubtime`", 135, 5, FALSE);
 		$this->fields['pubtime'] =& $this->pubtime;
-		$this->newsimg = new cField('news', 'x_newsimg', 'newsimg', "`newsimg`", 201, -1, TRUE);
-		$this->fields['newsimg'] =& $this->newsimg;
 	}
 
 	// Records per page
@@ -385,7 +382,6 @@ class cnews {
 		$this->catid->setDbValue($rs->fields('catid'));
 		$this->newsdesc->setDbValue($rs->fields('newsdesc'));
 		$this->pubtime->setDbValue($rs->fields('pubtime'));
-		$this->newsimg->Upload->DbValue = $rs->fields('newsimg');
 	}
 
 	// Render list row values

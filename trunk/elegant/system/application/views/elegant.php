@@ -34,9 +34,24 @@
 </div>
 
 <div id="rightbar">
+<?php if($selectcat != 2){?>
 <?php foreach($content as $citem):?>
 <?php echo $citem["catdesc"] ?>
 <?php endforeach;?>
+<?php }else{?>
+<?php foreach($team as $titem):?>
+<div class="list">
+<a href="index.php/main/elegantinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $titem["id"] ?>"><img src="upload/<?php echo $titem["teampic"] ?>"/></a>
+<div class="listinfo">
+<a class="listtitle" href="index.php/main/elegantinfo/<?php echo $rootid ?>/<?php echo $selectcat ?>/<?php echo $titem["id"] ?>"><?php echo $titem["teamname"] ?></a>
+<label class="listjobs"><?php echo $titem["teamjobs"] ?></label>
+<div class="remark">
+<?php echo $titem["teamdesc"] ?>
+</div>
+</div>
+</div>
+<?php endforeach;?>
+<?php }?>
 </div>
 
 </div>

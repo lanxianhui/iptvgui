@@ -170,6 +170,12 @@ class cdefault {
 			$this->Page_Terminate("servicerootlist.php");
 		}
 		if ($Security->IsLoggedIn()) {
+			$this->Page_Terminate("teamlist.php");
+		}
+		if ($Security->IsLoggedIn()) {
+			$this->Page_Terminate("casesrootlist.php");
+		}
+		if ($Security->IsLoggedIn()) {
 			echo "你没有权限访问当前页面";
 			echo "<br><a href=\"logout.php\">重新登录</a>";
 		} else {

@@ -13,6 +13,7 @@ class ccasescat {
 	var $id;
 	var $catname;
 	var $catorder;
+	var $rootid;
 	var $fields = array();
 	var $UseTokenInUrl = EW_USE_TOKEN_IN_URL;
 	var $Export; // Export
@@ -31,6 +32,8 @@ class ccasescat {
 		$this->fields['catname'] =& $this->catname;
 		$this->catorder = new cField('casescat', 'x_catorder', 'catorder', "`catorder`", 20, -1, FALSE);
 		$this->fields['catorder'] =& $this->catorder;
+		$this->rootid = new cField('casescat', 'x_rootid', 'rootid', "`rootid`", 20, -1, FALSE);
+		$this->fields['rootid'] =& $this->rootid;
 	}
 
 	// Records per page
@@ -374,6 +377,7 @@ class ccasescat {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->catname->setDbValue($rs->fields('catname'));
 		$this->catorder->setDbValue($rs->fields('catorder'));
+		$this->rootid->setDbValue($rs->fields('rootid'));
 	}
 
 	// Render list row values
@@ -401,6 +405,23 @@ class ccasescat {
 		$this->catorder->CssClass = "";
 		$this->catorder->ViewCustomAttributes = "";
 
+		// rootid
+		if (strval($this->rootid->CurrentValue) <> "") {
+			$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($this->rootid->CurrentValue) . "";
+			$rswrk = $conn->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+				$this->rootid->ViewValue = $rswrk->fields('rootname');
+				$rswrk->Close();
+			} else {
+				$this->rootid->ViewValue = $this->rootid->CurrentValue;
+			}
+		} else {
+			$this->rootid->ViewValue = NULL;
+		}
+		$this->rootid->CssStyle = "";
+		$this->rootid->CssClass = "";
+		$this->rootid->ViewCustomAttributes = "";
+
 		// id
 		$this->id->HrefValue = "";
 
@@ -409,6 +430,9 @@ class ccasescat {
 
 		// catorder
 		$this->catorder->HrefValue = "";
+
+		// rootid
+		$this->rootid->HrefValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();

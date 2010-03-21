@@ -122,7 +122,7 @@ var ew_DHTMLEditors = [];
 	<tr<?php echo $friendlink->linkaddress->RowAttributes ?>>
 		<td class="ewTableHeader">¡¥Ω”µÿ÷∑<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $friendlink->linkaddress->CellAttributes() ?>><span id="el_linkaddress">
-<textarea name="x_linkaddress" id="x_linkaddress" cols="35" rows="4"<?php echo $friendlink->linkaddress->EditAttributes() ?>><?php echo $friendlink->linkaddress->EditValue ?></textarea>
+<input type="text" name="x_linkaddress" id="x_linkaddress" value="<?php echo $friendlink->linkaddress->EditValue ?>"<?php echo $friendlink->linkaddress->EditAttributes() ?>>
 </span><?php echo $friendlink->linkaddress->CustomMsg ?></td>
 	</tr>
 <?php } ?>

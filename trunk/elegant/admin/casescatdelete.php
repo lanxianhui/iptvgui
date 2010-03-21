@@ -94,6 +94,7 @@ if ($casescat_deletelTotalRecs <= 0) { // No record found, exit
 		<td valign="top">类型ID</td>
 		<td valign="top">类型名称</td>
 		<td valign="top">类型排序</td>
+		<td valign="top">根类型</td>
 	</tr>
 	</thead>
 	<tbody>
@@ -121,6 +122,8 @@ while (!$rs->EOF) {
 <div<?php echo $casescat->catname->ViewAttributes() ?>><?php echo $casescat->catname->ListViewValue() ?></div></td>
 		<td<?php echo $casescat->catorder->CellAttributes() ?>>
 <div<?php echo $casescat->catorder->ViewAttributes() ?>><?php echo $casescat->catorder->ListViewValue() ?></div></td>
+		<td<?php echo $casescat->rootid->CellAttributes() ?>>
+<div<?php echo $casescat->rootid->ViewAttributes() ?>><?php echo $casescat->rootid->ListViewValue() ?></div></td>
 	</tr>
 <?php
 	$rs->MoveNext();
@@ -477,6 +480,7 @@ class ccasescat_delete {
 		$casescat->id->setDbValue($rs->fields('id'));
 		$casescat->catname->setDbValue($rs->fields('catname'));
 		$casescat->catorder->setDbValue($rs->fields('catorder'));
+		$casescat->rootid->setDbValue($rs->fields('rootid'));
 	}
 
 	// Render row values based on field settings
@@ -499,6 +503,10 @@ class ccasescat_delete {
 		// catorder
 		$casescat->catorder->CellCssStyle = "";
 		$casescat->catorder->CellCssClass = "";
+
+		// rootid
+		$casescat->rootid->CellCssStyle = "";
+		$casescat->rootid->CellCssClass = "";
 		if ($casescat->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -519,6 +527,23 @@ class ccasescat_delete {
 			$casescat->catorder->CssClass = "";
 			$casescat->catorder->ViewCustomAttributes = "";
 
+			// rootid
+			if (strval($casescat->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `casesroot` WHERE `id` = " . ew_AdjustSql($casescat->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$casescat->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$casescat->rootid->ViewValue = $casescat->rootid->CurrentValue;
+				}
+			} else {
+				$casescat->rootid->ViewValue = NULL;
+			}
+			$casescat->rootid->CssStyle = "";
+			$casescat->rootid->CssClass = "";
+			$casescat->rootid->ViewCustomAttributes = "";
+
 			// id
 			$casescat->id->HrefValue = "";
 
@@ -527,6 +552,9 @@ class ccasescat_delete {
 
 			// catorder
 			$casescat->catorder->HrefValue = "";
+
+			// rootid
+			$casescat->rootid->HrefValue = "";
 		}
 
 		// Call Row Rendered event

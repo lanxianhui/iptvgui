@@ -76,6 +76,20 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #rightbar ul li{ float:left; width:90%; border-bottom:dotted 1px #aaa; height:23px; padding-top:5px;}
 #rightbar ul li a{ float:left; color:#323232;}
 
+#rightbar .list{ float:left; width:100%; border-bottom:dotted 1px #AAA; padding-bottom:15px; padding-top:10px;}
+#rightbar .list img{ width:111px; height:137px; padding:5px; border:solid 1px #DCDCDC; float:left; display:block;}
+#rightbar .list .listinfo{ float:left; margin-left:30px; width:500px; height:150px;display:block;}
+#rightbar .list .listtitle{ float:left; margin-left:30px; width:100%;display:block; color:#656565; font-weight:700;}
+#rightbar .list .listjobs{ float:left; margin-left:30px; width:100%;display:block; font-weight:400; color:#656565;}
+#rightbar .list .remark{float:left; margin-left:30px; width:100%;display:block; font-weight:400; color:#656565; overflow:hidden; height:100px;}
+
+#rightbar .jointitle{ font-weight:400;color:#7e7e7e; width:100%; border-bottom:dotted 1px #7e7e7e; display:block; padding-bottom:15px;}
+#rightbar .join{border-bottom:dotted 1px #7e7e7e; width:100%;padding-bottom:20px; padding-top:10px;}
+#rightbar .join a{ font-weight:700; width:90%; color:#000; }
+#rightbar .join img{ float:left;}
+#rightbar .join .desc{ line-height:1.8em; overflow:hidden; height:90px; width:98%; padding-left:2%;}
+
+
 .page{ width:100%; float:left; padding-top:5px; padding-bottom:5px; margin-top:5px; }
 .page a{ color:#656565; margin-left:5px; margin-right:5px; float:left;}
 .page span{ float:left; padding-left:1px; padding-right:1px;}

@@ -523,7 +523,18 @@ class cservicecat_delete {
 			$servicecat->catname->ViewCustomAttributes = "";
 
 			// rootid
-			$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
+			if (strval($servicecat->rootid->CurrentValue) <> "") {
+				$sSqlWrk = "SELECT `rootname` FROM `serviceroot` WHERE `id` = " . ew_AdjustSql($servicecat->rootid->CurrentValue) . "";
+				$rswrk = $conn->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup value(s) found
+					$servicecat->rootid->ViewValue = $rswrk->fields('rootname');
+					$rswrk->Close();
+				} else {
+					$servicecat->rootid->ViewValue = $servicecat->rootid->CurrentValue;
+				}
+			} else {
+				$servicecat->rootid->ViewValue = NULL;
+			}
 			$servicecat->rootid->CssStyle = "";
 			$servicecat->rootid->CssClass = "";
 			$servicecat->rootid->ViewCustomAttributes = "";

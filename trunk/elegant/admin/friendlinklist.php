@@ -91,7 +91,7 @@ var ew_DHTMLEditors = [];
 <p><span class="phpmaker" style="white-space: nowrap;">表: Friendlink
 <?php if ($friendlink->Export == "" && $friendlink->CurrentAction == "") { ?>
 &nbsp;&nbsp;<a href="<?php echo $friendlink_list->PageUrl() ?>export=html">导出到 HTML</a>
-&nbsp;&nbsp;<a href="<?php echo $friendlink_list->PageUrl() ?>export=excel">导出到 Excel</a>
+&nbsp;&nbsp;<a href="<?php echo $friendlink_list->PageUrl() ?>export=xml">导出到 XML</a>
 &nbsp;&nbsp;<a href="<?php echo $friendlink_list->PageUrl() ?>export=csv">导出到 CSV</a>
 <?php } ?>
 </span></p>
@@ -120,8 +120,179 @@ var ew_DHTMLEditors = [];
 <?php $friendlink_list->ShowMessage() ?>
 <br>
 <table cellspacing="0" class="ewGrid"><tr><td class="ewGridContent">
+<div class="ewGridMiddlePanel">
+<form name="ffriendlinklist" id="ffriendlinklist" class="ewForm" action="" method="post">
+<?php if ($friendlink_list->lTotalRecs > 0) { ?>
+<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
+<?php
+	$friendlink_list->lOptionCnt = 0;
+if ($Security->IsLoggedIn()) {
+	$friendlink_list->lOptionCnt++; // view
+}
+if ($Security->IsLoggedIn()) {
+	$friendlink_list->lOptionCnt++; // edit
+}
+if ($Security->IsLoggedIn()) {
+	$friendlink_list->lOptionCnt++; // copy
+}
+if ($Security->IsLoggedIn()) {
+	$friendlink_list->lOptionCnt++; // Multi-select
+}
+	$friendlink_list->lOptionCnt += count($friendlink_list->ListOptions->Items); // Custom list options
+?>
+<?php echo $friendlink->TableCustomInnerHtml ?>
+<thead><!-- Table header -->
+	<tr class="ewTableHeader">
+<?php if ($friendlink->id->Visible) { // id ?>
+	<?php if ($friendlink->SortUrl($friendlink->id) == "") { ?>
+		<td>链接ID</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $friendlink->SortUrl($friendlink->id) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>链接ID</td><td style="width: 10px;"><?php if ($friendlink->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($friendlink->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($friendlink->linkname->Visible) { // linkname ?>
+	<?php if ($friendlink->SortUrl($friendlink->linkname) == "") { ?>
+		<td>链接名</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $friendlink->SortUrl($friendlink->linkname) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>链接名&nbsp;(*)</td><td style="width: 10px;"><?php if ($friendlink->linkname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($friendlink->linkname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($friendlink->linkorder->Visible) { // linkorder ?>
+	<?php if ($friendlink->SortUrl($friendlink->linkorder) == "") { ?>
+		<td>连接排序</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $friendlink->SortUrl($friendlink->linkorder) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>连接排序</td><td style="width: 10px;"><?php if ($friendlink->linkorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($friendlink->linkorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
 <?php if ($friendlink->Export == "") { ?>
-<div class="ewGridUpperPanel">
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;">&nbsp;</td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="friendlink_list.SelectAllKey(this);"></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($friendlink_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->HeaderCellHtml;
+}
+?>
+<?php } ?>
+	</tr>
+</thead>
+<?php
+if ($friendlink->ExportAll && $friendlink->Export <> "") {
+	$friendlink_list->lStopRec = $friendlink_list->lTotalRecs;
+} else {
+	$friendlink_list->lStopRec = $friendlink_list->lStartRec + $friendlink_list->lDisplayRecs - 1; // Set the last record to display
+}
+$friendlink_list->lRecCount = $friendlink_list->lStartRec - 1;
+if ($rs && !$rs->EOF) {
+	$rs->MoveFirst();
+	if (!$friendlink->SelectLimit && $friendlink_list->lStartRec > 1)
+		$rs->Move($friendlink_list->lStartRec - 1);
+}
+$friendlink_list->lRowCnt = 0;
+while (($friendlink->CurrentAction == "gridadd" || !$rs->EOF) &&
+	$friendlink_list->lRecCount < $friendlink_list->lStopRec) {
+	$friendlink_list->lRecCount++;
+	if (intval($friendlink_list->lRecCount) >= intval($friendlink_list->lStartRec)) {
+		$friendlink_list->lRowCnt++;
+
+	// Init row class and style
+	$friendlink->CssClass = "";
+	$friendlink->CssStyle = "";
+	$friendlink->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
+	if ($friendlink->CurrentAction == "gridadd") {
+		$friendlink_list->LoadDefaultValues(); // Load default values
+	} else {
+		$friendlink_list->LoadRowValues($rs); // Load row values
+	}
+	$friendlink->RowType = EW_ROWTYPE_VIEW; // Render view
+
+	// Render row
+	$friendlink_list->RenderRow();
+?>
+	<tr<?php echo $friendlink->RowAttributes() ?>>
+	<?php if ($friendlink->id->Visible) { // id ?>
+		<td<?php echo $friendlink->id->CellAttributes() ?>>
+<div<?php echo $friendlink->id->ViewAttributes() ?>><?php echo $friendlink->id->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($friendlink->linkname->Visible) { // linkname ?>
+		<td<?php echo $friendlink->linkname->CellAttributes() ?>>
+<div<?php echo $friendlink->linkname->ViewAttributes() ?>><?php echo $friendlink->linkname->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($friendlink->linkorder->Visible) { // linkorder ?>
+		<td<?php echo $friendlink->linkorder->CellAttributes() ?>>
+<div<?php echo $friendlink->linkorder->ViewAttributes() ?>><?php echo $friendlink->linkorder->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+<?php if ($friendlink->Export == "") { ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $friendlink->ViewUrl() ?>">查看</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $friendlink->EditUrl() ?>">编辑</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<a href="<?php echo $friendlink->CopyUrl() ?>">复制</a>
+</span></td>
+<?php } ?>
+<?php if ($Security->IsLoggedIn()) { ?>
+<td style="white-space: nowrap;"><span class="phpmaker">
+<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($friendlink->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
+</span></td>
+<?php } ?>
+<?php
+
+// Custom list options
+foreach ($friendlink_list->ListOptions->Items as $ListOption) {
+	if ($ListOption->Visible)
+		echo $ListOption->BodyCellHtml;
+}
+?>
+<?php } ?>
+	</tr>
+<?php
+	}
+	if ($friendlink->CurrentAction <> "gridadd")
+		$rs->MoveNext();
+}
+?>
+</tbody>
+</table>
+<?php } ?>
+</form>
+<?php
+
+// Close recordset
+if ($rs)
+	$rs->Close();
+?>
+</div>
+<?php if ($friendlink->Export == "") { ?>
+<div class="ewGridLowerPanel">
 <?php if ($friendlink->CurrentAction <> "gridadd" && $friendlink->CurrentAction <> "gridedit") { ?>
 <form name="ewpagerform" id="ewpagerform" class="ewForm" action="<?php echo ew_CurrentPage() ?>">
 <table border="0" cellspacing="0" cellpadding="0" class="ewPager">
@@ -174,6 +345,7 @@ var ew_DHTMLEditors = [];
 </table>
 </form>
 <?php } ?>
+<?php //if ($friendlink_list->lTotalRecs > 0) { ?>
 <span class="phpmaker">
 <?php if ($Security->IsLoggedIn()) { ?>
 <a href="<?php echo $friendlink->AddUrl() ?>">添加</a>&nbsp;&nbsp;
@@ -184,179 +356,9 @@ var ew_DHTMLEditors = [];
 <?php } ?>
 <?php } ?>
 </span>
+<?php //} ?>
 </div>
 <?php } ?>
-<div class="ewGridMiddlePanel">
-<form name="ffriendlinklist" id="ffriendlinklist" class="ewForm" action="" method="post">
-<?php if ($friendlink_list->lTotalRecs > 0) { ?>
-<table cellspacing="0" rowhighlightclass="ewTableHighlightRow" rowselectclass="ewTableSelectRow" roweditclass="ewTableEditRow" class="ewTable ewTableSeparate">
-<?php
-	$friendlink_list->lOptionCnt = 0;
-if ($Security->IsLoggedIn()) {
-	$friendlink_list->lOptionCnt++; // view
-}
-if ($Security->IsLoggedIn()) {
-	$friendlink_list->lOptionCnt++; // edit
-}
-if ($Security->IsLoggedIn()) {
-	$friendlink_list->lOptionCnt++; // copy
-}
-if ($Security->IsLoggedIn()) {
-	$friendlink_list->lOptionCnt++; // Multi-select
-}
-	$friendlink_list->lOptionCnt += count($friendlink_list->ListOptions->Items); // Custom list options
-?>
-<?php echo $friendlink->TableCustomInnerHtml ?>
-<thead><!-- Table header -->
-	<tr class="ewTableHeader">
-<?php if ($friendlink->Export == "") { ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;">&nbsp;</td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><input type="checkbox" name="key" id="key" class="phpmaker" onclick="friendlink_list.SelectAllKey(this);"></td>
-<?php } ?>
-<?php
-
-// Custom list options
-foreach ($friendlink_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->HeaderCellHtml;
-}
-?>
-<?php } ?>
-<?php if ($friendlink->id->Visible) { // id ?>
-	<?php if ($friendlink->SortUrl($friendlink->id) == "") { ?>
-		<td>链接ID</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $friendlink->SortUrl($friendlink->id) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>链接ID</td><td style="width: 10px;"><?php if ($friendlink->id->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($friendlink->id->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($friendlink->linkname->Visible) { // linkname ?>
-	<?php if ($friendlink->SortUrl($friendlink->linkname) == "") { ?>
-		<td>链接名</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $friendlink->SortUrl($friendlink->linkname) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>链接名&nbsp;(*)</td><td style="width: 10px;"><?php if ($friendlink->linkname->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($friendlink->linkname->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-<?php if ($friendlink->linkorder->Visible) { // linkorder ?>
-	<?php if ($friendlink->SortUrl($friendlink->linkorder) == "") { ?>
-		<td>连接排序</td>
-	<?php } else { ?>
-		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $friendlink->SortUrl($friendlink->linkorder) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>连接排序</td><td style="width: 10px;"><?php if ($friendlink->linkorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($friendlink->linkorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
-		</td>
-	<?php } ?>
-<?php } ?>		
-	</tr>
-</thead>
-<?php
-if ($friendlink->ExportAll && $friendlink->Export <> "") {
-	$friendlink_list->lStopRec = $friendlink_list->lTotalRecs;
-} else {
-	$friendlink_list->lStopRec = $friendlink_list->lStartRec + $friendlink_list->lDisplayRecs - 1; // Set the last record to display
-}
-$friendlink_list->lRecCount = $friendlink_list->lStartRec - 1;
-if ($rs && !$rs->EOF) {
-	$rs->MoveFirst();
-	if (!$friendlink->SelectLimit && $friendlink_list->lStartRec > 1)
-		$rs->Move($friendlink_list->lStartRec - 1);
-}
-$friendlink_list->lRowCnt = 0;
-while (($friendlink->CurrentAction == "gridadd" || !$rs->EOF) &&
-	$friendlink_list->lRecCount < $friendlink_list->lStopRec) {
-	$friendlink_list->lRecCount++;
-	if (intval($friendlink_list->lRecCount) >= intval($friendlink_list->lStartRec)) {
-		$friendlink_list->lRowCnt++;
-
-	// Init row class and style
-	$friendlink->CssClass = "";
-	$friendlink->CssStyle = "";
-	$friendlink->RowClientEvents = "onmouseover='ew_MouseOver(event, this);' onmouseout='ew_MouseOut(event, this);' onclick='ew_Click(event, this);'";
-	if ($friendlink->CurrentAction == "gridadd") {
-		$friendlink_list->LoadDefaultValues(); // Load default values
-	} else {
-		$friendlink_list->LoadRowValues($rs); // Load row values
-	}
-	$friendlink->RowType = EW_ROWTYPE_VIEW; // Render view
-
-	// Render row
-	$friendlink_list->RenderRow();
-?>
-	<tr<?php echo $friendlink->RowAttributes() ?>>
-<?php if ($friendlink->Export == "") { ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $friendlink->ViewUrl() ?>">查看</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $friendlink->EditUrl() ?>">编辑</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<a href="<?php echo $friendlink->CopyUrl() ?>">复制</a>
-</span></td>
-<?php } ?>
-<?php if ($Security->IsLoggedIn()) { ?>
-<td style="white-space: nowrap;"><span class="phpmaker">
-<input type="checkbox" name="key_m[]" id="key_m[]"  value="<?php echo ew_HtmlEncode($friendlink->id->CurrentValue) ?>" class="phpmaker" onclick='ew_ClickMultiCheckbox(this);'>
-</span></td>
-<?php } ?>
-<?php
-
-// Custom list options
-foreach ($friendlink_list->ListOptions->Items as $ListOption) {
-	if ($ListOption->Visible)
-		echo $ListOption->BodyCellHtml;
-}
-?>
-<?php } ?>
-	<?php if ($friendlink->id->Visible) { // id ?>
-		<td<?php echo $friendlink->id->CellAttributes() ?>>
-<div<?php echo $friendlink->id->ViewAttributes() ?>><?php echo $friendlink->id->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($friendlink->linkname->Visible) { // linkname ?>
-		<td<?php echo $friendlink->linkname->CellAttributes() ?>>
-<div<?php echo $friendlink->linkname->ViewAttributes() ?>><?php echo $friendlink->linkname->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	<?php if ($friendlink->linkorder->Visible) { // linkorder ?>
-		<td<?php echo $friendlink->linkorder->CellAttributes() ?>>
-<div<?php echo $friendlink->linkorder->ViewAttributes() ?>><?php echo $friendlink->linkorder->ListViewValue() ?></div>
-</td>
-	<?php } ?>
-	</tr>
-<?php
-	}
-	if ($friendlink->CurrentAction <> "gridadd")
-		$rs->MoveNext();
-}
-?>
-</tbody>
-</table>
-<?php } ?>
-</form>
-<?php
-
-// Close recordset
-if ($rs)
-	$rs->Close();
-?>
-</div>
 </td></tr></table>
 <?php if ($friendlink->Export == "" && $friendlink->CurrentAction == "") { ?>
 <script type="text/javascript">
@@ -491,9 +493,9 @@ class cfriendlink_list {
 
 		// Printer friendly or Export to HTML, no action required
 	}
-	if ($friendlink->Export == "excel") {
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xls');
+	if ($friendlink->Export == "xml") {
+		header('Content-Type: text/xml');
+		header('Content-Disposition: attachment; filename=' . $gsExportFile .'.xml');
 	}
 	if ($friendlink->Export == "csv") {
 		header('Content-Type: application/csv');

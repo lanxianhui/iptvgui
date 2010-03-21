@@ -54,7 +54,9 @@ class Main extends Controller {
 		$data ["catmenu"] = $this->getServiceCat ( $rid );
 		$data ["selectcat"] = $catid;
 		$data ["content"] = $this->getServiceCatByID ( $catid );
-		
+		if($catid == 2){
+			$data["team"] = $this->getTeamList();
+		}
 		//$this->pagiServiceNation ( "elegant", $rid, $catid, "service", $this->pagesize );
 		//$data ["servicelist"] = $this->getServiceByCat ( $catid, $offset );
 		//$data ["offset"] = $offset;
@@ -62,14 +64,17 @@ class Main extends Controller {
 		$this->showView ( $data, "elegant" );
 	}
 	// 关于清雅详细页面
-	function elegantinfo($rid, $catid, $serviceid) {
+	function elegantinfo($rid, $catid, $teamid) {
 		$data = array ();
 		$data ["catmenu"] = $this->getServiceCat ( $rid );
 		$data ["selectcat"] = $catid;
 		$data ["content"] = $this->getServiceCatByID ( $catid );
+	if($catid == 2){
+			$data["team"] = $this->getTeamInfo($teamid);
+		}
 		//$data["partner"] = $this->getAllPartners();
 		//$data["servicelist"] = $this->getServiceByCat($catid);
-		$data ["partnerinfo"] = $this->getServiceByID ( $serviceid );
+		//$data ["partnerinfo"] = $this->getServiceByID ( $serviceid );
 		$this->executeFrame ( $data, $rid );
 		$this->showView ( $data, "elegantinfo" );
 	}
@@ -126,6 +131,17 @@ class Main extends Controller {
 		$this->executeFrame ( $data, $rid );
 		$this->showView ( $data, "join" );
 	}
+	
+// 加入我们
+	function joininfo($rid, $catid = 6,$jid) {
+		$data = array ();
+		$data ["catmenu"] = $this->getServiceCat ( $rid );
+		$data ["selectcat"] = $catid;
+		$data ["content"] = $this->getServiceCatByID ( $catid );
+		$data["infocontent"] = $this->getServiceByID($jid);
+		$this->executeFrame ( $data, $rid );
+		$this->showView ( $data, "joininfo" );
+	}
 	// 联系我们
 	function contack($rid, $catid = 7, $offset = 0) {
 		$data = array ();
@@ -151,6 +167,10 @@ class Main extends Controller {
 		$this->showView ( $data, "consulting" );
 	}
 	// -------------------------------------------数据库需要的方法集合--------------------------------------
+	function getJoinInfo($jid){
+		$result = $this->db->get_where("join",array("id"=>$jid));
+		return $result->result_array();
+	}
 	function getIndexFriend() {
 		$result = $this->db->get ( "friendlink", 6, 0 );
 		return $result->result_array ();
@@ -243,6 +263,17 @@ class Main extends Controller {
 	function getNotice() {
 		$result = $this->db->get_where ( "servicecat", array ("id" => 10 ) );
 		return $result->result_array ();
+	}
+	
+	function getTeamList(){
+		$this->db->order_by("id","desc");
+		$result = $this->db->get("team");
+		return $result->result_array();
+	}
+	
+	function getTeamInfo($teamid){
+		$result = $this->db->get_where("team",array("id"=>$teamid));
+		return $result->result_array();
 	}
 	// -------------------------------------------整个页面需要用到的方法-------------------------------------
 	function executeFrame(&$data, $rid) {

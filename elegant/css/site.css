@@ -42,13 +42,13 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #footer ul{ float:right; }
 #footer ul li{ float:left; color:#727272; height:34px; padding-top:15px;}
 #footer ul li a{ color:#727272; line-height:1.4em;}
-
+/* common footer */
 #footer_outer{ width:1240px; float:left; border-top:solid 1px #e4e4e4; background-color:#f1f1f1;}
 #infofooter{ width:920px; float:left; background-color:#fff; margin-left:150px;}
 #copyright{ float:left; color:#727272;padding-top:15px; padding-left:20px;}
 #infofooter ul{ float:right; padding-right:20px; }
 #infofooter ul li{ float:left; color:#727272; height:34px; padding-top:15px;}
 #infofooter ul li a{ color:#727272; line-height:1.4em;}
-
+/* common info */
 #content{ width:920px; float:left;padding-left:150px; padding-right:170px; background-color:#f1f1f1;}
 #info{ float:left; background-color:#fff; min-height:500px; width:920px;}

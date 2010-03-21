@@ -1,4 +1,6 @@
 <?php foreach($root as $entry): $rootid = $entry["id"];?>
+<div id="content">
+<div id="info">
 <div id="adnav">
 <span>所在位置：</span>
 <a href="index.php/main/index">首页</a>
@@ -12,10 +14,6 @@
 </a>
 </div>
 <?php endforeach;?>
-
-<div id="content">
-<div id="info">
-
 <a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>"><img src="images/0<?php echo $rootid ?>.jpg"/></a>
 </div>
 </div>

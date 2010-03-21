@@ -663,7 +663,6 @@ class ccases_list {
 		$sql .= $cases->casepic6->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
 		$sql .= $cases->casepic7->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
 		$sql .= $cases->casepic8->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
-		$sql .= $cases->casepic9->FldExpression . " LIKE '%" . $sKeyword . "%' OR ";
 		if (substr($sql, -4) == " OR ") $sql = substr($sql, 0, strlen($sql)-4);
 		return $sql;
 	}
@@ -884,7 +883,6 @@ class ccases_list {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
-		$cases->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render row values based on field settings

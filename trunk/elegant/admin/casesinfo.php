@@ -23,7 +23,6 @@ class ccases {
 	var $casepic6;
 	var $casepic7;
 	var $casepic8;
-	var $casepic9;
 	var $fields = array();
 	var $UseTokenInUrl = EW_USE_TOKEN_IN_URL;
 	var $Export; // Export
@@ -62,8 +61,6 @@ class ccases {
 		$this->fields['casepic7'] =& $this->casepic7;
 		$this->casepic8 = new cField('cases', 'x_casepic8', 'casepic8', "`casepic8`", 201, -1, TRUE);
 		$this->fields['casepic8'] =& $this->casepic8;
-		$this->casepic9 = new cField('cases', 'x_casepic9', 'casepic9', "`casepic9`", 201, -1, TRUE);
-		$this->fields['casepic9'] =& $this->casepic9;
 	}
 
 	// Records per page
@@ -417,7 +414,6 @@ class ccases {
 		$this->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$this->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$this->casepic8->Upload->DbValue = $rs->fields('casepic8');
-		$this->casepic9->Upload->DbValue = $rs->fields('casepic9');
 	}
 
 	// Render list row values

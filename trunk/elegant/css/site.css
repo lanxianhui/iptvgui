@@ -89,8 +89,21 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #rightbar .join img{ float:left;}
 #rightbar .join .desc{ line-height:1.8em; overflow:hidden; height:90px; width:98%; padding-left:2%;}
 
+#rightbar .casetop dt{ height:30px; border-bottom:dotted 1px #CCC;}
+#rightbar .casetop dt a{ color:#C00; font-weight:700; float:right;}
+#rightbar .casetop dd div{ float:left; width:210px; height:169px; margin-right:20px; margin-top:15px; }
+#rightbar .casetop dd div img{ float:left; }
+#rightbar .casetop dd div .aimage{ width:210px; height:140px; margin-bottom:10px;}
+#rightbar .casetop dd div a{ float:left; color:#656565;}
+
 
 .page{ width:100%; float:left; padding-top:5px; padding-bottom:5px; margin-top:5px; }
 .page a{ color:#656565; margin-left:5px; margin-right:5px; float:left;}
 .page span{ float:left; padding-left:1px; padding-right:1px;}
 .page strong{ float:left;color:#D2E497; padding-left:5px; padding-right:5px;}
+
+#caseinfo .title{ font-size:14px; font-weight:700; float:left; width:100%; }
+#caseinfo .stitle{ font-size:12px; font-weight:700; float:left; width:100%; color:#656565;}
+#caseinfo #focus{ width:675px; height:444px; border:solid 1px #CCC; padding:3px;}
+#caseinfo .clickimg{ width:82px; height:54px; float:left; margin-right:3px;}
+#caseinfo .clickimg:hover{ cursor:pointer;}

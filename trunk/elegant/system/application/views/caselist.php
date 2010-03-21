@@ -32,12 +32,9 @@
 </div>
 
 <div id="rightbar">
-<?php foreach($casecat as $citem):?>
 <dl class="casetop">
-<dt><a href="index.php/main/caselist/<?php echo $citem["rootid"] ?>/<?php echo $citem["id"] ?>" style="float:left;"><?php echo $citem["catname"]?></a> <a href="index.php/main/caselist/<?php echo $citem["rootid"] ?>/<?php echo $citem["id"] ?>">更多&gt;&gt;</a></dt>
 <dd>
 <?php foreach($cases as $ciitem):?>
-<?php if($ciitem["catid"] == $citem["id"]){?>
 <div class="">
 <a href="index.php/main/casesinfo/<?php echo $ciitem["rootid"] ?>/<?php echo $ciitem["catid"] ?>/<?php echo $ciitem["id"] ?>">
 <img class="aimage" src="upload/<?php echo $ciitem["casepic1"] ?>"/>
@@ -47,11 +44,10 @@
 <?php echo $ciitem["casetitle"] ?>
 </a>
 </div>
-<?php }?>
 <?php endforeach;?>
 </dd>
 </dl>
-<?php endforeach;?>
+<div class="page"  style="float:left;"><?php echo $this->pagination->create_links();?></div>
 </div>
 </div>
 </div>

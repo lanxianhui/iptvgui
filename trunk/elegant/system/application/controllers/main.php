@@ -107,15 +107,47 @@ class Main extends Controller {
 		$this->executeFrame ( $data, 4);
 		$this->showView ( $data, "newsinfo" );
 	}
-	// 项目案例
-	function cases($rid, $catid = 3, $offset = 0) {
+	
+	function casesinfo($rid,$catid,$cid,$offset=0){
 		$data = array ();
-		$data ["catmenu"] = $this->getCasesCatByID ();
-		$data ["selectcat"] = $catid;
-		$data ["content"] = $this->getServiceCatByID ( $catid );
-		$this->pagiServiceNation ( "cases", $rid, $catid, "service", $this->pagesize );
+		$data ["catmenu"] = $this->getCasesRoots();
+		$data ["selectcat"] = $rid;
+		$data ["content"] = $this->getCasesRootByID ( $rid );
+		//$this->pagiServiceNation ( "cases", $rid, $catid, "service", $this->pagesize );
 		$data ["offset"] = $offset;
-		$data ["servicelist"] = $this->getServiceByCat ( $catid, $offset );
+		$data ["casecat"] = $this->getCasesCatByRid($rid);
+		//$this->pagiCaseNation("caselist",$rid,$catid,"cases",9);
+		$data["cases"] = $this->getCasesByID($cid);
+		//$data ["servicelist"] = $this->getServiceByCat ( $catid, $offset );
+		$this->executeFrame ( $data, $rid );
+		$this->showView ( $data, "casesinfo" );
+	}
+	
+	function caselist($rid,$catid=-1,$offset = 0){
+		$data = array ();
+		$data ["catmenu"] = $this->getCasesRoots();
+		$data ["selectcat"] = $rid;
+		$data ["content"] = $this->getCasesRootByID ( $rid );
+		//$this->pagiServiceNation ( "cases", $rid, $catid, "service", $this->pagesize );
+		$data ["offset"] = $offset;
+		$data ["casecat"] = $this->getCasesCatByRid($rid);
+		$this->pagiCaseNation("caselist",$rid,$catid,"cases",9);
+		$data["cases"] = $this->getCasesByCat($catid,$offset);
+		//$data ["servicelist"] = $this->getServiceByCat ( $catid, $offset );
+		$this->executeFrame ( $data, $rid );
+		$this->showView ( $data, "caselist" );
+	}
+	// 项目案例
+	function cases($rid, $catid = -1, $offset = 0) {
+		$data = array ();
+		$data ["catmenu"] = $this->getCasesRoots();
+		$data ["selectcat"] = $rid;
+		$data ["content"] = $this->getCasesRootByID ( $rid );
+		//$this->pagiServiceNation ( "cases", $rid, $catid, "service", $this->pagesize );
+		$data ["offset"] = $offset;
+		$data ["casecat"] = $this->getCasesCatByRid($rid);
+		$data["cases"] = $this->getCasesByRoot($rid);
+		//$data ["servicelist"] = $this->getServiceByCat ( $catid, $offset );
 		$this->executeFrame ( $data, $rid );
 		$this->showView ( $data, "cases" );
 	}
@@ -180,16 +212,46 @@ class Main extends Controller {
 		$result = $this->db->get ( "friendlink" );
 		return $result->result_array ();
 	}
+	function getCasesCatByRid($rid){
+		$result = $this->db->get_where("casescat",array("rootid"=>$rid));
+		return $result->result_array ();
+	}
+	
 	function getCasesCat() {
 		$this->db->order_by ( "catorder" );
 		$result = $this->db->get ( "casescat" );
 		return $result->result_array ();
 	}
+	
+	function getCasesByCat($catid,$offset){
+		$this->db->order_by("id","desc");
+		$result = $this->db->get_where ( "cases", array ("catid" => $catid ),9, $offset);
+		return $result->result_array ();
+	}
+	
 	function getCasesCatByID() {
 		$this->db->order_by ( "catorder" );
 		$result = $this->db->get_where ( "casescat");
 		return $result->result_array ();
 	}
+	
+	function getCasesRoots(){
+		$this->db->order_by ( "rootorder" );
+		$result = $this->db->get("casesroot");
+		return $result->result_array();
+	}
+	
+	function getCasesRootByID($rid){
+		$result = $this->db->get_where("casesroot",array("id"=>$rid));
+		return $result->result_array();
+	}
+	
+	function getCasesByRoot($rid){
+		$this->db->order_by("id","desc");
+		$result = $this->db->get_where ( "cases", array ("rootid" => $rid ) );
+		return $result->result_array ();
+	}
+	
 	function getCasesByID($casesid) {
 		$result = $this->db->get_where ( "cases", array ("id" => $casesid ) );
 		return $result->result_array ();
@@ -317,6 +379,24 @@ class Main extends Controller {
 		}
 		if (! $total) {
 			$rownumber = $this->db->query ( "select * from expert" );
+			$config ['total_rows'] = $rownumber->num_rows;
+		} else {
+			$config ['total_rows'] = $total;
+		}
+		$config ['uri_segment'] = $uri_segment;
+		$config ['per_page'] = $perpage;
+		$this->pagination->initialize ( $config );
+	}
+	
+function pagiCaseNation($commend, $rootid,$catid, $table, $perpage, $base_url = null, $uri_segment = 5, $total = null) {
+		$this->load->library ( 'pagination' );
+		if (! $base_url) {
+			$config ['base_url'] = base_url () . 'index.php/main/' . $commend . '/' . $rootid . "/".$catid."/" . $this->methodName;
+		} else {
+			$config ['base_url'] = $base_url;
+		}
+		if (! $total) {
+			$rownumber = $this->db->query ( "select * from cases where catid=$catid" );
 			$config ['total_rows'] = $rownumber->num_rows;
 		} else {
 			$config ['total_rows'] = $total;

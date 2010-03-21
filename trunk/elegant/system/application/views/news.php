@@ -1,32 +1,54 @@
-<?php foreach($root as $entry): $rootid = $entry["id"];?>
+
 <div id="content">
 <div id="info">
+<?php foreach($root as $entry): $rootid = $entry["id"];?>
 <div id="adnav">
-<span>所在位置：</span>
+<span style="color:black;">所在位置：</span>
 <a href="index.php/main/index">首页</a>
-<span>&nbsp;&gt;&nbsp;</span>
-<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>"><?php echo $entry["rootname"] ?></a>
-<span>&nbsp;&gt;&nbsp;</span>
-<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>">
-<?php foreach($content as $catitem):?>
+<span>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</span>
+<a href="index.php/main/news/<?php echo $rootid ?>/1"><?php echo $entry["rootname"] ?></a>
+<span>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</span>
+<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectncat ?>">
+<?php foreach($newscat as $catitem):?>
+<?php if($selectncat == $catitem["id"]){?>
 <?php echo $catitem["catname"] ?>
+<?php }?>
 <?php endforeach;?>
 </a>
 </div>
 <?php endforeach;?>
-<a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectcat ?>"><img src="images/0<?php echo $rootid ?>.jpg"/></a>
+<div id="leftbar">
+<dl>
+<dt><a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $selectncat ?>"><img src="images/0<?php echo $rootid ?>.jpg"/></a>
+</dt>
+<dd>
 <ul>
-<?php foreach ($catmenu as $citem):?>
-<?php if($selectcat == $citem["id"]){?>
-<li><img src="images/button_03.jpg"/><a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $citem["id"] ?>" style="font-weight:700;margin-left:6px;"><?php echo $citem["catname"] ?></a></li>
+<?php foreach ($newscat as $citem):?>
+<?php if($selectncat == $citem["id"]){?>
+<li class="activeli"><a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $citem["id"] ?>" class="active"><?php echo $citem["catname"] ?></a></li>
 <?php }else{?>
-<li><img src="images/button_02.jpg"/><a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $citem["id"] ?>"><?php echo $citem["catname"] ?></a></li>
+<li class="deactiveli"><a href="index.php/main/news/<?php echo $rootid ?>/<?php echo $citem["id"] ?>" class="deactive"><?php echo $citem["catname"] ?></a></li>
 <?php }?>
 <?php endforeach;?>
 </ul>
+</dd>
+</dl>
+</div>
 
-
-
+<div id="rightbar">
+<ul>
+<?php foreach($newslist as $nitem):?>
+<li><span>
+<?php $date =  (explode(" ", $nitem["pubtime"])); ?>
+<?php echo  $date[0] ?></span>
+<a href="index.php/main/newsinfo/<?php echo $rootid ?>/<?php echo $selectncat ?>/<?php echo $nitem["id"] ?>/<?php echo $offset ?>"><?php echo $nitem["newstitle"] ?></a></li>
+<?php endforeach;?>
+</ul>
+<div class="page"  style="float:left;"><?php echo $this->pagination->create_links();?></div>
+</div>
 
 </div>
 </div>
+
+
+

@@ -9,52 +9,34 @@ function searchList(){
 }
 
 function submitSign(baseurl){
-	var username = jQuery("#username").attr("value");
-	var email = jQuery("#email").attr("value");
-	var mobile = jQuery("#mobile").attr("value");
-	var phone = jQuery("#phone").attr("value");
-	var address = jQuery("#address").attr("value");
+	var title = jQuery("#title").attr("value");
 	var company = jQuery("#company").attr("value");
-	var contact = jQuery("#contact").attr("value");
-	if(validateNull(username)){
-		alert("对不起，请输入您的用户姓名！");
-		return;
-	}
-	if(validateNull(email)){
-		alert("对不起，请输入您的用户Email地址！");
-		return;
-	}
-	if(validateNull(mobile)){
-		alert("对不起，请输入您的手机号码！");
-		return;
-	}
-	if(validateNull(phone)){
-		alert("对不起，请输入您的固定电话！");
-		return;
-	}
-	if(validateNull(address)){
-		alert("对不起，请输入居住地址！");
+	var phone = jQuery("#phone").attr("value");
+	var content = jQuery("#infocontent").html();
+	if(validateNull(title)){
+		alert("对不起，请输入您称呼！");
 		return;
 	}
 	if(validateNull(company)){
-		alert("对不起，请输入您的单位地址！");
+		alert("对不起，请输入您的公司全称！");
 		return;
 	}
-	if(validateNull(contact)){
-		alert("对不起，请输入您的联系方式！");
+	if(validateNull(phone)){
+		alert("对不起，请输入您的固定电话或者手机！");
+		return;
+	}
+	if(validateNull(content)){
+		alert("对不起，请输入您的咨询内容！");
 		return;
 	}
 	jQuery.ajax({
 		type:"POST",
 		url:baseurl + "index.php/main/submitSign",
 		data:{
-			username:username,
-			email:email,
-			mobile:mobile,
+			title:title,
 			phone:phone,
-			address:address,
 			company:company,
-			contact:contact
+			content:content
 		},
 		success:function(data,textStatus){
 			if(data == "Success"){
@@ -72,12 +54,9 @@ function returnPage(baseurl,rootid,catid,offset){
 }
 
 function resetForm(){
-	jQuery("#username").attr("value","");
-	jQuery("#email").attr("value","");
-	jQuery("#mobile").attr("value","");
 	jQuery("#phone").attr("value","");
-	jQuery("#address").attr("value","");
-	jQuery("#contact").attr("value","");
+	jQuery("#title").attr("value","");
+	jQuery("#infocontent").attr("value","");
 	jQuery("#company").attr("value","");
 }
 

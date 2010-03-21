@@ -51,4 +51,32 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #infofooter ul li a{ color:#727272; line-height:1.4em;}
 /* common info */
 #content{ width:920px; float:left;padding-left:150px; padding-right:170px; background-color:#f1f1f1;}
-#info{ float:left; background-color:#fff; min-height:500px; width:920px;}
+#info{ float:left; background-color:#fff; min-height:500px; width:910px; padding-left:10px;}
+#adnav{ width:100%; float:left; border-bottom:dotted 1px #A0A0A0; height:28px; padding-top:10px;}
+#adnav a{ color:#A0A0A0; line-height:1.8em;}
+#adnav span{ color:#A0A0A0; line-height:1.6em;}
+
+#leftbar{ width:180px; float:left; margin-top:5px;}
+#leftbar ul .activeli{ width:180px; background-image:url(../images/button_03.jpg); height:31px;}
+#leftbar ul .deactiveli{ width:180px; background-image:url(../images/button_02.jpg); height:31px;}
+#leftbar ul li .active{ margin-left:20px; color:#FFF; font-weight:700;line-height:2.7em;}
+#leftbar ul li .deactive{ margin-left:20px; color:#505050; line-height:2.7em;}
+
+#rightbar{ font-size:12px; line-height:1.8em; width:680px; float:right; padding-top:36px; padding-right:15px; padding-bottom:60px;}
+#rightbar label{ font-weight:700; color:#000; }
+#rightbar .label{ font-weight:700; color:#656565;width:50px;}
+#rightbar .notice{ color:#A7A7A7;}
+#rightbar input{ width:345px; height:21px;}
+#rightbar td{ vertical-align:top; line-height:2em;}
+#rightbar textarea{ width:345px; height:175px; overflow:hidden;}
+#rightbar .submit{ width:75px; height:26px; color:#656565; border:solid 1px #B5D353; text-align:center; float:right;}
+#rightbar .submit:hover{ cursor:pointer; text-decoration:none;}
+#rightbar ul{ min-height:400px;}
+#rightbar ul li span{ float:left;color:#b5d353; font-weight:700; width:100px;}
+#rightbar ul li{ float:left; width:90%; border-bottom:dotted 1px #aaa; height:23px; padding-top:5px;}
+#rightbar ul li a{ float:left; color:#323232;}
+
+.page{ width:100%; float:left; padding-top:5px; padding-bottom:5px; margin-top:5px; }
+.page a{ color:#656565; margin-left:5px; margin-right:5px; float:left;}
+.page span{ float:left; padding-left:1px; padding-right:1px;}
+.page strong{ float:left;color:#D2E497; padding-left:5px; padding-right:5px;}

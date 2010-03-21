@@ -43,8 +43,9 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #footer ul li{ float:left; color:#727272; height:34px; padding-top:15px;}
 #footer ul li a{ color:#727272; line-height:1.4em;}
 /* common footer */
-#footer_outer{ width:1240px; float:left; border-top:solid 1px #e4e4e4; background-color:#f1f1f1;}
-#infofooter{ width:920px; float:left; background-color:#fff; margin-left:150px;}
+#footer_outer,#bg_outer{ width:1240px; float:left; border-top:solid 1px #e4e4e4; background-color:#f1f1f1;}
+#bg_outer{ border:none;}
+#infofooter,#bg_ftinfo{ width:920px; float:left; background-color:#fff; margin-left:150px;_margin-left:75px;}
 #copyright{ float:left; color:#727272;padding-top:15px; padding-left:20px;}
 #infofooter ul{ float:right; padding-right:20px; }
 #infofooter ul li{ float:left; color:#727272; height:34px; padding-top:15px;}
@@ -107,3 +108,5 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #caseinfo #focus{ width:675px; height:444px; border:solid 1px #CCC; padding:3px;}
 #caseinfo .clickimg{ width:82px; height:54px; float:left; margin-right:3px;}
 #caseinfo .clickimg:hover{ cursor:pointer;}
+
+#bg{ float:right; }

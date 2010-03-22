@@ -20,10 +20,10 @@ class Main extends Controller {
 		$this->showView ( $data, "test" );
 	}
 	
-	function index($rid = 8, $catid = 1) {
+	function index($rid = 0, $catid = 1) {
 		$data = array ();
 		$data ["indexlink"] = $this->getIndexFriend ();
-		$this->executeFrame ( $data, 8 );
+		$this->executeFrame ( $data, 0 );
 		$this->showIndexView ( $data, "index" );
 	}
 	function signflow($rid = 0, $catid = 20) {

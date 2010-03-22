@@ -21,14 +21,16 @@
 <img class="phone" src="images/logo_02.jpg"/>
 <div id="nav">
 <ul>
-<li style="width:60px;"><a href="index.php/main" style="text-align:left;">首页</a></li>
-<li><a href="index.php/main/elegant/2/1">关于清雅</a></li>
-<li><a href="index.php/main/cases/1">项目案例</a></li>
-<li><a href="index.php/main/news/4/1">新闻资讯</a></li>
-<li><a href="index.php/main/consulting/5/13">项目咨询</a></li>
-<li><a href="index.php/main/join/6/6">加入我们</a></li>
-<li><a href="index.php/main/contack/7/10">联系我们</a></li>
-<li style="width:60px;"><a href="index.php/main/elegant/8/15" style="text-align:right;">English</a></li>
+<?php $html = "style=\"color:#98c143;font-weight:700;\"";?>
+<li style="width:60px;"><a href="index.php/main" style="text-align:left;"
+<?php if($selectroot == 0){ echo $html; }?>>首页</a></li>
+<li><a href="index.php/main/elegant/2/1" <?php if($selectroot == 2){ echo $html; }?>>关于清雅</a></li>
+<li><a href="index.php/main/cases/1" <?php if($selectroot == 1){ echo $html; }?>>项目案例</a></li>
+<li><a href="index.php/main/news/4/1" <?php if($selectroot == 4){ echo $html; }?>>新闻资讯</a></li>
+<li><a href="index.php/main/consulting/5/13" <?php if($selectroot == 5){ echo $html; }?>>项目咨询</a></li>
+<li><a href="index.php/main/join/6/6" <?php if($selectroot == 6){ echo $html; }?>>加入我们</a></li>
+<li><a href="index.php/main/contack/7/10" <?php if($selectroot == 7){ echo $html; }?>>联系我们</a></li>
+<li style="width:60px;"><a href="index.php/main/elegant/8/15" style="text-align:right;" <?php if($selectroot == 8){ echo $html; }?>>English</a></li>
 </ul>
 </div>
 </div>

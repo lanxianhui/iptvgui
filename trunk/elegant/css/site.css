@@ -33,7 +33,7 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 /* friend link css */
 #friend{ padding-left:150px; padding-right:170px;}
 #friend ul{ width:920px; padding-top:18px; padding-bottom:10px;}
-#friend label{ color:535353; }
+#friend label{ color:#535353; }
 #friend ul li{ float:left; margin-right:10px; }
 #friend ul li a{ color:#98c143; line-height:1.6em;}
 /* index footer */

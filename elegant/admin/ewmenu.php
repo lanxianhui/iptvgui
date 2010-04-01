@@ -126,6 +126,9 @@ if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(11, "团队成员", "teamlist.php", -1);
 }
 if (IsLoggedIn()) {
+	$RootMenu->AddMenuItem(12, "首页图片", "indexpic.php", -1);
+}
+if (IsLoggedIn()) {
 	$RootMenu->AddMenuItem(3, "案例类型", "casescatlist.php", -1);
 }
 if (IsLoggedIn()) {

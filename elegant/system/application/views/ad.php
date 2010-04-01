@@ -6,8 +6,7 @@
 <?php endforeach;?>
 <div id="ad_left"></div>
 <div id="ad">
-
-<object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="916" height="240">
+<object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="916" height="39">
   <param name="movie" value="swf/ad<?php echo $adid ?>.swf">
   <param name="quality" value="high">
   <param name="wmode" value="opaque">
@@ -16,7 +15,7 @@
   <param name="expressinstall" value="swf/expressInstall.swf">
   <!-- Next object tag is for non-IE browsers. So hide it from IE using IECC. -->
   <!--[if !IE]>-->
-  <object type="application/x-shockwave-flash" data="swf/ad<?php echo $adid ?>.swf" width="916" height="240">
+  <object type="application/x-shockwave-flash" data="swf/ad<?php echo $adid ?>.swf" width="916" height="39">
     <!--<![endif]-->
     <param name="quality" value="high">
     <param name="wmode" value="opaque">

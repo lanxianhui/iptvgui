@@ -51,15 +51,15 @@ cases_add.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_casetitle"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 案例标题");
-		elm = fobj.elements["x" + infix + "_casedesc"];
-		if (elm && !ew_HasValue(elm))
-			return ew_OnError(this, elm, "必填项 - 案例描述");
 		elm = fobj.elements["x" + infix + "_rootid"];
 		if (elm && !ew_HasValue(elm))
-			return ew_OnError(this, elm, "必填项 - 根类型");
+			return ew_OnError(this, elm, "必填项 - 案例根类");
 		elm = fobj.elements["x" + infix + "_catid"];
 		if (elm && !ew_HasValue(elm))
 			return ew_OnError(this, elm, "必填项 - 案例类型");
+		elm = fobj.elements["x" + infix + "_casedesc"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 案例描述");
 		elm = fobj.elements["x" + infix + "_casepic1"];
 		if (elm && !ew_CheckFileType(elm.value))
 			return ew_OnError(this, elm, "不允许上传的文件类型");
@@ -84,6 +84,12 @@ cases_add.ValidateForm = function(fobj) {
 		elm = fobj.elements["x" + infix + "_casepic8"];
 		if (elm && !ew_CheckFileType(elm.value))
 			return ew_OnError(this, elm, "不允许上传的文件类型");
+		elm = fobj.elements["x" + infix + "_caseorder"];
+		if (elm && !ew_HasValue(elm))
+			return ew_OnError(this, elm, "必填项 - 案例排序");
+		elm = fobj.elements["x" + infix + "_caseorder"];
+		if (elm && !ew_CheckInteger(elm.value))
+			return ew_OnError(this, elm, "错误的 Integer - 案例排序");
 
 		// Call Form Custom Validate event
 		if (!this.Form_CustomValidate(fobj)) return false;
@@ -173,28 +179,9 @@ function ew_FocusDHTMLEditor(name) {
 </span><?php echo $cases->casetitle->CustomMsg ?></td>
 	</tr>
 <?php } ?>
-<?php if ($cases->casedesc->Visible) { // casedesc ?>
-	<tr<?php echo $cases->casedesc->RowAttributes ?>>
-		<td class="ewTableHeader">案例描述<span class='ewmsg'>&nbsp;*</span></td>
-		<td<?php echo $cases->casedesc->CellAttributes() ?>><span id="el_casedesc">
-<textarea name="x_casedesc" id="x_casedesc" cols="35" rows="4"<?php echo $cases->casedesc->EditAttributes() ?>><?php echo $cases->casedesc->EditValue ?></textarea>
-<script type="text/javascript">
-<!--
-ew_DHTMLEditors.push(new ew_DHTMLEditor("x_casedesc", function() {
-	var sBasePath = 'fckeditor/';
-	var oFCKeditor = new FCKeditor('x_casedesc', 35*_width_multiplier, 4*_height_multiplier);
-	oFCKeditor.BasePath = sBasePath;
-	oFCKeditor.ReplaceTextarea();
-	this.active = true;
-}));
--->
-</script>
-</span><?php echo $cases->casedesc->CustomMsg ?></td>
-	</tr>
-<?php } ?>
 <?php if ($cases->rootid->Visible) { // rootid ?>
 	<tr<?php echo $cases->rootid->RowAttributes ?>>
-		<td class="ewTableHeader">根类型<span class='ewmsg'>&nbsp;*</span></td>
+		<td class="ewTableHeader">案例根类<span class='ewmsg'>&nbsp;*</span></td>
 		<td<?php echo $cases->rootid->CellAttributes() ?>><span id="el_rootid">
 <select id="x_rootid" name="x_rootid" onchange="ew_UpdateOpt('x_catid','x_rootid',cases_add.ar_x_catid);"<?php echo $cases->rootid->EditAttributes() ?>>
 <?php
@@ -260,6 +247,25 @@ cases_add.ar_x_catid = [<?php echo $jswrk ?>];
 //-->
 </script>
 </span><?php echo $cases->catid->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casedesc->Visible) { // casedesc ?>
+	<tr<?php echo $cases->casedesc->RowAttributes ?>>
+		<td class="ewTableHeader">案例描述<span class='ewmsg'>&nbsp;*</span></td>
+		<td<?php echo $cases->casedesc->CellAttributes() ?>><span id="el_casedesc">
+<textarea name="x_casedesc" id="x_casedesc" cols="35" rows="4"<?php echo $cases->casedesc->EditAttributes() ?>><?php echo $cases->casedesc->EditValue ?></textarea>
+<script type="text/javascript">
+<!--
+ew_DHTMLEditors.push(new ew_DHTMLEditor("x_casedesc", function() {
+	var sBasePath = 'fckeditor/';
+	var oFCKeditor = new FCKeditor('x_casedesc', 35*_width_multiplier, 4*_height_multiplier);
+	oFCKeditor.BasePath = sBasePath;
+	oFCKeditor.ReplaceTextarea();
+	this.active = true;
+}));
+-->
+</script>
+</span><?php echo $cases->casedesc->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 <?php if ($cases->casepic1->Visible) { // casepic1 ?>
@@ -332,6 +338,14 @@ cases_add.ar_x_catid = [<?php echo $jswrk ?>];
 <input type="file" name="x_casepic8" id="x_casepic8"<?php echo $cases->casepic8->EditAttributes() ?>>
 </div>
 </span><?php echo $cases->casepic8->CustomMsg ?></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->caseorder->Visible) { // caseorder ?>
+	<tr<?php echo $cases->caseorder->RowAttributes ?>>
+		<td class="ewTableHeader">案例排序<span class='ewmsg'>&nbsp;*</span></td>
+		<td<?php echo $cases->caseorder->CellAttributes() ?>><span id="el_caseorder">
+<input type="text" name="x_caseorder" id="x_caseorder" size="30" value="<?php echo $cases->caseorder->EditValue ?>"<?php echo $cases->caseorder->EditAttributes() ?>>
+</span><?php echo $cases->caseorder->CustomMsg ?></td>
 	</tr>
 <?php } ?>
 </table>
@@ -647,9 +661,10 @@ class ccases_add {
 		// Load from form
 		global $objForm, $cases;
 		$cases->casetitle->setFormValue($objForm->GetValue("x_casetitle"));
-		$cases->casedesc->setFormValue($objForm->GetValue("x_casedesc"));
 		$cases->rootid->setFormValue($objForm->GetValue("x_rootid"));
 		$cases->catid->setFormValue($objForm->GetValue("x_catid"));
+		$cases->casedesc->setFormValue($objForm->GetValue("x_casedesc"));
+		$cases->caseorder->setFormValue($objForm->GetValue("x_caseorder"));
 		$cases->id->setFormValue($objForm->GetValue("x_id"));
 	}
 
@@ -658,9 +673,10 @@ class ccases_add {
 		global $cases;
 		$cases->id->CurrentValue = $cases->id->FormValue;
 		$cases->casetitle->CurrentValue = $cases->casetitle->FormValue;
-		$cases->casedesc->CurrentValue = $cases->casedesc->FormValue;
 		$cases->rootid->CurrentValue = $cases->rootid->FormValue;
 		$cases->catid->CurrentValue = $cases->catid->FormValue;
+		$cases->casedesc->CurrentValue = $cases->casedesc->FormValue;
+		$cases->caseorder->CurrentValue = $cases->caseorder->FormValue;
 	}
 
 	// Load row based on key values
@@ -697,9 +713,9 @@ class ccases_add {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
 		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
 		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
@@ -708,6 +724,7 @@ class ccases_add {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->caseorder->setDbValue($rs->fields('caseorder'));
 	}
 
 	// Render row values based on field settings
@@ -723,10 +740,6 @@ class ccases_add {
 		$cases->casetitle->CellCssStyle = "";
 		$cases->casetitle->CellCssClass = "";
 
-		// casedesc
-		$cases->casedesc->CellCssStyle = "";
-		$cases->casedesc->CellCssClass = "";
-
 		// rootid
 		$cases->rootid->CellCssStyle = "";
 		$cases->rootid->CellCssClass = "";
@@ -734,6 +747,10 @@ class ccases_add {
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
+
+		// casedesc
+		$cases->casedesc->CellCssStyle = "";
+		$cases->casedesc->CellCssClass = "";
 
 		// casepic1
 		$cases->casepic1->CellCssStyle = "";
@@ -766,6 +783,10 @@ class ccases_add {
 		// casepic8
 		$cases->casepic8->CellCssStyle = "";
 		$cases->casepic8->CellCssClass = "";
+
+		// caseorder
+		$cases->caseorder->CellCssStyle = "";
+		$cases->caseorder->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -779,12 +800,6 @@ class ccases_add {
 			$cases->casetitle->CssStyle = "";
 			$cases->casetitle->CssClass = "";
 			$cases->casetitle->ViewCustomAttributes = "";
-
-			// casedesc
-			$cases->casedesc->ViewValue = $cases->casedesc->CurrentValue;
-			$cases->casedesc->CssStyle = "";
-			$cases->casedesc->CssClass = "";
-			$cases->casedesc->ViewCustomAttributes = "";
 
 			// rootid
 			if (strval($cases->rootid->CurrentValue) <> "") {
@@ -819,6 +834,12 @@ class ccases_add {
 			$cases->catid->CssStyle = "";
 			$cases->catid->CssClass = "";
 			$cases->catid->ViewCustomAttributes = "";
+
+			// casedesc
+			$cases->casedesc->ViewValue = $cases->casedesc->CurrentValue;
+			$cases->casedesc->CssStyle = "";
+			$cases->casedesc->CssClass = "";
+			$cases->casedesc->ViewCustomAttributes = "";
 
 			// casepic1
 			if (!is_null($cases->casepic1->Upload->DbValue)) {
@@ -908,17 +929,23 @@ class ccases_add {
 			$cases->casepic8->CssClass = "";
 			$cases->casepic8->ViewCustomAttributes = "";
 
+			// caseorder
+			$cases->caseorder->ViewValue = $cases->caseorder->CurrentValue;
+			$cases->caseorder->CssStyle = "";
+			$cases->caseorder->CssClass = "";
+			$cases->caseorder->ViewCustomAttributes = "";
+
 			// casetitle
 			$cases->casetitle->HrefValue = "";
-
-			// casedesc
-			$cases->casedesc->HrefValue = "";
 
 			// rootid
 			$cases->rootid->HrefValue = "";
 
 			// catid
 			$cases->catid->HrefValue = "";
+
+			// casedesc
+			$cases->casedesc->HrefValue = "";
 
 			// casepic1
 			$cases->casepic1->HrefValue = "";
@@ -943,15 +970,14 @@ class ccases_add {
 
 			// casepic8
 			$cases->casepic8->HrefValue = "";
+
+			// caseorder
+			$cases->caseorder->HrefValue = "";
 		} elseif ($cases->RowType == EW_ROWTYPE_ADD) { // Add row
 
 			// casetitle
 			$cases->casetitle->EditCustomAttributes = "";
 			$cases->casetitle->EditValue = ew_HtmlEncode($cases->casetitle->CurrentValue);
-
-			// casedesc
-			$cases->casedesc->EditCustomAttributes = "";
-			$cases->casedesc->EditValue = ew_HtmlEncode($cases->casedesc->CurrentValue);
 
 			// rootid
 			$cases->rootid->EditCustomAttributes = "";
@@ -974,6 +1000,10 @@ class ccases_add {
 			if ($rswrk) $rswrk->Close();
 			array_unshift($arwrk, array("", "请选择", ""));
 			$cases->catid->EditValue = $arwrk;
+
+			// casedesc
+			$cases->casedesc->EditCustomAttributes = "";
+			$cases->casedesc->EditValue = ew_HtmlEncode($cases->casedesc->CurrentValue);
 
 			// casepic1
 			$cases->casepic1->EditCustomAttributes = "";
@@ -1046,6 +1076,10 @@ class ccases_add {
 			} else {
 				$cases->casepic8->EditValue = "";
 			}
+
+			// caseorder
+			$cases->caseorder->EditCustomAttributes = "";
+			$cases->caseorder->EditValue = ew_HtmlEncode($cases->caseorder->CurrentValue);
 		}
 
 		// Call Row Rendered event
@@ -1130,17 +1164,25 @@ class ccases_add {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 案例标题";
 		}
-		if ($cases->casedesc->FormValue == "") {
-			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "必填项 - 案例描述";
-		}
 		if ($cases->rootid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
-			$gsFormError .= "必填项 - 根类型";
+			$gsFormError .= "必填项 - 案例根类";
 		}
 		if ($cases->catid->FormValue == "") {
 			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
 			$gsFormError .= "必填项 - 案例类型";
+		}
+		if ($cases->casedesc->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 案例描述";
+		}
+		if ($cases->caseorder->FormValue == "") {
+			$gsFormError .= ($gsFormError <> "") ? "<br>" : "";
+			$gsFormError .= "必填项 - 案例排序";
+		}
+		if (!ew_CheckInteger($cases->caseorder->FormValue)) {
+			if ($gsFormError <> "") $gsFormError .= "<br>";
+			$gsFormError .= "错误的 Integer - 案例排序";
 		}
 
 		// Return validate result
@@ -1165,10 +1207,6 @@ class ccases_add {
 		$cases->casetitle->SetDbValueDef($cases->casetitle->CurrentValue, "");
 		$rsnew['casetitle'] =& $cases->casetitle->DbValue;
 
-		// Field casedesc
-		$cases->casedesc->SetDbValueDef($cases->casedesc->CurrentValue, "");
-		$rsnew['casedesc'] =& $cases->casedesc->DbValue;
-
 		// Field rootid
 		$cases->rootid->SetDbValueDef($cases->rootid->CurrentValue, 0);
 		$rsnew['rootid'] =& $cases->rootid->DbValue;
@@ -1176,6 +1214,10 @@ class ccases_add {
 		// Field catid
 		$cases->catid->SetDbValueDef($cases->catid->CurrentValue, 0);
 		$rsnew['catid'] =& $cases->catid->DbValue;
+
+		// Field casedesc
+		$cases->casedesc->SetDbValueDef($cases->casedesc->CurrentValue, "");
+		$rsnew['casedesc'] =& $cases->casedesc->DbValue;
 
 		// Field casepic1
 		$cases->casepic1->Upload->SaveToSession(); // Save file value to Session
@@ -1240,6 +1282,10 @@ class ccases_add {
 		} else {
 			$rsnew['casepic8'] = ew_UploadFileNameEx(ew_UploadPathEx(True, EW_UPLOAD_DEST_PATH), $cases->casepic8->Upload->FileName);
 		}
+
+		// Field caseorder
+		$cases->caseorder->SetDbValueDef($cases->caseorder->CurrentValue, 0);
+		$rsnew['caseorder'] =& $cases->caseorder->DbValue;
 
 		// Call Row Inserting event
 		$bInsertRow = $cases->Row_Inserting($rsnew);

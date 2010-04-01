@@ -104,16 +104,9 @@ cases_view.ValidateRequired = false; // no JavaScript validation
 <div<?php echo $cases->casetitle->ViewAttributes() ?>><?php echo $cases->casetitle->ViewValue ?></div></td>
 	</tr>
 <?php } ?>
-<?php if ($cases->casedesc->Visible) { // casedesc ?>
-	<tr<?php echo $cases->casedesc->RowAttributes ?>>
-		<td class="ewTableHeader">案例描述</td>
-		<td<?php echo $cases->casedesc->CellAttributes() ?>>
-<div<?php echo $cases->casedesc->ViewAttributes() ?>><?php echo $cases->casedesc->ViewValue ?></div></td>
-	</tr>
-<?php } ?>
 <?php if ($cases->rootid->Visible) { // rootid ?>
 	<tr<?php echo $cases->rootid->RowAttributes ?>>
-		<td class="ewTableHeader">根类型</td>
+		<td class="ewTableHeader">案例根类</td>
 		<td<?php echo $cases->rootid->CellAttributes() ?>>
 <div<?php echo $cases->rootid->ViewAttributes() ?>><?php echo $cases->rootid->ViewValue ?></div></td>
 	</tr>
@@ -123,6 +116,13 @@ cases_view.ValidateRequired = false; // no JavaScript validation
 		<td class="ewTableHeader">案例类型</td>
 		<td<?php echo $cases->catid->CellAttributes() ?>>
 <div<?php echo $cases->catid->ViewAttributes() ?>><?php echo $cases->catid->ViewValue ?></div></td>
+	</tr>
+<?php } ?>
+<?php if ($cases->casedesc->Visible) { // casedesc ?>
+	<tr<?php echo $cases->casedesc->RowAttributes ?>>
+		<td class="ewTableHeader">案例描述</td>
+		<td<?php echo $cases->casedesc->CellAttributes() ?>>
+<div<?php echo $cases->casedesc->ViewAttributes() ?>><?php echo $cases->casedesc->ViewValue ?></div></td>
 	</tr>
 <?php } ?>
 <?php if ($cases->casepic1->Visible) { // casepic1 ?>
@@ -283,6 +283,13 @@ cases_view.ValidateRequired = false; // no JavaScript validation
 <?php } ?>
 <?php } ?>
 </td>
+	</tr>
+<?php } ?>
+<?php if ($cases->caseorder->Visible) { // caseorder ?>
+	<tr<?php echo $cases->caseorder->RowAttributes ?>>
+		<td class="ewTableHeader">案例排序</td>
+		<td<?php echo $cases->caseorder->CellAttributes() ?>>
+<div<?php echo $cases->caseorder->ViewAttributes() ?>><?php echo $cases->caseorder->ViewValue ?></div></td>
 	</tr>
 <?php } ?>
 </table>
@@ -652,9 +659,9 @@ class ccases_view {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
 		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
 		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
@@ -663,6 +670,7 @@ class ccases_view {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->caseorder->setDbValue($rs->fields('caseorder'));
 	}
 
 	// Render row values based on field settings
@@ -682,10 +690,6 @@ class ccases_view {
 		$cases->casetitle->CellCssStyle = "";
 		$cases->casetitle->CellCssClass = "";
 
-		// casedesc
-		$cases->casedesc->CellCssStyle = "";
-		$cases->casedesc->CellCssClass = "";
-
 		// rootid
 		$cases->rootid->CellCssStyle = "";
 		$cases->rootid->CellCssClass = "";
@@ -693,6 +697,10 @@ class ccases_view {
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
+
+		// casedesc
+		$cases->casedesc->CellCssStyle = "";
+		$cases->casedesc->CellCssClass = "";
 
 		// casepic1
 		$cases->casepic1->CellCssStyle = "";
@@ -725,6 +733,10 @@ class ccases_view {
 		// casepic8
 		$cases->casepic8->CellCssStyle = "";
 		$cases->casepic8->CellCssClass = "";
+
+		// caseorder
+		$cases->caseorder->CellCssStyle = "";
+		$cases->caseorder->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -738,12 +750,6 @@ class ccases_view {
 			$cases->casetitle->CssStyle = "";
 			$cases->casetitle->CssClass = "";
 			$cases->casetitle->ViewCustomAttributes = "";
-
-			// casedesc
-			$cases->casedesc->ViewValue = $cases->casedesc->CurrentValue;
-			$cases->casedesc->CssStyle = "";
-			$cases->casedesc->CssClass = "";
-			$cases->casedesc->ViewCustomAttributes = "";
 
 			// rootid
 			if (strval($cases->rootid->CurrentValue) <> "") {
@@ -778,6 +784,12 @@ class ccases_view {
 			$cases->catid->CssStyle = "";
 			$cases->catid->CssClass = "";
 			$cases->catid->ViewCustomAttributes = "";
+
+			// casedesc
+			$cases->casedesc->ViewValue = $cases->casedesc->CurrentValue;
+			$cases->casedesc->CssStyle = "";
+			$cases->casedesc->CssClass = "";
+			$cases->casedesc->ViewCustomAttributes = "";
 
 			// casepic1
 			if (!is_null($cases->casepic1->Upload->DbValue)) {
@@ -867,20 +879,26 @@ class ccases_view {
 			$cases->casepic8->CssClass = "";
 			$cases->casepic8->ViewCustomAttributes = "";
 
+			// caseorder
+			$cases->caseorder->ViewValue = $cases->caseorder->CurrentValue;
+			$cases->caseorder->CssStyle = "";
+			$cases->caseorder->CssClass = "";
+			$cases->caseorder->ViewCustomAttributes = "";
+
 			// id
 			$cases->id->HrefValue = "";
 
 			// casetitle
 			$cases->casetitle->HrefValue = "";
 
-			// casedesc
-			$cases->casedesc->HrefValue = "";
-
 			// rootid
 			$cases->rootid->HrefValue = "";
 
 			// catid
 			$cases->catid->HrefValue = "";
+
+			// casedesc
+			$cases->casedesc->HrefValue = "";
 
 			// casepic1
 			$cases->casepic1->HrefValue = "";
@@ -905,6 +923,9 @@ class ccases_view {
 
 			// casepic8
 			$cases->casepic8->HrefValue = "";
+
+			// caseorder
+			$cases->caseorder->HrefValue = "";
 		}
 
 		// Call Row Rendered event

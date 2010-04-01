@@ -224,7 +224,7 @@ class Main extends Controller {
 	}
 	
 	function getCasesByCat($catid,$offset){
-		$this->db->order_by("id","desc");
+		$this->db->order_by("caseorder");
 		$result = $this->db->get_where ( "cases", array ("catid" => $catid ),9, $offset);
 		return $result->result_array ();
 	}
@@ -247,7 +247,7 @@ class Main extends Controller {
 	}
 	
 	function getCasesByRoot($rid){
-		$this->db->order_by("id","desc");
+		$this->db->order_by("caseorder");
 		$result = $this->db->get_where ( "cases", array ("rootid" => $rid ) );
 		return $result->result_array ();
 	}
@@ -311,6 +311,12 @@ class Main extends Controller {
 		return $result->result_array ();
 	}
 	
+	function getServiceCats(){
+		$this->db->order_by ("catorder");
+		$result = $this->db->get ("servicecat");
+		return $result->result_array ();
+	}
+	
 	function getServiceCat($rid) {
 		$this->db->order_by ( "catorder" );
 		$result = $this->db->get_where ( "servicecat", array ("rootid" => $rid ) );
@@ -343,6 +349,9 @@ class Main extends Controller {
 		$data ["root"] = $this->getServiceRootByID ( $rid );
 		$data ["selectroot"] = $rid;
 		$data ["footer"] = $this->getServiceCat ( 8 );
+		$data["dropmenu"] = $this->getServiceCats();
+		$data ["newsmenu"] = $this->getNewsCat ();
+		$data ["casesmenu"] = $this->getCasesRoots();
 	}
 	// 头部导航栏
 	function getRootNav() {

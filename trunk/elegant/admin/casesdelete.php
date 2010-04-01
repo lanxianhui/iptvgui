@@ -93,8 +93,9 @@ if ($cases_deletelTotalRecs <= 0) { // No record found, exit
 	<tr class="ewTableHeader">
 		<td valign="top">案例ID</td>
 		<td valign="top">案例标题</td>
-		<td valign="top">根类型</td>
+		<td valign="top">案例根类</td>
 		<td valign="top">案例类型</td>
+		<td valign="top">案例排序</td>
 	</tr>
 	</thead>
 	<tbody>
@@ -124,6 +125,8 @@ while (!$rs->EOF) {
 <div<?php echo $cases->rootid->ViewAttributes() ?>><?php echo $cases->rootid->ListViewValue() ?></div></td>
 		<td<?php echo $cases->catid->CellAttributes() ?>>
 <div<?php echo $cases->catid->ViewAttributes() ?>><?php echo $cases->catid->ListViewValue() ?></div></td>
+		<td<?php echo $cases->caseorder->CellAttributes() ?>>
+<div<?php echo $cases->caseorder->ViewAttributes() ?>><?php echo $cases->caseorder->ListViewValue() ?></div></td>
 	</tr>
 <?php
 	$rs->MoveNext();
@@ -479,9 +482,9 @@ class ccases_delete {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
 		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
 		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
@@ -490,6 +493,7 @@ class ccases_delete {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->caseorder->setDbValue($rs->fields('caseorder'));
 	}
 
 	// Render row values based on field settings
@@ -516,6 +520,10 @@ class ccases_delete {
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
+
+		// caseorder
+		$cases->caseorder->CellCssStyle = "";
+		$cases->caseorder->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -564,6 +572,12 @@ class ccases_delete {
 			$cases->catid->CssClass = "";
 			$cases->catid->ViewCustomAttributes = "";
 
+			// caseorder
+			$cases->caseorder->ViewValue = $cases->caseorder->CurrentValue;
+			$cases->caseorder->CssStyle = "";
+			$cases->caseorder->CssClass = "";
+			$cases->caseorder->ViewCustomAttributes = "";
+
 			// id
 			$cases->id->HrefValue = "";
 
@@ -575,6 +589,9 @@ class ccases_delete {
 
 			// catid
 			$cases->catid->HrefValue = "";
+
+			// caseorder
+			$cases->caseorder->HrefValue = "";
 		}
 
 		// Call Row Rendered event

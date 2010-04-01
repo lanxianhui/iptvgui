@@ -163,10 +163,10 @@ if ($Security->IsLoggedIn()) {
 <?php } ?>		
 <?php if ($cases->rootid->Visible) { // rootid ?>
 	<?php if ($cases->SortUrl($cases->rootid) == "") { ?>
-		<td>根类型</td>
+		<td>案例根类</td>
 	<?php } else { ?>
 		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->rootid) ?>',1);">
-			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>根类型</td><td style="width: 10px;"><?php if ($cases->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例根类</td><td style="width: 10px;"><?php if ($cases->rootid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->rootid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
 		</td>
 	<?php } ?>
 <?php } ?>		
@@ -176,6 +176,15 @@ if ($Security->IsLoggedIn()) {
 	<?php } else { ?>
 		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->catid) ?>',1);">
 			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例类型</td><td style="width: 10px;"><?php if ($cases->catid->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->catid->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
+		</td>
+	<?php } ?>
+<?php } ?>		
+<?php if ($cases->caseorder->Visible) { // caseorder ?>
+	<?php if ($cases->SortUrl($cases->caseorder) == "") { ?>
+		<td>案例排序</td>
+	<?php } else { ?>
+		<td class="ewPointer" onmousedown="ew_Sort(event,'<?php echo $cases->SortUrl($cases->caseorder) ?>',1);">
+			<table cellspacing="0" class="ewTableHeaderBtn"><tr><td>案例排序</td><td style="width: 10px;"><?php if ($cases->caseorder->getSort() == "ASC") { ?><img src="images/sortup.gif" width="10" height="9" border="0"><?php } elseif ($cases->caseorder->getSort() == "DESC") { ?><img src="images/sortdown.gif" width="10" height="9" border="0"><?php } ?></td></tr></table>
 		</td>
 	<?php } ?>
 <?php } ?>		
@@ -255,6 +264,11 @@ while (($cases->CurrentAction == "gridadd" || !$rs->EOF) &&
 	<?php if ($cases->catid->Visible) { // catid ?>
 		<td<?php echo $cases->catid->CellAttributes() ?>>
 <div<?php echo $cases->catid->ViewAttributes() ?>><?php echo $cases->catid->ListViewValue() ?></div>
+</td>
+	<?php } ?>
+	<?php if ($cases->caseorder->Visible) { // caseorder ?>
+		<td<?php echo $cases->caseorder->CellAttributes() ?>>
+<div<?php echo $cases->caseorder->ViewAttributes() ?>><?php echo $cases->caseorder->ListViewValue() ?></div>
 </td>
 	<?php } ?>
 <?php if ($cases->Export == "") { ?>
@@ -733,6 +747,7 @@ class ccases_list {
 			$cases->UpdateSort($cases->casetitle); // Field 
 			$cases->UpdateSort($cases->rootid); // Field 
 			$cases->UpdateSort($cases->catid); // Field 
+			$cases->UpdateSort($cases->caseorder); // Field 
 			$cases->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -772,6 +787,7 @@ class ccases_list {
 				$cases->casetitle->setSort("");
 				$cases->rootid->setSort("");
 				$cases->catid->setSort("");
+				$cases->caseorder->setSort("");
 			}
 
 			// Reset start position
@@ -872,9 +888,9 @@ class ccases_list {
 		global $cases;
 		$cases->id->setDbValue($rs->fields('id'));
 		$cases->casetitle->setDbValue($rs->fields('casetitle'));
-		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->rootid->setDbValue($rs->fields('rootid'));
 		$cases->catid->setDbValue($rs->fields('catid'));
+		$cases->casedesc->setDbValue($rs->fields('casedesc'));
 		$cases->casepic1->Upload->DbValue = $rs->fields('casepic1');
 		$cases->casepic2->Upload->DbValue = $rs->fields('casepic2');
 		$cases->casepic3->Upload->DbValue = $rs->fields('casepic3');
@@ -883,6 +899,7 @@ class ccases_list {
 		$cases->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$cases->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$cases->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$cases->caseorder->setDbValue($rs->fields('caseorder'));
 	}
 
 	// Render row values based on field settings
@@ -909,6 +926,10 @@ class ccases_list {
 		// catid
 		$cases->catid->CellCssStyle = "";
 		$cases->catid->CellCssClass = "";
+
+		// caseorder
+		$cases->caseorder->CellCssStyle = "";
+		$cases->caseorder->CellCssClass = "";
 		if ($cases->RowType == EW_ROWTYPE_VIEW) { // View row
 
 			// id
@@ -957,6 +978,12 @@ class ccases_list {
 			$cases->catid->CssClass = "";
 			$cases->catid->ViewCustomAttributes = "";
 
+			// caseorder
+			$cases->caseorder->ViewValue = $cases->caseorder->CurrentValue;
+			$cases->caseorder->CssStyle = "";
+			$cases->caseorder->CssClass = "";
+			$cases->caseorder->ViewCustomAttributes = "";
+
 			// id
 			$cases->id->HrefValue = "";
 
@@ -968,6 +995,9 @@ class ccases_list {
 
 			// catid
 			$cases->catid->HrefValue = "";
+
+			// caseorder
+			$cases->caseorder->HrefValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1012,6 +1042,7 @@ class ccases_list {
 				ew_ExportAddValue($sExportStr, 'casetitle', $cases->Export);
 				ew_ExportAddValue($sExportStr, 'rootid', $cases->Export);
 				ew_ExportAddValue($sExportStr, 'catid', $cases->Export);
+				ew_ExportAddValue($sExportStr, 'caseorder', $cases->Export);
 				echo ew_ExportLine($sExportStr, $cases->Export);
 			}
 		}
@@ -1036,6 +1067,7 @@ class ccases_list {
 					$XmlDoc->AddField('casetitle', $cases->casetitle->CurrentValue);
 					$XmlDoc->AddField('rootid', $cases->rootid->CurrentValue);
 					$XmlDoc->AddField('catid', $cases->catid->CurrentValue);
+					$XmlDoc->AddField('caseorder', $cases->caseorder->CurrentValue);
 					$XmlDoc->EndRow();
 				} else {
 					if ($sExportStyle == "v" && $cases->Export <> "csv") { // Vertical format
@@ -1043,12 +1075,14 @@ class ccases_list {
 						echo ew_ExportField('casetitle', $cases->casetitle->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						echo ew_ExportField('rootid', $cases->rootid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						echo ew_ExportField('catid', $cases->catid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
+						echo ew_ExportField('caseorder', $cases->caseorder->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 					}	else { // Horizontal format
 						$sExportStr = "";
 						ew_ExportAddValue($sExportStr, $cases->id->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						ew_ExportAddValue($sExportStr, $cases->casetitle->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						ew_ExportAddValue($sExportStr, $cases->rootid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						ew_ExportAddValue($sExportStr, $cases->catid->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
+						ew_ExportAddValue($sExportStr, $cases->caseorder->ExportValue($cases->Export, $cases->ExportOriginalValue), $cases->Export);
 						echo ew_ExportLine($sExportStr, $cases->Export);
 					}
 				}

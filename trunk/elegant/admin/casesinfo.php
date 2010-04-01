@@ -12,9 +12,9 @@ class ccases {
 	var $SelectLimit = FALSE;
 	var $id;
 	var $casetitle;
-	var $casedesc;
 	var $rootid;
 	var $catid;
+	var $casedesc;
 	var $casepic1;
 	var $casepic2;
 	var $casepic3;
@@ -23,6 +23,7 @@ class ccases {
 	var $casepic6;
 	var $casepic7;
 	var $casepic8;
+	var $caseorder;
 	var $fields = array();
 	var $UseTokenInUrl = EW_USE_TOKEN_IN_URL;
 	var $Export; // Export
@@ -39,12 +40,12 @@ class ccases {
 		$this->fields['id'] =& $this->id;
 		$this->casetitle = new cField('cases', 'x_casetitle', 'casetitle', "`casetitle`", 200, -1, FALSE);
 		$this->fields['casetitle'] =& $this->casetitle;
-		$this->casedesc = new cField('cases', 'x_casedesc', 'casedesc', "`casedesc`", 201, -1, FALSE);
-		$this->fields['casedesc'] =& $this->casedesc;
 		$this->rootid = new cField('cases', 'x_rootid', 'rootid', "`rootid`", 20, -1, FALSE);
 		$this->fields['rootid'] =& $this->rootid;
 		$this->catid = new cField('cases', 'x_catid', 'catid', "`catid`", 20, -1, FALSE);
 		$this->fields['catid'] =& $this->catid;
+		$this->casedesc = new cField('cases', 'x_casedesc', 'casedesc', "`casedesc`", 201, -1, FALSE);
+		$this->fields['casedesc'] =& $this->casedesc;
 		$this->casepic1 = new cField('cases', 'x_casepic1', 'casepic1', "`casepic1`", 201, -1, TRUE);
 		$this->fields['casepic1'] =& $this->casepic1;
 		$this->casepic2 = new cField('cases', 'x_casepic2', 'casepic2', "`casepic2`", 201, -1, TRUE);
@@ -61,6 +62,8 @@ class ccases {
 		$this->fields['casepic7'] =& $this->casepic7;
 		$this->casepic8 = new cField('cases', 'x_casepic8', 'casepic8', "`casepic8`", 201, -1, TRUE);
 		$this->fields['casepic8'] =& $this->casepic8;
+		$this->caseorder = new cField('cases', 'x_caseorder', 'caseorder', "`caseorder`", 3, -1, FALSE);
+		$this->fields['caseorder'] =& $this->caseorder;
 	}
 
 	// Records per page
@@ -403,9 +406,9 @@ class ccases {
 	function LoadListRowValues(&$rs) {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->casetitle->setDbValue($rs->fields('casetitle'));
-		$this->casedesc->setDbValue($rs->fields('casedesc'));
 		$this->rootid->setDbValue($rs->fields('rootid'));
 		$this->catid->setDbValue($rs->fields('catid'));
+		$this->casedesc->setDbValue($rs->fields('casedesc'));
 		$this->casepic1->Upload->DbValue = $rs->fields('casepic1');
 		$this->casepic2->Upload->DbValue = $rs->fields('casepic2');
 		$this->casepic3->Upload->DbValue = $rs->fields('casepic3');
@@ -414,6 +417,7 @@ class ccases {
 		$this->casepic6->Upload->DbValue = $rs->fields('casepic6');
 		$this->casepic7->Upload->DbValue = $rs->fields('casepic7');
 		$this->casepic8->Upload->DbValue = $rs->fields('casepic8');
+		$this->caseorder->setDbValue($rs->fields('caseorder'));
 	}
 
 	// Render list row values
@@ -469,6 +473,12 @@ class ccases {
 		$this->catid->CssClass = "";
 		$this->catid->ViewCustomAttributes = "";
 
+		// caseorder
+		$this->caseorder->ViewValue = $this->caseorder->CurrentValue;
+		$this->caseorder->CssStyle = "";
+		$this->caseorder->CssClass = "";
+		$this->caseorder->ViewCustomAttributes = "";
+
 		// id
 		$this->id->HrefValue = "";
 
@@ -480,6 +490,9 @@ class ccases {
 
 		// catid
 		$this->catid->HrefValue = "";
+
+		// caseorder
+		$this->caseorder->HrefValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();

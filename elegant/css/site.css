@@ -23,8 +23,8 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #nav li a:hover{ color:#0264A5;}
 #nav li ul{ visibility:hidden; position:absolute; margin-top:36px; margin-left:0px; *margin-left:-100px; width:100px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; /*IE8*/
-     filter:alpha(opacity=75);  /*IE5¡¢IE5.5¡¢IE6¡¢IE7*/
-     opacity: .75;  /*Opera9.0+¡¢Firefox1.5+¡¢Safari¡¢Chrome*/
+     filter:alpha(opacity=75);  /*IE5ï¿½ï¿½IE5.5ï¿½ï¿½IE6ï¿½ï¿½IE7*/
+     opacity: .75;  /*Opera9.0+ï¿½ï¿½Firefox1.5+ï¿½ï¿½Safariï¿½ï¿½Chrome*/
 }
 #nav li ul li{ width:100%; background-color:#fff;}
 #nav li:hover ul{ visibility:visible;}
@@ -40,7 +40,7 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #ad_left{ float:left; width:150px; height:38px; margin-top:1px; background-color:#252525;}
 #ad_right{ float:left; width:170px; height:38px; margin-top:1px; background-color:#B5d353;}
 /* friend link css */
-#friend{ padding-left:150px; padding-right:170px;}
+#friend{ padding-left:150px; padding-right:170px; padding-top:15px;}
 #friend ul{ width:920px; padding-top:18px; padding-bottom:10px;}
 #friend label{ color:#535353; }
 #friend ul li{ float:left; margin-right:10px; }
@@ -99,6 +99,7 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #rightbar .join img{ float:left;}
 #rightbar .join .desc{ line-height:1.8em; overflow:hidden; height:90px; width:98%; padding-left:2%;}
 
+#rightbar .casetop{ width:100%; float:left; padding-bottom:30px;}
 #rightbar .casetop dt{ height:30px; border-bottom:dotted 1px #CCC;}
 #rightbar .casetop dt a{ color:#999; font-weight:100; float:right;}
 #rightbar .casetop dd div{ float:left; width:210px; height:169px; *margin-right:20px; margin-right:10px; margin-top:15px; }
@@ -119,3 +120,5 @@ hr{border:none;border-top:dotted 1px #aaa;height:1px; width:100%;}
 #caseinfo .clickimg:hover{ cursor:pointer;}
 
 #bg{ float:right; }
+
+.indexpic{width:25px;height:20px;color:black;background-color:white; text-align:center;z-index:100;position:absolute;margin-top:385px;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=75)'; filter:alpha(opacity=75);opacity: .75;}

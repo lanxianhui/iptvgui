@@ -10,7 +10,7 @@
     <li>&nbsp;|&nbsp;</li>
 </ul>
 <div id="copyright">
-@ Copyright 2010 Chinya Landscape Architecture,Designed by feel8.
+@ Copyright 2010 Chinya Landscape Architecture.
 </div>
 </div>
 </body>

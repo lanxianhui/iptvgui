@@ -1,33 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <imagesshow>
-<lookbook>
-  <url_pic>xml/d01.jpg</url_pic>
-  <big_pic>index.php/main/casesinfo/1/1/1</big_pic>
- <p_name>这里是此项目的名称</p_name>
- <id>1</id>
-</lookbook>
-<lookbook>
-  <url_pic>xml/d02.jpg</url_pic>
-  <big_pic>index.php/main/casesinfo/1/1/1</big_pic>
-<p_name>This is the projects name2This is the projects name2</p_name>
- <id>2</id>
-</lookbook>
-<lookbook>
-  <url_pic>xml/d03.jpg</url_pic>
-  <big_pic>index.php/main/casesinfo/1/1/1</big_pic>
-<p_name>This is the projects name3name3name3</p_name>
- <id>3</id>
-</lookbook>
-<lookbook>
-  <url_pic>xml/d04.jpg</url_pic>
-  <big_pic>index.php/main/casesinfo/1/1/1</big_pic>
-<p_name>projects name4</p_name>
- <id>4</id>
-</lookbook>
-<lookbook>
-  <url_pic>xml/d05.jpg</url_pic>
-  <big_pic>index.php/main/casesinfo/1/1/1</big_pic>
-<p_name>This is the projects name5</p_name>
- <id>5</id>
-</lookbook>
+  <lookbook>
+    <url_pic>xml/20100407150418.jpg</url_pic>
+    <big_pic></big_pic>
+    <p_name></p_name>
+    <id>1</id>
+  </lookbook>
+  <lookbook>
+    <url_pic>xml/20100407150459.jpg</url_pic>
+    <big_pic></big_pic>
+    <p_name>sdf</p_name>
+    <id>2</id>
+  </lookbook>
+  <lookbook>
+    <url_pic>xml/20100407150410.jpg</url_pic>
+    <big_pic></big_pic>
+    <p_name>sdfsdfsdf</p_name>
+    <id>3</id>
+  </lookbook>
+  <lookbook>
+    <url_pic>xml/20100407150427.jpg</url_pic>
+    <big_pic></big_pic>
+    <p_name>dfgfhgh</p_name>
+    <id>4</id>
+  </lookbook>
+  <lookbook>
+    <url_pic>xml/20100407150445.jpg</url_pic>
+    <big_pic></big_pic>
+    <p_name>yuyui</p_name>
+    <id>5</id>
+  </lookbook>
 </imagesshow>

@@ -6,6 +6,7 @@
 <?php endforeach;?>
 <div id="ad_left"></div>
 <div id="ad">
+
 <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="916" height="39">
   <param name="movie" value="swf/ad<?php echo $adid ?>.swf">
   <param name="quality" value="high">
